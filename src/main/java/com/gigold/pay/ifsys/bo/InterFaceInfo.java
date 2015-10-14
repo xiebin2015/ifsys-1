@@ -31,9 +31,9 @@ public class InterFaceInfo implements Serializable {
     private String ifType;
     private String ifProtocol;
      
-    private InterFaceSysTem interFaceSysTem;
-    private InterFacePro interFacePro;
-    private UserInfo userInfo;
+    private List<InterFaceSysTem> interFaceSysTem;
+    private List<InterFacePro> interFacePro;
+    private List<UserInfo> userInfo;
     private List<InterFaceField> fieldInfoList;
     
 
@@ -51,46 +51,48 @@ public class InterFaceInfo implements Serializable {
         this.fieldInfoList = fieldInfoList;
     }
 
-    /**
-     * @return the interFacePro
-     */
-    public InterFacePro getInterFacePro() {
-        return interFacePro;
-    }
-
-    /**
-     * @param interFacePro the interFacePro to set
-     */
-    public void setInterFacePro(InterFacePro interFacePro) {
-        this.interFacePro = interFacePro;
-    }
-
-    /**
-     * @return the userInfo
-     */
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    /**
-     * @param userInfo the userInfo to set
-     */
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
+   
 
     /**
      * @return the interFaceSysTem
      */
-    public InterFaceSysTem getInterFaceSysTem() {
+    public List<InterFaceSysTem> getInterFaceSysTem() {
         return interFaceSysTem;
     }
 
     /**
      * @param interFaceSysTem the interFaceSysTem to set
      */
-    public void setInterFaceSysTem(InterFaceSysTem interFaceSysTem) {
+    public void setInterFaceSysTem(List<InterFaceSysTem> interFaceSysTem) {
         this.interFaceSysTem = interFaceSysTem;
+    }
+
+    /**
+     * @return the interFacePro
+     */
+    public List<InterFacePro> getInterFacePro() {
+        return interFacePro;
+    }
+
+    /**
+     * @param interFacePro the interFacePro to set
+     */
+    public void setInterFacePro(List<InterFacePro> interFacePro) {
+        this.interFacePro = interFacePro;
+    }
+
+    /**
+     * @return the userInfo
+     */
+    public List<UserInfo> getUserInfo() {
+        return userInfo;
+    }
+
+    /**
+     * @param userInfo the userInfo to set
+     */
+    public void setUserInfo(List<UserInfo> userInfo) {
+        this.userInfo = userInfo;
     }
 
     /**

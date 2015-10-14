@@ -17,14 +17,20 @@
 		<result property="ifUrl" column="IF_URL" />
 		<result property="ifType" column="IF_TYPE" />
 		<result property="ifProtocol" column="IF_PROTOCOL" />
-		<association property="interFaceSysTem" column="IF_SYS_ID"
+		<!-- <association property="interFaceSysTem" column="IF_SYS_ID"
 			select="getInterFaceSysTem" />
 		<association property="interFacePro" column="IF_PRO_ID"
 			select="getInterFacePro" />
 		<association property="userInfo" column="IF_CREATEBY"
-			select="getUserInfo" />
-		<collection property="fieldInfoList" column="ID" select="getFieldInfoList">
+			select="getUserInfo" />-->
+		<collection property="fieldInfoList" column="ID" select="getFieldInfoList"> 
 		</collection>
+		
+		<collection property="interFaceSysTem" column="IF_SYS_ID" select="getInterFaceSysTem">
+        </collection>
+        
+        <collection property="userInfo" column="IF_CREATEBY" select="getUserInfo">
+        </collection>
 
 	</resultMap>
 
