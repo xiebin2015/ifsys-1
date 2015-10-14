@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gigold.pay.ifsys.dao.InterFaceSystemDao">
+
+	<resultMap type="com.gigold.pay.ifsys.bo.InterFaceSysTem" id="sysResultMap">
+		<id property="id" column="ID" />
+		<result property="sysName" column="IF_SYS_NAME" />
+		<result property="sysDesc" column="IF_SYS_DESC" />
+
+	</resultMap>
+
+	<select id="getAllSysInfo" parameterType="com.gigold.pay.ifsys.bo.InterFaceSysTem"
+		resultMap="sysResultMap">
+		<![CDATA[  
+        select *
+        from T_IF_SYSTEM
+        ]]>
+
+	</select>
+	<select id="getSysInfoById" parameterType="com.gigold.pay.ifsys.bo.InterFaceSysTem"
+		resultMap="sysResultMap">
+		<![CDATA[  
+         SELECT *   
+         FROM T_IF_SYSTEM  
+         where id=1
+        ]]>
+	</select>
+</mapper>
+ 
+ 
+ 
+ 
+ 
+ 

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>独孤九剑</title>
+		<link rel="stylesheet" type="text/css" href="info/css/amazeui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<script type="text/javascript" src="info/js/jquery.min.js"></script>
+		<script src="js/plugin/myThirdPlugin.js"></script>
+		<script type="text/javascript">
+			var pageNum = 1;
+			var pages = 0;
+			var pageSize = 3;
+
+			function loadInterFacePage(params) {
+				params.data.pageSize = pageSize;
+				$.ajax({
+					type: "POST",
+					url: params.url,
+					dataType: "json",
+					contentType: "application/json",
+					data: JSON.stringify(params.data),
+					async: false,
+					error: function(request) {
+						alert("Connection error");
+					},
+					success: function(data) {
+						if (data.rspCd == "00000") {
+							var listStr = "";
+							$.each(data.pageInfo.list, function(index, rowData) {
+								listStr +=
+									'<tr data-id=' + rowData.id + '>' +
+									'<td  width=60 class="am-primary">' + (index + 1) + '</td>' +
+									'<td class="textLeft">' + rowData.ifName + '</td>' +
+									'<td class="textLeft">' + rowData.ifDesc + '</td>' +
+									'<td width=200>' +
+									'<a href="interFaceDetail.html?id=' + rowData.id + '" class="">查看详情</a>&nbsp;&nbsp;' +
+									'<a href="interFaceUpdate.html?id=' + rowData.id + '" class="">修改</a>&nbsp;&nbsp;' +
+									'<a href="#" id="' + rowData.id + '" class="deleteBtn">删除</a>' +
+									'<td>' +
+									'</tr>';
+							});
+							$("#propDateShowBody").html(listStr);
+							//添加页码
+							var pagesStr = '';
+							pageNum = parseInt(data.pageInfo.pageNum);
+							pages = parseInt(data.pageInfo.pages);
+							if (data.pageInfo.isFirstPage || pages == 0) {
+								pagesStr += '<li class="am-pagination-first am-disabled">';
+							} else {
+								pagesStr += '<li class="am-pagination-first">';
+							}
+							pagesStr += '<a class="">第一页</a></li>';
+							if (data.pageInfo.hasPreviousPage) {
+								pagesStr += '<li class="am-pagination-prev"><a class="">上一页</a></li>'
+							} else {
+								pagesStr += '<li class="am-pagination-prev am-disabled"><a class="">上一页</a></li>'
+							}
+							//添加分页信息
+							$.each(data.pageInfo.navigatepageNums, function(index, pageInfo) {
+								//添加页码
+								if (data.pageInfo.pageNum == pageInfo) {
+									pagesStr += '<li class="am-active"><a class="">' + pageInfo + '</a></li>';
+								} else {
+									pagesStr += '<li class=""><a class="">' + pageInfo + '</a></li>';
+								}
+							});
+							if (data.pageInfo.hasNextPage) {
+								pagesStr += '<li class="am-pagination-next "><a class="">下一页</a></li>'
+							} else {
+								pagesStr += '<li class="am-pagination-next am-disabled"><a class="">下一页</a></li>';
+							}
+							if (data.pageInfo.isLastPage) {
+								pagesStr += '<li class="am-pagination-last am-disabled"><a class="">最末页</a></li>';
+							} else {
+								pagesStr += '<li class="am-pagination-last"><a class="">最末页</a></li>';
+							}
+							$(".pageUl").html(pagesStr);
+						} else {
+							alert("失败处理");
+						}
+					}
+				});
+			}
+			$(function() {
+				//$("#welcome").html("<h>欢迎"+$.getUrlParam("userName")+"登录系统</h>");
+				loadInterFacePage({
+					url: "getInterFaceByPage.do",
+					data: {
+						"pageInfo": {
+							"pageNum": $("#pageNum").val(),
+							"pageSize": pageSize
+						},
+						"interFaceInfo": {
+							"ifName": $("#ifName").val()
+						}
+					}
+				});
+				$("#search").click(function() {
+					$('#srearchFrom').submit(function() {
+						loadInterFacePage({
+							url: "fuzzyQuery.do",
+							data: {
+								"pageInfo": {
+									"pageNum": 1,
+									"pageSize": pageSize
+								},
+								"interFaceInfo": {
+									"ifName": $("#ifName").val()
+								}
+							}
+						});
+						return false;
+					});
+				});
+				$(document).on("click", ".pageUl li", function() {
+					var textNum = $(this).text();
+					if ("第一页" == textNum) {
+						textNum = 1;
+					}
+					if ("上一页" == textNum) {
+						textNum = pageNum - 1;
+					}
+					if ("最末页" == textNum) {
+						textNum = pages;
+					}
+					if ("下一页" == textNum) {
+						textNum = pageNum + 1;
+					}
+					var ifName = $("#ifName").val();
+					var url = "getInterFaceByPage.do";
+					var sendData = {
+						"pageInfo": {
+							"pageNum": textNum,
+							"pageSize": pageSize
+						}
+					};
+					if (ifName != null) {
+						url = "fuzzyQuery.do";
+						sendData = {
+							"pageInfo": {
+								"pageNum": textNum,
+								"pageSize": pageSize
+							},
+							"interFaceInfo": {
+								"ifName": $("#ifName").val()
+							}
+						}
+					};
+					loadInterFacePage({
+						url: url,
+						data: sendData
+					});
+				});
+				$("#propDateShow").on("click", ".deleteBtn", function() {
+					$('#my-confirm').modal({
+						relatedTarget: this,
+						onConfirm: function(options) {
+							var deleteId = $(this.relatedTarget).parent().parent().attr("data-id");
+							var sendData = {
+								"interFaceInfo": {
+									"id": deleteId
+								}
+							}
+							$.ajax({
+								type: "POST",
+								url: "deleteInterFaceById.do",
+								dataType: "json",
+								contentType: "application/json",
+								data: JSON.stringify(sendData),
+								async: false,
+								error: function(request) {
+									alert("Connection error");
+								},
+								success: function(data) {
+									if (data.rspCd == "00000") {
+										alert("删除成功");
+										self.location.href = "main.html";
+									} else {
+										alert("失败处理");
+									}
+								}
+							});
+						}
+					});
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<header data-am-widget="header" class="am-header am-titlebar am-header-default">
+			<h1 class="am-header-title">
+        <a href="#title-link" class="">独孤九剑</a>
+    </h1>
+			<div id="welcome"></div>
+
+			<div class="am-header-right am-header-nav ">
+				<i class="am-header-icon am-icon-bars" title="开发ing..."> </i>
+				<div class="am-dropdown" data-am-dropdown>
+					<button class="am-btn am-btn-primary am-dropdown-toggle menu" data-am-dropdown-toggle>
+						查看功能
+						<span class="am-icon-caret-down"></span>
+					</button>
+					<ul class="am-dropdown-content">
+						<li><a href="main.html">接口查询</a></li>
+						<!-- <li><a href="goAddInterFace">添加系统</a></li>
+                    <li><a href="#">添加产品</a></li> -->
+						<li><a href="interFaceAdd.html">添加接口</a></li>
+					</ul>
+				</div>
+
+			</div>
+
+		</header>
+		<div class="filtrate">
+			<form id="srearchFrom">
+				<!--搜索-->
+				<div class="search">
+
+					<input id="ifName" name="ifName" placeholder="输入需要查找的内容" />
+					<button id="search">查找</button>
+
+				</div>
+			</form>
+		</div>
+
+		<nav class="navMid">
+			<table id="propDateShow" class="am-table am-table-bordered am-table-hover am-table-compact am-table-centered">
+
+				<thead>
+					<th>序号</th>
+					<th>接口名</th>
+					<th>接口功能描述</th>
+					<th>操作</th>
+
+				</thead>
+				<tbody id="propDateShowBody">
+
+				</tbody>
+			</table>
+
+			<ul data-am-widget="pagination" class="am-pagination am-pagination-default pageUl">
+			</ul>
+
+			<!-- 删除确认 -->
+			<div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+				<div class="am-modal-dialog">
+					<div class="am-modal-hd">Gigold</div>
+					<div class="am-modal-bd">
+						你，确定要删除这条记录吗？
+					</div>
+					<div class="am-modal-footer">
+						<span class="am-modal-btn" data-am-modal-cancel>取消</span>
+						<span class="am-modal-btn" data-am-modal-confirm>确定</span>
+					</div>
+				</div>
+			</div>
+
+		</nav>
+		<input type="hidden" id="pageNum" value="1" />
+		<script src="info/js/amazeui.min.js"></script>
+		<script type="text/javascript" src="js/gigold.system.main.js"></script>
+	</body>
+
+</html>
