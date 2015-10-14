@@ -28,7 +28,8 @@
 		
 		<collection property="interFaceSysTem" column="IF_SYS_ID" select="getInterFaceSysTem">
         </collection>
-        
+          <collection property="interFacePro" column="IF_PRO_ID" select="getInterFacePro">
+        </collection>
         <collection property="userInfo" column="IF_CREATEBY" select="getUserInfo">
         </collection>
 
