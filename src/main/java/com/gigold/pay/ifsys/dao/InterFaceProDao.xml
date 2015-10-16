@@ -17,6 +17,7 @@
 		where  ISVALID='Y'
         ]]>
 	</select>
+	
 	<select id="getProInfoById" parameterType="com.gigold.pay.ifsys.bo.InterFacePro"
 		resultMap="proResultMap">
 		<![CDATA[  
@@ -27,6 +28,14 @@
 	</select>
 
 
+    <select id="getProInfoBySysId" parameterType="com.gigold.pay.ifsys.bo.InterFacePro"
+        resultMap="proResultMap">
+        <![CDATA[  
+        SELECT *
+        FROM T_IF_PRO
+        WHERE IF_SYS_ID=#{sysId} and  ISVALID='Y'
+        ]]>
+    </select>
 
 </mapper>
  

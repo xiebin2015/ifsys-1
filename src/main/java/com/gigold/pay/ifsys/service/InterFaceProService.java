@@ -12,14 +12,19 @@ import com.gigold.pay.ifsys.dao.InterFaceProDao;
 public class InterFaceProService {
 
     @Autowired
-    InterFaceProDao InterFaceProDao;
+    InterFaceProDao interFaceProDao;
 
     public List<InterFacePro> getAllProInfo() {
-        return InterFaceProDao.getAllProInfo();
+        return interFaceProDao.getAllProInfo();
     }
 
     public InterFacePro getProInfoById(InterFacePro interFacePro) {
-        return InterFaceProDao.getProInfoById(interFacePro);
+        return interFaceProDao.getProInfoById(interFacePro);
     }
+    
+    public List<InterFacePro> getProInfoBySysId(InterFacePro interFacePro){
+        return interFaceProDao.getProInfoBySysId(interFacePro);
+    }
+    
 
 }

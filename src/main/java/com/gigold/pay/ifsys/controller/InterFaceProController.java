@@ -36,6 +36,22 @@ public class InterFaceProController extends BaseController{
 
     }
     
+    @RequestMapping(value = "/getProInfoBySysId.do")
+    public @ResponseBody InterFaceProResponseDto getProInfoBySysId( @RequestBody InterFaceProRequestDto qdto) {
+        InterFaceProResponseDto dto = new InterFaceProResponseDto();
+        List<InterFacePro> rlist = interFaceProService.getProInfoBySysId(qdto.getInterFacePro());
+        if (rlist != null) {
+            dto.setProList(rlist);
+            dto.setRspCd(SysCode.SUCCESS);
+        } else {
+            dto.setRspCd(CodeItem.IF_FAILURE);
+        }
+
+        return dto;
+
+    }
+    
+    
     
 
     @RequestMapping(value = "/getAllProInfo.do")

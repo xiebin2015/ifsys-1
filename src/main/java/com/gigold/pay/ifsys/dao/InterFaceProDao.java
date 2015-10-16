@@ -15,6 +15,7 @@ import com.gigold.pay.ifsys.bo.InterFacePro;
  * Title: InterFaceProDao<br/>
  * Description: <br/>
  * Company: gigold<br/>
+ * 
  * @author xb
  * @date 2015年10月12日上午9:41:46
  *
@@ -22,6 +23,8 @@ import com.gigold.pay.ifsys.bo.InterFacePro;
 public interface InterFaceProDao {
 
     public List<InterFacePro> getAllProInfo();
-    
-    public InterFacePro getProInfoById(InterFacePro interFacePro) ;
+
+    public InterFacePro getProInfoById(InterFacePro interFacePro);
+
+    public List<InterFacePro> getProInfoBySysId(InterFacePro interFacePro);
 }

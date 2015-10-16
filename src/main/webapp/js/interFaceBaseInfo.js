@@ -9,8 +9,34 @@ $(function() {
 	$(".AddInterface").on("click",function(){
 		window.location.href="interFaceBaseInfo.html?userName="+$.getUrlParam("userName");
 	});
+	$("#ifProId").attr("disabled","disabled"); ;
+
 	
-	
+	$('#ifSysId').change(function(){ 
+	var sysId=	$(this).children('option:selected').val();
+	var sendData={
+			"interFacePro":{
+				   "sysId":sysId
+				}
+			};
+	//加载产品信息
+	  gigold.pay.interFace.ajaxHandler({
+			"url":"getProInfoBySysId.do",
+			"data":JSON.stringify(sendData),
+			"onSuccess":function(data){
+				if (data.rspCd == "00000") {
+					$("#ifProId").removeAttr("disabled");  
+					 var optionStr='<option value="0" selected>请选择所属产品</option>';
+					$.each(data.proList, function(index, proData) {
+                        optionStr += '<option value="'+proData.id+'">'
+                                + proData.proName + '</option>';
+                       
+                    });
+					 $("#ifProId").html(optionStr);
+              }
+			}
+		});
+	});
 		//加载系统信息
     gigold.pay.interFace.ajaxHandler({
 			"url":"getAllSysInfo.do",
@@ -26,19 +52,19 @@ $(function() {
 			}
 		});
 		
-		//加载产品信息
-		 gigold.pay.interFace.ajaxHandler({
-	            "url":"getAllProInfo.do",
-	            "onSuccess":function(data){
-	            	if (data.rspCd == "00000") {
-	                    $.each(data.proList, function(index, proData) {
-	                        var optionStr = '<option value="'+proData.id+'">'
-	                                + proData.proName + '</option>';
-	                        $("#ifProId").append(optionStr);
-	                    });
-	                }
-	            }
-	        });
+//		//加载产品信息
+//		 gigold.pay.interFace.ajaxHandler({
+//	            "url":"getAllProInfo.do",
+//	            "onSuccess":function(data){
+//	            	if (data.rspCd == "00000") {
+//	                    $.each(data.proList, function(index, proData) {
+//	                        var optionStr = '<option value="'+proData.id+'">'
+//	                                + proData.proName + '</option>';
+//	                        $("#ifProId").append(optionStr);
+//	                    });
+//	                }
+//	            }
+//	        });
 		
        //接口基本信息保存按钮功能
 		$("#saveInterFaceBtn").click(function() {
