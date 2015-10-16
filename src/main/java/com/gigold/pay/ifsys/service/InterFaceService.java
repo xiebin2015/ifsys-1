@@ -1,6 +1,7 @@
 package com.gigold.pay.ifsys.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class InterFaceService {
     
     public List<InterFaceInfo> queryInterFaceByPage(InterFaceInfo interFaceInfo) {
 
-        return interFaceDao.queryInterFaceByPage();
+        return interFaceDao.queryInterFaceByPage(interFaceInfo);
     }
     
     

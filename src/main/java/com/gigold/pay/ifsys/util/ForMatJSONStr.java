@@ -19,8 +19,13 @@ public class ForMatJSONStr {
     
     public static void main(String[] args) {
         String jsonStr = "{\"id\":\"1\",\"name\":\"a1\",\"obj\":{\"id\":11,\"name\":\"a11\",\"array\":[{\"id\":111,\"name\":\"a111\"},{\"id\":112,\"name\":\"a112\"}]}}";
+       
+        jsonStr="{\"aa\":{/**/\"ddd\":\"dddd\" /*dddd*/}}";
+
+        
+        
         String fotmatStr = ForMatJSONStr.format(jsonStr);
-        System.out.println(fotmatStr);
+        System.out.println(fotmatStr.replaceAll("\\*/", "*/\n"));
     }
      
     /**

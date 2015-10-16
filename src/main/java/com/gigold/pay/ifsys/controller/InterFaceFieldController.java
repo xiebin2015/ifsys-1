@@ -130,7 +130,7 @@ public class InterFaceFieldController extends BaseController{
                if("4".equals(ff.getFieldCheck())){
                    ss.append("[{"); 
                }else{
-                ss.append("{"); 
+                ss.append("{"+"/*"+ff.getFieldReferValue()+"*/\n"); 
                }
             }else{
                 ss.append("\""+ff.getFieldReferValue()+"\" /*"+ff.getFieldDesc()+"*/");

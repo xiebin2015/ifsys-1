@@ -32,6 +32,56 @@ public class InterFaceInfo extends Domain implements Serializable {
     private String ifType;
     private String ifProtocol;
     private String isValid;
+    
+    private String sysName;
+    private String proName;
+    private String designName;
+    
+    
+    
+    
+
+    /**
+     * @return the proName
+     */
+    public String getProName() {
+        return proName;
+    }
+
+    /**
+     * @param proName the proName to set
+     */
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
+
+    /**
+     * @return the designName
+     */
+    public String getDesignName() {
+        return designName;
+    }
+
+    /**
+     * @param designName the designName to set
+     */
+    public void setDesignName(String designName) {
+        this.designName = designName;
+    }
+
+    /**
+     * @return the sysName
+     */
+    public String getSysName() {
+        return sysName;
+    }
+
+    /**
+     * @param sysName the sysName to set
+     */
+    public void setSysName(String sysName) {
+        this.sysName = sysName;
+    }
 
     /**
      * @return the isValid

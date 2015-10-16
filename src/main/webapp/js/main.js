@@ -1,6 +1,6 @@
 var pageNum = 1;
 	var pages = 0;
-	var pageSize = 20;
+	var pageSize = 3;
 	function handlerData(data) {
 		var listStr = "";
 		$.each(data.pageInfo.list,
@@ -11,6 +11,15 @@ var pageNum = 1;
 									+ '</td>'
 									+ '<td class="textLeft">'
 									+ rowData.ifName
+									+ '</td>'
+									+ '<td class="textLeft">'
+									+ rowData.sysName
+									+ '</td>'
+									+ '<td class="textLeft">'
+									+ rowData.proName
+									+ '</td>'
+									+ '<td class="textLeft">'
+									+ rowData.designName
 									+ '</td>'
 									+ '<td class="textLeft">'
 									+ rowData.ifDesc
@@ -115,6 +124,7 @@ var pageNum = 1;
 		 
 		 
 		$("#search").click(function() {
+			console.log("hhehe");
 			var paramData = {
 				"pageInfo" : {
 					"pageNum" : 1,
@@ -128,9 +138,10 @@ var pageNum = 1;
 			
 			 $('#srearchFrom').submit(function() {
 				 gigold.pay.interFace.ajaxHandler({
-		                "url" : "fuzzyQuery.do",
+		                "url" : "queryByCondition.do",
 		                "data" : JSON.stringify(paramData),
 		                "onSuccess" : function(data) {
+		                	console.log(data);
 		                    if (data.rspCd == "00000") {
 		                        handlerData(data);
 		                    } else {
@@ -166,7 +177,7 @@ var pageNum = 1;
 				}
 			};
 			if (ifName != null&&ifName!='') {
-				url = "fuzzyQuery.do";
+				url = "queryByCondition.do";
 				sendData = {
 					"pageInfo" : {
 						"pageNum" : textNum,

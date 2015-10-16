@@ -80,26 +80,10 @@ public class InterFaceController extends BaseController{
         return dto;
     }
     
-//    
-//    public @ResponseBody InterFaceResponseDto getInterFaceById(@RequestBody InterFaceRequestDto qdto) {
-//        //debug("调用getInterFaceById：");
-//        InterFaceInfo interFaceInfo = interFaceService.getInterFaceById(qdto.getInterFaceInfo());
-//        InterFaceResponseDto dto = new InterFaceResponseDto();
-//       if (interFaceInfo != null) {
-//            dto.setInterFaceInfo(interFaceInfo);
-//            dto.setRspCd(SysCode.SUCCESS);
-//        } else {
-//            dto.setRspCd(CodeItem.IF_FAILURE);
-//        }
-//        return dto;
-//    }
-    
-    
     @RequestMapping("/queryByCondition")
     public @ResponseBody InterFacePageResponseDto queryInterFaceByPage(@RequestBody InterFaceFuzzyQueryRequestDto qdto) {
-       // PageHelper.startPage(qdto.getPageInfo().getPageNum(),qdto.getPageInfo().getPageSize());
+       PageHelper.startPage(qdto.getPageInfo().getPageNum(),qdto.getPageInfo().getPageSize());
         List<InterFaceInfo> list = interFaceService.queryInterFaceByPage(qdto.getInterFaceInfo());
-        System.out.println(qdto.getInterFaceInfo().getIfName()+qdto.getPageInfo().getPageNum());
         debug("传入的参数：" + qdto.getPageInfo().getPageNum() + "====" + qdto.getPageInfo().getPageSize());
         InterFacePageResponseDto dto = new InterFacePageResponseDto();
         if (list != null) {
@@ -111,32 +95,6 @@ public class InterFaceController extends BaseController{
         }
         return dto;
     }
-    
-//   
-//    
-//    @RequestMapping("/queryByCondition")
-//    public @ResponseBody InterFacePageResponseDto queryByCondition(@RequestBody InterFacePageRequestDto qdto) {
-//       debug("调用getInterFaceByPage：");
-//        PageHelper.startPage(qdto.getPageInfo().getPageNum(),qdto.getPageInfo().getPageSize());
-//        InterFaceInfo interFaceInfo=new InterFaceInfo();
-//        interFaceInfo.setId(34);
-//        List<InterFaceInfo> list = interFaceService.fuzzyQuery(interFaceInfo);
-//        debug("传入的参数：" + qdto.getPageInfo().getPageNum() + "====" + qdto.getPageInfo().getPageSize());
-//        InterFacePageResponseDto dto = new InterFacePageResponseDto();
-//        if (list != null) {
-//            PageInfo<InterFaceInfo> pageInfo = new PageInfo<InterFaceInfo>(list);
-//            dto.setPageInfo(pageInfo);
-//            dto.setRspCd(SysCode.SUCCESS);
-//        } else {
-//            dto.setRspCd(CodeItem.IF_FAILURE);
-//        }
-//        return dto;
-//
-//    }
-    
-    
-    
-
     /**
      * 分页查询
      * 

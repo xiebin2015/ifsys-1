@@ -20,6 +20,18 @@
 		<result property="isValid" column="ISVALID" />
 	</resultMap>
 
+<resultMap type="com.gigold.pay.ifsys.bo.InterFaceInfo" id="joinResultMap">
+        <id property="id" column="ID" />
+        <result property="ifName" column="IF_NAME" />
+        <result property="ifDesc" column="IF_DESC" />
+        <result property="uid" column="IF_CREATEBY" />
+        <result property="ifSysId" column="IF_SYS_ID" />
+        <result property="ifProId" column="IF_PRO_ID" />
+        <result property="sysName" column="IF_SYS_NAME" />
+        <result property="proName" column="IF_PRO_NAME" />
+        <result property="designName" column="USERNAME" />
+    </resultMap>
+
 	<select id="getInterFaceById" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo"
 		resultMap="ifResultMap">
         <![CDATA[  
@@ -41,23 +53,49 @@
 	</select>
 
 
-	<select id="getAllInterFaceByPage" resultMap="ifResultMap">
+	<select id="getAllInterFaceByPage" resultMap="joinResultMap">
         <![CDATA[  
-        select
-        *
-        from
-        T_IF_INTERFACE where ISVALID='Y'
+         select
+        inteFace.ID,
+        IF_NAME,
+        IF_DESC,
+        IF_CREATEBY,
+        inteFace.IF_SYS_ID,
+        IF_SYS_NAME,
+        IF_PRO_ID,
+        IF_PRO_NAME,
+        USERNAME
+        from T_IF_INTERFACE inteFace 
+        left join T_IF_SYSTEM  sys on inteFace.IF_SYS_ID=sys.ID
+        left join T_IF_PRO  PRO on inteFace.IF_SYS_ID=PRO.ID
+        left join T_IF_USER  user on inteFace.IF_SYS_ID=user.ID
+        where inteFace.ISVALID='Y'
         ]]>
 	</select>
 	<!-- 模糊查询 -->
 	<select id="queryInterFaceByPage" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo"
-		resultMap="ifResultMap">
+		resultMap="joinResultMap">
         <![CDATA[  
-        select
-        *
-        from
-        T_IF_INTERFACE
-       where IF_NAME like '%${ifName}%' and ISVALID='Y'
+         select
+        inteFace.ID,
+        IF_NAME,
+        IF_DESC,
+        IF_CREATEBY,
+        inteFace.IF_SYS_ID,
+        IF_SYS_NAME,
+        IF_PRO_ID,
+        IF_PRO_NAME,
+        USERNAME
+        from T_IF_INTERFACE inteFace 
+        left join T_IF_SYSTEM  sys on inteFace.IF_SYS_ID=sys.ID
+        left join T_IF_PRO  PRO on inteFace.IF_SYS_ID=PRO.ID
+        left join T_IF_USER  user on inteFace.IF_SYS_ID=user.ID
+       where inteFace.IF_NAME like '%${ifName}%'
+        or inteFace.IF_DESC like '%${ifName}%' 
+        or IF_SYS_NAME like '%${ifName}%' 
+        or IF_PRO_NAME like '%${ifName}%' 
+        or USERNAME like '%${ifName}%' 
+        and inteFace.ISVALID='Y'
         ]]>
 	</select>
 
