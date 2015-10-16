@@ -17,180 +17,85 @@
 		<result property="ifUrl" column="IF_URL" />
 		<result property="ifType" column="IF_TYPE" />
 		<result property="ifProtocol" column="IF_PROTOCOL" />
-		<!-- <association property="interFaceSysTem" column="IF_SYS_ID"
-			select="getInterFaceSysTem" />
-		<association property="interFacePro" column="IF_PRO_ID"
-			select="getInterFacePro" />
-		<association property="userInfo" column="IF_CREATEBY"
-			select="getUserInfo" />-->
-		<collection property="fieldInfoList" column="ID" select="getFieldInfoList"> 
-		</collection>
-		
-		<collection property="interFaceSysTem" column="IF_SYS_ID" select="getInterFaceSysTem">
-        </collection>
-          <collection property="interFacePro" column="IF_PRO_ID" select="getInterFacePro">
-        </collection>
-        <collection property="userInfo" column="IF_CREATEBY" select="getUserInfo">
-        </collection>
-
-	</resultMap>
-
-	<resultMap type="com.gigold.pay.ifsys.bo.InterFaceSysTem" id="sysResultMap">
-		<id property="id" column="ID" />
-		<result property="sysName" column="IF_SYS_NAME" />
-		<result property="sysDesc" column="IF_SYS_DESC" />
-
-	</resultMap>
-	<resultMap type="com.gigold.pay.ifsys.bo.InterFacePro" id="proResultMap">
-		<id property="id" column="ID" />
-		<result property="sysId" column="IF_SYS_ID" />
-		<result property="proName" column="IF_PRO_NAME" />
-		<result property="proDesc" column="IF_PRO_DESC" />
-
-	</resultMap>
-
-	<resultMap type="com.gigold.pay.ifsys.bo.UserInfo" id="userResultMap">
-		<id property="id" column="ID" />
-		<result property="loginName" column="LOGIN_NAME" />
-		<result property="loginPassword" column="LOGIN_PASSWORD" />
-		<result property="email" column="EMAIL" />
-		<result property="userName" column="USERNAME" />
-	</resultMap>
-	
-	<resultMap type="com.gigold.pay.ifsys.bo.InterFaceField" id="fieldResultMap">
-		<id property="id" column="ID" />
-        <result property="parentId" column="PARENTID" />
-        <result property="ifId" column="IF_ID" />
-        <result property="fieldName" column="FIELD_NAME" />
-        <result property="fieldDesc" column="FIELD_DESC" />
-        <result property="fieldType" column="FIELD_TYPE" />
-        <result property="fieldCheck" column="FIELD_CHECK" />
-        <result property="fieldFlag" column="FIELD_FLAG" />
-        <result property="fieldReferValue" column="FIELD_REFER_VALUE" />
-        <result property="fieldStatusCode" column="FIELD_STATUS_CODE" />
-        <result property="level" column="FIELD_LEVEL" />
+		<result property="isValid" column="ISVALID" />
 	</resultMap>
 
 	<select id="getInterFaceById" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo"
 		resultMap="ifResultMap">
-		<![CDATA[  
-		select
-		*
-		from T_IF_INTERFACE
-		where ID=#{id}
-		]]>
-	</select>
-
-
-	<select id="getInterFaceSysTem" parameterType="int" resultMap="sysResultMap">
         <![CDATA[  
         select
         *
-        from T_IF_SYSTEM
-        where ID=#{id}
+        from T_IF_INTERFACE
+        where ID=#{id} and ISVALID='Y'
         ]]>
 	</select>
-
-
-	<select id="getInterFacePro" parameterType="int" resultMap="proResultMap">
-        <![CDATA[  
-        select
-        *
-        from T_IF_PRO
-        where ID=#{id}
-        ]]>
-	</select>
-
-	<select id="getUserInfo" parameterType="int" resultMap="userResultMap">
-        <![CDATA[  
-        select
-        *
-        from T_IF_USER
-        where ID=#{id}
-        ]]>
-	</select>
-
-<select id="getFieldInfoList" parameterType="com.gigold.pay.ifsys.bo.InterFaceField"
-        resultMap="fieldResultMap">
-        <![CDATA[  
-        select
-        *
-        from T_IF_FIELD
-        where IF_ID=#{id}
-        ]]>
-    </select>
-
-
 
 
 	<select id="getInterfaceByProId" parameterType="int" resultMap="ifResultMap">
-		<![CDATA[  
-		select
-		*
-		from T_IF_INTERFACE
-		where IF_PRO_ID=#{ifProId}
-		]]>
+        <![CDATA[  
+        select
+        *
+        from T_IF_INTERFACE
+        where IF_PRO_ID=#{ifProId} and ISVALID='Y'
+        ]]>
 	</select>
 
 
+	<select id="getAllInterFaceByPage" resultMap="ifResultMap">
+        <![CDATA[  
+        select
+        *
+        from
+        T_IF_INTERFACE where ISVALID='Y'
+        ]]>
+	</select>
 	<!-- 模糊查询 -->
-	<select id="getInterFace" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo"
+	<select id="queryInterFaceByPage" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo"
 		resultMap="ifResultMap">
-		<![CDATA[  
-		select
-		*
-		from T_IF_INTERFACE
-		where IF_NAME
-		like '%${ifName}%'
-		or IF_DESC like '%${ifName}%'
-		]]>
-	</select>
-
-	<select id="getAllInterFace" resultMap="ifResultMap">
-		<![CDATA[  
-		select
-		*
-		from
-		T_IF_INTERFACE
-		]]>
-
+        <![CDATA[  
+        select
+        *
+        from
+        T_IF_INTERFACE
+       where IF_NAME like '%${ifName}%' and ISVALID='Y'
+        ]]>
 	</select>
 
 	<insert id="addInterFace" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo"
 		useGeneratedKeys="true" keyProperty="id">
-		<![CDATA[  
-		insert into
-		T_IF_INTERFACE(IF_NAME,IF_DESC,IF_CREATEBY,IF_CREATETIME,IF_SYS_ID,IF_PRO_ID,IF_REQUEST,IF_RESPONSE_SUCCESS,IF_RESPONSE_FAILURE,IF_STATUS,IF_URL,IF_TYPE,IF_PROTOCOL)
-		values(#{ifName},#{ifDesc},#{ifCreateBy},#{ifCreateTime},#{ifSysId},#{ifProId},#{ifRequest},#{ifResponseSuccuss},#{ifResponseFailure},#{ifStatus},#{ifUrl},#{ifType},#{ifProtocol})
-	]]>
+        <![CDATA[  
+        insert into
+        T_IF_INTERFACE(IF_NAME,IF_DESC,IF_CREATEBY,IF_CREATETIME,IF_SYS_ID,IF_PRO_ID,IF_REQUEST,IF_RESPONSE_SUCCESS,IF_RESPONSE_FAILURE,IF_STATUS,IF_URL,IF_TYPE,IF_PROTOCOL,ISVALID)
+        values(#{ifName},#{ifDesc},#{ifCreateBy},#{ifCreateTime},#{ifSysId},#{ifProId},#{ifRequest},#{ifResponseSuccuss},#{ifResponseFailure},#{ifStatus},#{ifUrl},#{ifType},#{ifProtocol},'Y')
+    ]]>
 	</insert>
 
 	<delete id="deleteInterFaceById" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo">
-		<![CDATA[  
-		delete
-		from
-		T_IF_INTERFACE
-		where ID=#{id}
-		]]>
+        <![CDATA[  
+        update
+        T_IF_INTERFACE
+        set ISVALID='N'
+        where ID=#{id}
+        ]]>
 	</delete>
 
 
 	<update id="updateInterFace" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo">
-		<![CDATA[  
-		update T_IF_INTERFACE
-		set
-		IF_NAME=#{ifName},
-		IF_DESC=#{ifDesc},
-		IF_REQUEST=#{ifRequest},
-		IF_RESPONSE_SUCCESS=#{ifResponseSuccuss},
-		IF_RESPONSE_FAILURE=#{ifResponseFailure},
-		IF_PRO_ID=#{ifProId},
-		IF_SYS_ID=#{ifSysId},
-		IF_TYPE=#{ifType},
-		IF_PROTOCOL=#{ifProtocol},
-		IF_URL=#{ifUrl}
-		where ID=#{id}
-		]]>
+        <![CDATA[  
+        update T_IF_INTERFACE
+        set
+        IF_NAME=#{ifName},
+        IF_DESC=#{ifDesc},
+        IF_REQUEST=#{ifRequest},
+        IF_RESPONSE_SUCCESS=#{ifResponseSuccuss},
+        IF_RESPONSE_FAILURE=#{ifResponseFailure},
+        IF_PRO_ID=#{ifProId},
+        IF_SYS_ID=#{ifSysId},
+        IF_TYPE=#{ifType},
+        IF_PROTOCOL=#{ifProtocol},
+        IF_URL=#{ifUrl}
+        where ID=#{id}
+        ]]>
 	</update>
 
 

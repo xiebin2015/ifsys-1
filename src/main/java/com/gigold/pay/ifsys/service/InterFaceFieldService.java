@@ -34,7 +34,7 @@ public class InterFaceFieldService {
         List<InterFaceField> list=interFaceFieldDao.getFieldById(interFaceField);
         if(list!=null&&list.size()>0){
             InterFaceField ifield=list.get(0);
-            interFaceField.setLevel(ifield.getLevel()+ifield.getId()+"-");
+            interFaceField.setLevel(ifield.getLevel()+new Date().getTime()+"-"+ifield.getId()+"-");
         }else{
             
             interFaceField.setLevel(interFaceField.getParentId()+"-"+new Date().getTime()+"-");

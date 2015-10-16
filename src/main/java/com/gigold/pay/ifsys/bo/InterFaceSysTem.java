@@ -12,6 +12,8 @@ import java.io.Serializable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.gigold.pay.framework.core.Domain;
+
 /**
  * Title: InterFaceSysTem<br/>
  * Description: <br/>
@@ -24,10 +26,33 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class InterFaceSysTem implements Serializable {
+public class InterFaceSysTem extends Domain implements Serializable {
     /** serialVersionUID */
     private static final long serialVersionUID = 1L;
     private int id;
+    
+    private String isValid;
+
+    /**
+     * @return the isValid
+     */
+    public String getIsValid() {
+        return isValid;
+    }
+
+    /**
+     * @param isValid the isValid to set
+     */
+    public void setIsValid(String isValid) {
+        this.isValid = isValid;
+    }
+
+    /**
+     * @return the serialversionuid
+     */
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 
     /**
      * @return the id

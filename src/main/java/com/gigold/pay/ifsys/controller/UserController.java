@@ -9,24 +9,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gigold.pay.framework.core.SysCode;
+import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.ifsys.bo.UserInfo;
 import com.gigold.pay.ifsys.service.UserInfoService;
 
 @Controller
 @RequestMapping("/")
-public class UserController {
+public class UserController extends BaseController{
 	@Autowired
 	UserInfoService userInfoService;
 
 	
 	@RequestMapping(value = "/login")
-	public @ResponseBody UserResDto login2(@RequestBody  UserIReqDto rdto, HttpSession session) {
+	public @ResponseBody UserResDto login2(@RequestBody  UserIReqDto rdto,HttpSession sessin) {
 		UserInfo user = userInfoService.login(rdto.getUserInfo());
 		UserResDto dto=new UserResDto();
 		if (user == null) {
 			dto.setRspCd(CodeItem.IF_FAILURE);
 		} else {
-			session.setAttribute("userInfo", user);
+		    sessin.setAttribute("userInfo", user);
 			dto.setUserInfo(user);
 			dto.setRspCd(SysCode.SUCCESS);
 		}

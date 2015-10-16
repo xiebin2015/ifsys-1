@@ -12,6 +12,8 @@ import java.io.Serializable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.gigold.pay.framework.core.Domain;
+
 /**
  * Title: InterFaceField<br/>
  * Description: <br/>
@@ -23,7 +25,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class InterFaceField implements Serializable {
+public class InterFaceField extends Domain implements Serializable {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 1L;
@@ -38,6 +40,19 @@ public class InterFaceField implements Serializable {
     private String fieldReferValue;
     private String fieldStatusCode;
     private String level;
+    private String isValid;
+    /**
+     * @return the isValid
+     */
+    public String getIsValid() {
+        return isValid;
+    }
+    /**
+     * @param isValid the isValid to set
+     */
+    public void setIsValid(String isValid) {
+        this.isValid = isValid;
+    }
     /**
      * @return the level
      */

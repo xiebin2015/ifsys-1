@@ -33,3 +33,6 @@ gigold.pay.interFace.ajaxHandler = function(options) {
 		}
 	});
 }
+
+
+

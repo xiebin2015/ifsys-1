@@ -1,5 +1,16 @@
 $(function(){
 	
+	$(".loggxnxi").html("登录用户：<span class='colorBlue'>" + $.getUrlParam("userName") + " </span>");
+	// 查询接口（首页）,用户信息
+	$(".QueryInterface").on("click",function(){
+		window.location.href="main.html?userName="+$.getUrlParam("userName");
+	});
+	//添加接口，用户信息
+	$(".AddInterface").on("click",function(){
+		window.location.href="interFaceBaseInfo.html?userName="+$.getUrlParam("userName");
+	});
+	
+	
     var userId = $.getUrlParam("id");
 	propAddHandel(userId);
 	//基本信息保存
@@ -12,10 +23,8 @@ $(function(){
                 "data":JSON.stringify(sendData),
                 "onSuccess":function(data){
                 	 if (data.rspCd == "00000") {
-                		 //保存成功取消遮罩
                 		 $(".maskBox").removeClass("maskBox");
                           alert("保存成功");
-                           $("#ifId").val(data.interFaceInfo.id);
                       }else{
                           alert("保存失败");
                       }
@@ -88,7 +97,7 @@ $(function(){
 	            		 alert("保存成功");
 	            		 if($(recordForm).find("input[name=operFlag]").val()=='insert'){
 	            		 $(recordForm).find(".fieldId").val(data.interFaceField.id);
-	                     $(recordForm).find(".levelCode").val(data.interFaceField.id);
+	                     $(recordForm).find(".levelCode").val(data.interFaceField.level);
 	            		 }
 	                     console.log(data);
 	                     
@@ -141,14 +150,15 @@ $(function(){
 
 function propAddHandel(userId){
 	
-	var propAddReq = propAddRequest("getAllSysInfo.do",getSys,userId);
-	propAddReq.request();
+	var getSysProp = propAddRequest("getAllSysInfo.do",getSys,userId);
+	getSysProp.request();
 	
-	var propAddReqa = propAddRequest("getAllProInfo.do",getProduct,userId);
-	propAddReqa.request();
+	var getProProp = propAddRequest("getAllProInfo.do",getProduct,userId);
+	getProProp.request();
 	
 	var getCurProp = propAddRequest("queryInterFaceById.do",GetCurProp,userId);
 	getCurProp.request();
+
 }
 
 //ajax获取接口信息
@@ -169,7 +179,7 @@ function propAddRequest(urlStr,fn,userId){
 			data:addParam(data),
 			success:fn,
 			error:function(e){
-				console.log(e);
+				alert("Error")
 			}
 		});
 		
@@ -225,7 +235,6 @@ function GetCurProp(result){
 function getCurProp(result){
 	var backData = {};
 	backData = result;
-	console.log(result);
 	backData.rander = function(){
 		$("#id").val(result.interFaceInfo.id);
 		$("#ifId").val(result.interFaceInfo.id);
@@ -233,7 +242,7 @@ function getCurProp(result){
 		$("#ifDesc").val(this.interFaceInfo.ifDesc);
 		$("#ifUrl").val(this.interFaceInfo.ifUrl);
 		//获取当前接口所属系统
-		var ifSysName = this.interFaceInfo.interFaceSysTem.sysName;
+		var ifSysName = this.system.sysName;
 		var optionsSys = $("#ifSysId option");
 		for(var i=0;i<optionsSys.length;i++){
 			if(ifSysName==(optionsSys[i].label)){
@@ -241,15 +250,31 @@ function getCurProp(result){
 			}
 		}
 		//获取当前接口所属产品
-		var ifProName = this.interFaceInfo.interFacePro.proName;
+		var ifProName = this.pro.proName;
 		var optionsPro = $("#ifProId option");
 		for(var i=0;i<optionsPro.length;i++){
 			if(ifProName==(optionsPro[i].label)){
 				$(optionsPro[i]).attr("selected","selected");
 			}
 		}
+		//获取当前接口所属协议
+		var ifProtocolName = this.interFaceInfo.ifProtocol;
+		var ifProtocols = $("#ifProtocolId option");
+		for(var i=0;i<ifProtocols.length;i++){
+			if(ifProtocolName==(ifProtocols[i].label)){
+				$(ifProtocols[i]).attr("selected","selected");
+			}
+		}
+		//获取当前接口请求方式
+		var ifTypeName = this.interFaceInfo.ifType;
+		var ifTypes = $("#ifTypeId option");
+		for(var i=0;i<ifTypes.length;i++){
+			if(ifTypeName==(ifTypes[i].label)){
+				$(ifTypes[i]).attr("selected","selected");
+			}
+		}
 		
-		var field = this.interFaceInfo.fieldInfoList;
+		var field = this.fieldList;
 		
 		//获取接口所有字段
 		var resStr = "";
@@ -302,13 +327,11 @@ function getCurProp(result){
 					  
 			}
 		}
-		console.log(reqflag);
 		//渲染字段信息
 		if(resflag){
-			
-		    $(".responseDefine").html(resStr);
+		   $(".responseDefine").html(resStr);
 		}
-       if(reqflag){
+        if(reqflag){
 	      $(".requestDefine").html(reqStr);
 		}
 		

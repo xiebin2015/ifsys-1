@@ -29,28 +29,78 @@ public class InterFaceService {
         return interFaceDao.getInterFaceById(interFaceInfo);
     }
 
+    /**
+     * 
+     * Title: getInterFaceByProId<br/>
+     * 根据产品Id查询接口: <br/>
+     * @author xb
+     * @date 2015年10月15日下午12:45:41
+     *
+     * @param id
+     * @return
+     */
     public List<InterFaceInfo> getInterFaceByProId(int id) {
         return null;
     }
 
-    public List<InterFaceInfo> fuzzyQuery(InterFaceInfo interFaceInfo) {
+    /**
+     * 
+     * Title: getAllInterFace<br/>
+     * 分页获取所有接口信息: <br/>
+     * @author xb
+     * @date 2015年10月15日下午12:46:05
+     *
+     * @return
+     */
+    public List<InterFaceInfo> getAllInterFaceByPage() {
 
-        return interFaceDao.getInterFace(interFaceInfo);
+        return interFaceDao.getAllInterFaceByPage();
     }
+    
+    
+    public List<InterFaceInfo> queryInterFaceByPage(InterFaceInfo interFaceInfo) {
 
-    public List<InterFaceInfo> getAllInterFace() {
-
-        return interFaceDao.getAllInterFace();
+        return interFaceDao.queryInterFaceByPage();
     }
-
+    
+    
+    
+    /**
+     * 
+     * Title: addInterFace<br/>
+     * 添加接口: <br/>
+     * @author xb
+     * @date 2015年10月15日下午12:46:44
+     *
+     * @param interFaceInfo
+     * @return
+     */
     public boolean addInterFace(InterFaceInfo interFaceInfo) {
         return interFaceDao.addInterFace(interFaceInfo);
     }
-
+   /**
+    * 
+    * Title: deleteInterFaceById<br/>
+    * 删除接口: <br/>
+    * @author xb
+    * @date 2015年10月15日下午12:47:06
+    *
+    * @param interFaceInfo
+    * @return
+    */
     public boolean deleteInterFaceById(InterFaceInfo interFaceInfo) {
         return interFaceDao.deleteInterFaceById(interFaceInfo);
     }
-
+    /**
+     * 
+     * Title: updateInterFace<br/>
+     * 修改接口: <br/>
+     * @author xb
+     * @date 2015年10月15日下午12:47:26
+     *
+     * @param interFaceInfo
+     * @return
+     */
     public boolean updateInterFace(InterFaceInfo interFaceInfo) {
         boolean flag = interFaceDao.updateInterFace(interFaceInfo);
         return flag;

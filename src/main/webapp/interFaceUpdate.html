@@ -13,7 +13,8 @@
 				<a>独孤九剑</a>
 			</h1>
 			<ol class="am-breadcrumb" style="margin:0;">
-			  <li><a href="main.html" target="_blank">首页</a></li>
+			  <li><a>独孤九剑</a></li>
+			  <li><a class="QueryInterface">首页</a></li>
 			  <li class="am-active">接口修改</li>
 			<div class="loggxnxi">登陆用户：<span class="userName colorName">11111</span></div>
 			</ol>
@@ -24,8 +25,8 @@
 						查看功能<span class="am-icon-caret-down"></span>
 					</button>
 					<ul class="am-dropdown-content">
-						<li><a href="main.html">接口查询</a></li>
-						<li><a href="interFaceAdd.html">添加接口</a></li>
+						<li><a class="QueryInterface">接口查询</a></li>
+						<li><a class="AddInterface">添加接口</a></li>
 					</ul>
 				</div>
 			</div>
@@ -75,7 +76,7 @@
 						<tr>
 							<td class="am-text-right am-text-secondary">接口协议:</td>
 							<td>
-								<select id="ifProtocol" name="ifProtocol" data-am-selected="{btnWidth: '20%'}">
+								<select id="ifProtocolId" name="ifProtocol" data-am-selected="{btnWidth: '20%'}">
 									<option value="HTTP" selected>HTTP</option>
 									<option value="FTP">FTP</option>
 								</select>
@@ -84,7 +85,7 @@
 						<tr>
 							<td class="am-text-right am-text-secondary">接口请求方式:</td>
 							<td>
-								<select id="ifType" name="ifType" data-am-selected="{btnWidth: '20%'}">
+								<select id="ifTypeId" name="ifType" data-am-selected="{btnWidth: '20%'}">
 									<option value="POST" selected>POST</option>
 									<option value="GET">GET</option>
 								</select>
@@ -164,7 +165,7 @@
 		<script type="text/javascript" src="info/js/jquery.min.js"></script>
 		<script src="info/js/amazeui.min.js"></script>
 		<script src="js/plugin/myThirdPlugin.js"></script>
-		<script src="js/interFaceSys.js"></script>
+		<script src="js/plugin/interFaceSys.js"></script>
 		<script type="text/javascript" src="js/interFaceUpDate.js" ></script>
 	</body>
 

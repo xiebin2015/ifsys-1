@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gigold.pay.framework.core.SysCode;
+import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.ifsys.bo.InterFaceDicType;
 import com.gigold.pay.ifsys.service.InterFaceDicTypeService;
 
 @Controller
-public class InterFaceDicTypeController {
+public class InterFaceDicTypeController extends BaseController {
     @Autowired
     InterFaceDicTypeService interFaceDicTypeService;
     @RequestMapping(value = "/getDicInfoByIfId.do")

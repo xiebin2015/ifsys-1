@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gigold.pay.framework.core.SysCode;
+import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.ifsys.bo.InterFaceSysTem;
 import com.gigold.pay.ifsys.service.InterFaceSysService;
 
 @Controller
-public class InterFaceSysController {
+public class InterFaceSysController extends BaseController{
     @Autowired
     InterFaceSysService interFaceSysService;
 
@@ -37,7 +38,20 @@ public class InterFaceSysController {
 
     }
     
-    
+    @RequestMapping(value = "/queryTest.do")
+    public @ResponseBody InterFaceSysResponseDto queryTest(@RequestBody InterFaceSysRequestDto qdto ) {
+        InterFaceSysResponseDto dto = new InterFaceSysResponseDto();
+        List<InterFaceSysTem> rlist= interFaceSysService.queryTest(qdto.getInterFaceSysTem());
+        if (rlist != null) {
+            dto.setSysList(rlist);
+            dto.setRspCd(SysCode.SUCCESS);
+        } else {
+            dto.setRspCd(CodeItem.IF_FAILURE);
+        }
+
+        return dto;
+
+    }
 
     @RequestMapping(value = "/getAllSysInfo.do")
     public @ResponseBody InterFaceSysResponseDto getAllSysInfo( ) {

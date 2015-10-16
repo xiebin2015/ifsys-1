@@ -21,5 +21,8 @@ public class InterFaceSysService {
     public InterFaceSysTem getSysInfoById(InterFaceSysTem interFaceSystem) {
         return interFaceSystemDao.getSysInfoById(interFaceSystem);
     }
-
+    public List<InterFaceSysTem> queryTest(InterFaceSysTem interFaceSystem) {
+        return interFaceSystemDao.queryTest(interFaceSystem);
+    }
+    
 }

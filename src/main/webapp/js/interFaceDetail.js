@@ -1,7 +1,16 @@
-
-
-
 $(function(){
+	console.log( $.getUrlParam("userName"))
+	$(".loggxnxi").html("登录用户：<span class='colorBlue'>" + $.getUrlParam("userName") + " </span>");
+	// 查询接口（首页）,用户信息
+	$(".QueryInterface").on("click",function(){
+		window.location.href="main.html?userName="+$.getUrlParam("userName");
+	});
+	//添加接口，用户信息
+	$(".AddInterface").on("click",function(){
+		window.location.href="interFaceBaseInfo.html?userName="+$.getUrlParam("userName");
+	});
+	
+	
 	var userId = $.getUrlParam("id");
 	//var userId = 7;
 	perHandel(userId);
@@ -53,7 +62,7 @@ function perRequest(userId){
 }
 //渲染接口基本信息
 function perRander(result){
-	console.log(result);
+	
 	var backData = {};
 	backData = result;
 	
@@ -61,11 +70,11 @@ function perRander(result){
 		$(".propName").html(this.interFaceInfo.ifName);
 		$(".propDesc").html(this.interFaceInfo.ifDesc);
 		$(".propUrl").html(this.interFaceInfo.ifUrl);
-		$(".propSystem").html(this.interFaceInfo.interFaceSysTem.sysName);
-		$(".propProduct").html(this.interFaceInfo.interFacePro.proName);
+		$(".propSystem").html(this.system.sysName);
+		$(".propProduct").html(this.pro.proName);
 		$(".propHttp").html(this.interFaceInfo.ifProtocol);
 		$(".propRequest").html(this.interFaceInfo.ifType);
-		$(".userName").html(this.interFaceInfo.userInfo.userName);
+		$(".userName").html(this.userInfo.userName);
 	}
 	return backData;
 }

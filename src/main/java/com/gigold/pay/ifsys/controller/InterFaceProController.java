@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gigold.pay.framework.core.SysCode;
+import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.ifsys.bo.InterFacePro;
 import com.gigold.pay.ifsys.service.InterFaceProService;
 
 @Controller
-public class InterFaceProController {
+public class InterFaceProController extends BaseController{
     @Autowired
     InterFaceProService interFaceProService;
     @RequestMapping(value = "/getProInfoByIfId.do")

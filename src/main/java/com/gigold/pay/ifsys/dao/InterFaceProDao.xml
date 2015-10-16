@@ -7,13 +7,14 @@
 		<result property="sysId" column="IF_SYS_ID" />
 		<result property="proName" column="IF_PRO_NAME" />
 		<result property="proDesc" column="IF_PRO_DESC" />
-
+		<result property="isValid" column="ISVALID" />
 	</resultMap>
 	<select id="getAllProInfo" parameterType="com.gigold.pay.ifsys.bo.InterFacePro"
 		resultMap="proResultMap">
 		<![CDATA[  
 		SELECT *
-		FROM T_IF_PRO
+		FROM T_IF_PRO 
+		where  ISVALID='Y'
         ]]>
 	</select>
 	<select id="getProInfoById" parameterType="com.gigold.pay.ifsys.bo.InterFacePro"
@@ -21,7 +22,7 @@
 		<![CDATA[  
 		SELECT *
 		FROM T_IF_PRO
-		WHERE id=#{id}
+		WHERE id=#{id} and  ISVALID='Y'
 		]]>
 	</select>
 

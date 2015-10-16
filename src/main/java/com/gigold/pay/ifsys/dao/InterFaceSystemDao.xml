@@ -6,7 +6,7 @@
 		<id property="id" column="ID" />
 		<result property="sysName" column="IF_SYS_NAME" />
 		<result property="sysDesc" column="IF_SYS_DESC" />
-
+		<result property="isValid" column="ISVALID" />
 	</resultMap>
 
 	<select id="getAllSysInfo" parameterType="com.gigold.pay.ifsys.bo.InterFaceSysTem"
@@ -14,6 +14,7 @@
 		<![CDATA[  
         select *
         from T_IF_SYSTEM
+        where  ISVALID='Y'
         ]]>
 
 	</select>
@@ -22,9 +23,20 @@
 		<![CDATA[  
          SELECT *   
          FROM T_IF_SYSTEM  
-         where id=1
+         where id=#{id} and  ISVALID='Y'
         ]]>
 	</select>
+
+	<select id="queryTest" parameterType="com.gigold.pay.ifsys.bo.InterFaceSysTem"
+		resultMap="sysResultMap">
+        <![CDATA[  
+         SELECT *   
+         FROM T_IF_SYSTEM  
+         where IF_SYS_NAME like '%${sysName}%'
+        ]]>
+	</select>
+
+
 </mapper>
  
  

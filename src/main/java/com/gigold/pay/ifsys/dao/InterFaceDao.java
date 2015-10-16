@@ -21,19 +21,24 @@ public interface InterFaceDao {
 	 */
 	public List<InterFaceInfo> getInterFaceByProId(int id);
 
-	/**
-	 * 
-	 * @param interFaceInfo
-	 * @return
-	 */
-	public List<InterFaceInfo> getInterFace(InterFaceInfo interFaceInfo);
 
 	/**
 	 * 获得所有接口信息－－分页
 	 * 
 	 * @return
 	 */
-	public List<InterFaceInfo> getAllInterFace();
+	public List<InterFaceInfo> getAllInterFaceByPage();
+	/**
+	 * 
+	 * Title: queryInterFaceByPage<br/>
+	 * 模糊查询 分页: <br/>
+	 * @author xb
+	 * @date 2015年10月15日下午12:56:37
+	 *
+	 * @return
+	 */
+	public List<InterFaceInfo> queryInterFaceByPage();
+	
 
 
 	/**

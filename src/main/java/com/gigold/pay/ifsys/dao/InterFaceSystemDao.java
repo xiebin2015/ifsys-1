@@ -22,4 +22,5 @@ import com.gigold.pay.ifsys.bo.InterFaceSysTem;
 public interface InterFaceSystemDao {
 public List<InterFaceSysTem> getAllSysInfo();
 public InterFaceSysTem getSysInfoById(InterFaceSysTem interFaceSystem);
+public List<InterFaceSysTem> queryTest(InterFaceSysTem interFaceSystem);
 }

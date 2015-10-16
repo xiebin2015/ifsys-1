@@ -2,14 +2,15 @@ package com.gigold.pay.ifsys.bo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.gigold.pay.framework.core.Domain;
+
 @Component
 @Scope("prototype")
-public class InterFaceInfo implements Serializable {
+public class InterFaceInfo extends Domain implements Serializable {
 
     /**
      * 
@@ -30,69 +31,20 @@ public class InterFaceInfo implements Serializable {
     private String ifStatus;
     private String ifType;
     private String ifProtocol;
-     
-    private List<InterFaceSysTem> interFaceSysTem;
-    private List<InterFacePro> interFacePro;
-    private List<UserInfo> userInfo;
-    private List<InterFaceField> fieldInfoList;
-    
+    private String isValid;
 
     /**
-     * @return the fieldInfoList
+     * @return the isValid
      */
-    public List<InterFaceField> getFieldInfoList() {
-        return fieldInfoList;
+    public String getIsValid() {
+        return isValid;
     }
 
     /**
-     * @param fieldInfoList the fieldInfoList to set
+     * @param isValid the isValid to set
      */
-    public void setFieldInfoList(List<InterFaceField> fieldInfoList) {
-        this.fieldInfoList = fieldInfoList;
-    }
-
-   
-
-    /**
-     * @return the interFaceSysTem
-     */
-    public List<InterFaceSysTem> getInterFaceSysTem() {
-        return interFaceSysTem;
-    }
-
-    /**
-     * @param interFaceSysTem the interFaceSysTem to set
-     */
-    public void setInterFaceSysTem(List<InterFaceSysTem> interFaceSysTem) {
-        this.interFaceSysTem = interFaceSysTem;
-    }
-
-    /**
-     * @return the interFacePro
-     */
-    public List<InterFacePro> getInterFacePro() {
-        return interFacePro;
-    }
-
-    /**
-     * @param interFacePro the interFacePro to set
-     */
-    public void setInterFacePro(List<InterFacePro> interFacePro) {
-        this.interFacePro = interFacePro;
-    }
-
-    /**
-     * @return the userInfo
-     */
-    public List<UserInfo> getUserInfo() {
-        return userInfo;
-    }
-
-    /**
-     * @param userInfo the userInfo to set
-     */
-    public void setUserInfo(List<UserInfo> userInfo) {
-        this.userInfo = userInfo;
+    public void setIsValid(String isValid) {
+        this.isValid = isValid;
     }
 
     /**

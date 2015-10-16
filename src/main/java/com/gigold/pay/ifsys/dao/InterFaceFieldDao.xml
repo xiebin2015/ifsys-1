@@ -14,6 +14,7 @@
 		<result property="fieldReferValue" column="FIELD_REFER_VALUE" />
 		<result property="fieldStatusCode" column="FIELD_STATUS_CODE" />
 		<result property="level" column="FIELD_LEVEL" />
+		<result property="isValid" column="ISVALID" />
 	</resultMap>
 
 
@@ -23,7 +24,7 @@
         <![CDATA[  
         SELECT *
         FROM T_IF_FIELD
-        where ID=#{parentId}
+        where ID=#{parentId} and ISVALID='Y'
         ]]>
 	</select>
 
@@ -33,7 +34,7 @@
 		<![CDATA[  
 		SELECT *
 		FROM T_IF_FIELD
-		where IF_ID=#{ifId} and PARENTID=0 and FIELD_FLAG=#{fieldFlag}
+		where IF_ID=#{ifId} and PARENTID=0 and FIELD_FLAG=#{fieldFlag}  and ISVALID='Y'
 		]]>
 	</select>
 	<!-- 获得接口响应定义的所有一级字段 -->
@@ -45,7 +46,7 @@
 		where IF_ID=#{ifId}
 		and PARENTID＝0
 		and
-		FIELD_FLAG＝'0'
+		FIELD_FLAG＝'0'  and ISVALID='Y'
 		]]>
 	</select>
 	<!-- 获取某个字段的所有子字段 -->
@@ -54,18 +55,20 @@
 		<![CDATA[  
 		select *
         from T_IF_FIELD
-        where PARENTID=#{id} and FIELD_FLAG=#{fieldFlag}
+        where PARENTID=#{id} and FIELD_FLAG=#{fieldFlag}  and ISVALID='Y'
         ]]>
 	</select>
 
 	<!-- 获取某个接口的所有字段 -->
 	<select id="getFieldByIfId" parameterType="com.gigold.pay.ifsys.bo.InterFaceField"
 		resultMap="fieldResultMap">
-        <![CDATA[  
         select *
         from T_IF_FIELD
-        where IF_ID=#{ifId} and FIELD_FLAG=#{fieldFlag}
-        ]]>
+        where IF_ID=#{ifId} and ISVALID='Y'
+        <if test="fieldFlag != null">  
+         and FIELD_FLAG=#{fieldFlag} 
+       </if>  
+       
 	</select>
 
 
@@ -83,27 +86,28 @@
         FIELD_CHECK,
         FIELD_FLAG,
         FIELD_REFER_VALUE,
-        FIELD_LEVEL
+        FIELD_LEVEL,
+        ISVALID
         )
-        values(#{parentId},#{ifId},#{fieldName},#{fieldDesc},#{fieldType},#{fieldCheck},#{fieldFlag},#{fieldReferValue},#{level})
+        values(#{parentId},#{ifId},#{fieldName},#{fieldDesc},#{fieldType},#{fieldCheck},#{fieldFlag},#{fieldReferValue},#{level},'Y')
     ]]>
 	</insert>
 
 	<!-- 删除字段 -->
 	<delete id="deleteFieldByLevel" parameterType="com.gigold.pay.ifsys.bo.InterFaceField">
         <![CDATA[  
-        delete
-        from
+        update
         T_IF_FIELD
+        set ISVALID='N'
         where FIELD_LEVEL like '${level}%' and IF_ID=#{ifId} and FIELD_FLAG=#{fieldFlag}
         ]]>
 	</delete>
 	<!-- 删除某个接口下某个字段的所有子字段 -->
 	<delete id="deleteFieldByParentId" parameterType="com.gigold.pay.ifsys.bo.InterFaceField">
         <![CDATA[  
-        delete
-        from
+        update
         T_IF_FIELD
+        set ISVALID='N'
         where PARENTID=#{id} and IF_ID=#{ifId}
         ]]>
 	</delete>
@@ -115,7 +119,7 @@
         FIELD_DESC=#{fieldDesc},
         FIELD_CHECK=#{fieldCheck},
         FIELD_REFER_VALUE=#{fieldReferValue}
-        where ID=#{id}
+        where ID=#{id}  and ISVALID='Y'
         ]]>
     </update>
 	

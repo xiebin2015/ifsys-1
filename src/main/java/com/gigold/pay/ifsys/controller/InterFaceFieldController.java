@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gigold.pay.framework.core.SysCode;
+import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.framework.web.ResponseDto;
 import com.gigold.pay.ifsys.bo.InterFaceField;
 import com.gigold.pay.ifsys.service.InterFaceFieldService;
 import com.gigold.pay.ifsys.util.ForMatJSONStr;
 
 @Controller
-public class InterFaceFieldController {
+public class InterFaceFieldController extends BaseController{
     @Autowired
     InterFaceFieldService interFaceFeildService;
     /**
