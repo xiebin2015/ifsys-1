@@ -1,6 +1,6 @@
 var pageNum = 1;
 	var pages = 0;
-	var pageSize = 3;
+	var pageSize = 20;
 	function handlerData(data) {
 		var listStr = "";
 		$.each(data.pageInfo.list,

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.druid.util.StringUtils;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.framework.web.ResponseDto;
@@ -36,14 +37,12 @@ public class InterFaceFieldController extends BaseController{
         ss.append("{");
         InterFaceField interFaceField=qdto.getInterFaceField();
         List<InterFaceField> rlist=interFaceFeildService.getFirstReqFieldByIfId(interFaceField);
-        proJSON(ss,rlist);
+        proJSON(ss,rlist,interFaceField.getFieldCheck());
         String jsonStr=ss.toString().replaceAll(",\\}", "}").replaceAll(",\\]", "]");
         jsonStr=jsonStr.substring(0, jsonStr.length()-1);
         InterFaceFieldResJsonDto dto = new InterFaceFieldResJsonDto();
         dto.setRspCd(SysCode.SUCCESS);
         dto.setJsonStr(ForMatJSONStr.format(jsonStr));
-        
-        System.out.println(ForMatJSONStr.format(jsonStr));
          return dto;
         
     }
@@ -119,34 +118,32 @@ public class InterFaceFieldController extends BaseController{
      * @param ss
      * @param list
      */
-    public void proJSON(StringBuilder ss,List<InterFaceField> list){
+    public void proJSON(StringBuilder ss,List<InterFaceField> list,String parentFieldCheck){
        int i=0;
+       
        InterFaceField ff=null;
         for(i=0;i<list.size();i++){
-          ff =list.get(i);
+            ff =list.get(i);
           List<InterFaceField> clist=interFaceFeildService.getFieldByparentId(ff);
             ss.append("\""+ff.getFieldName()+"\":");
             if(clist!=null&&clist.size()>0){
                if("4".equals(ff.getFieldCheck())){
                    ss.append("[{"); 
                }else{
-                ss.append("{"+"/*"+ff.getFieldReferValue()+"*/\n"); 
+                ss.append("{"+"/*"+ff.getFieldDesc()+"*/\n"); 
                }
+               proJSON(ss,clist,ff.getFieldCheck());
             }else{
                 ss.append("\""+ff.getFieldReferValue()+"\" /*"+ff.getFieldDesc()+"*/");
                 if(i<list.size()-1){
                     ss.append(",");
                   } 
             }
-          
-            if(clist.size()>0){
-                proJSON(ss,clist);
-            }
         }
         
         if(i>0){
-           if(ff.getFieldCheck().equals("4")){
-               ss.append("]}");
+           if(!StringUtils.isEmpty(parentFieldCheck)&&parentFieldCheck.equals("4")){
+               ss.append("}]");
            }else{
                ss.append("}");
            }
@@ -154,6 +151,56 @@ public class InterFaceFieldController extends BaseController{
         }
        
     }
+    
+    
+    
+    /**
+     * 
+     * Title: proJSON<br/>
+     * 将接口请求部分解析成JSON字符串: <br/>
+     * @author xb
+     * @date 2015年10月12日上午9:32:51
+     *
+     * @param ss
+     * @param list
+     */
+//    public void proJSON(StringBuilder ss,List<InterFaceField> list){
+//       int i=0;
+//       InterFaceField ff=null;
+//        for(i=0;i<list.size();i++){
+//          ff =list.get(i);
+//          List<InterFaceField> clist=interFaceFeildService.getFieldByparentId(ff);
+//            ss.append("\""+ff.getFieldName()+"\":");
+//            if(clist!=null&&clist.size()>0){
+//               if("4".equals(ff.getFieldCheck())){
+//                   ss.append("[{"); 
+//               }else{
+//                ss.append("{"+"/*"+ff.getFieldDesc()+"*/\n"); 
+//               }
+//            }else{
+//                ss.append("\""+ff.getFieldReferValue()+"\" /*"+ff.getFieldDesc()+"*/");
+//                if(i<list.size()-1){
+//                    ss.append(",");
+//                  } 
+//            }
+//          
+//            if(clist.size()>0){
+//                proJSON(ss,clist);
+//            }
+//        }
+//        
+//        if(i>0){
+//           if(ff.getFieldCheck().equals("4")){
+//               ss.append("]}");
+//           }else{
+//               ss.append("}");
+//           }
+//            ss.append(",");
+//        }
+//       
+//    }
+//    
+    
     
 //    public void proJSON(StringBuilder ss,List<InterFaceField> list){
 //        int i=0;

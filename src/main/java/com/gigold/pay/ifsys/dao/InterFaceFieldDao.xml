@@ -17,7 +17,6 @@
 		<result property="isValid" column="ISVALID" />
 	</resultMap>
 
-
 	<!-- 获得根据ID -->
 	<select id="getFieldById" parameterType="com.gigold.pay.ifsys.bo.InterFaceField"
 		resultMap="fieldResultMap">
@@ -87,9 +86,10 @@
         FIELD_FLAG,
         FIELD_REFER_VALUE,
         FIELD_LEVEL,
-        ISVALID
+        ISVALID,
+        FIELD_STATUS_CODE
         )
-        values(#{parentId},#{ifId},#{fieldName},#{fieldDesc},#{fieldType},#{fieldCheck},#{fieldFlag},#{fieldReferValue},#{level},'Y')
+        values(#{parentId},#{ifId},#{fieldName},#{fieldDesc},#{fieldType},#{fieldCheck},#{fieldFlag},#{fieldReferValue},#{level},'Y',#{fieldStatusCode})
     ]]>
 	</insert>
 

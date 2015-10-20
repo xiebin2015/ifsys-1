@@ -67,8 +67,8 @@
         USERNAME
         from T_IF_INTERFACE inteFace 
         left join T_IF_SYSTEM  sys on inteFace.IF_SYS_ID=sys.ID
-        left join T_IF_PRO  PRO on inteFace.IF_SYS_ID=PRO.ID
-        left join T_IF_USER  user on inteFace.IF_SYS_ID=user.ID
+        left join T_IF_PRO  PRO on inteFace.IF_PRO_ID=PRO.ID
+        left join T_IF_USER  user on inteFace.IF_CREATEBY=user.ID
         where inteFace.ISVALID='Y'
         ]]>
 	</select>
@@ -88,13 +88,13 @@
         USERNAME
         from T_IF_INTERFACE inteFace 
         left join T_IF_SYSTEM  sys on inteFace.IF_SYS_ID=sys.ID
-        left join T_IF_PRO  PRO on inteFace.IF_SYS_ID=PRO.ID
-        left join T_IF_USER  user on inteFace.IF_SYS_ID=user.ID
-       where inteFace.IF_NAME like '%${ifName}%'
+        left join T_IF_PRO  PRO on inteFace.IF_PRO_ID=PRO.ID
+        left join T_IF_USER  user on inteFace.IF_CREATEBY=user.ID
+       where (inteFace.IF_NAME like '%${ifName}%'
         or inteFace.IF_DESC like '%${ifName}%' 
         or IF_SYS_NAME like '%${ifName}%' 
         or IF_PRO_NAME like '%${ifName}%' 
-        or USERNAME like '%${ifName}%' 
+        or USERNAME like '%${ifName}%' )
         and inteFace.ISVALID='Y'
         ]]>
 	</select>

@@ -10,8 +10,22 @@ $(function() {
 	$(".AddInterface").on("click",function(){
 		window.location.href="interFaceBaseInfo.html?userName="+$.getUrlParam("userName");
 	});
+	var i=0;
 	
-	
+	$(".addResBtn").on("click",function(){
+			var resForm=$("#resForm");
+			var cloneForm=$(resForm).clone();
+			 $(cloneForm).find("input").val("");
+			if(i==0){
+				$("#resForm").show();
+			}else{
+				$(resForm).after(cloneForm);
+			}
+			i++;
+			
+		    
+	});
+		
 		//加载系统信息
     gigold.pay.interFace.ajaxHandler({
 			"url":"getAllSysInfo.do",

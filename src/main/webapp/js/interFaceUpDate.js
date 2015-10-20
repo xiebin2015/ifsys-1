@@ -236,8 +236,8 @@ function getCurProp(result){
 	var backData = {};
 	backData = result;
 	backData.rander = function(){
-		$("#id").val(result.interFaceInfo.id);
-		$("#ifId").val(result.interFaceInfo.id);
+		$("#id").val(this.interFaceInfo.id);
+		$("#ifId").val(this.interFaceInfo.id);
 		$("#ifName").val(this.interFaceInfo.ifName);
 		$("#ifDesc").val(this.interFaceInfo.ifDesc);
 		$("#ifUrl").val(this.interFaceInfo.ifUrl);
@@ -275,6 +275,7 @@ function getCurProp(result){
 		}
 		
 		var field = this.fieldList;
+		console.log(field);
 		
 		//获取接口所有字段
 		var resStr = "";
@@ -311,7 +312,7 @@ function getCurProp(result){
 					 +'<input type="hidden" name="parentId" value='+field[i].parentId+'>'
 					   +'<input type="hidden" name="fieldFlag" value="2"/>'
 					   +'<input type="hidden" name="operFlag" value="update"/>'
-					   +'<input type="hidden" class="levelCode" name="level" value='+field[i].level+'"/>'
+					   +'<input type="hidden" class="levelCode" name="level" value='+field[i].level+'>'
 					   +'字段名：<input name="fieldName" value='+field[i].fieldName+' placeholder="请输入字段名"/>'
 					   +	'字段约束：<select name="fieldCheck" data-type='+field[i].fieldCheck+' data-am-selected="{btnWidth:"10%"}">'
 					   +'<option value="0" selected>请选择</option><option value="4">数组</option>'

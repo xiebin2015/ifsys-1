@@ -97,7 +97,7 @@ function perRequestQq(userId){
 			url:"getInterFaceFieldsJson.do",
 			dataType:'json',
 			contentType : "application/json",
-			async:"false",
+			async:"true",
 			data:addParam(data),
 			success:function(result){
 				var perData = perRanderQq(result);
@@ -139,7 +139,7 @@ function perRequestXy(userId){
 			url:"getInterFaceFieldsJson.do",
 			dataType:'json',
 			contentType : "application/json",
-			async:"false",
+			async:"true",
 			data:addParam(data),
 			success:function(result){
 				var perData = perRanderXy(result);

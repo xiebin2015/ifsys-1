@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class UserInfo implements Serializable {
+public class UserInfo  implements Serializable {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 1L;
