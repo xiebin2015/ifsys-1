@@ -108,10 +108,18 @@ var pageNum = 1;
 	    $(".InterfaceDetails").on("click",function(){
 	        window.location.href="interFaceDetail.html?userName="+$.getUrlParam("userName");
 	    });
-		
-		 loadInterFacePage({
-			url : "getInterFaceByPage.do",
-			data : {
+	    
+	    var ifName = $("#ifName").val();
+		var url = "getInterFaceByPage.do";
+		var sendData = {
+			"pageInfo" : {
+				"pageNum" : $("#pageNum").val(),
+				"pageSize" : pageSize
+			}
+		};
+		if (ifName != null&&ifName!='') {
+			url = "queryByCondition.do";
+			sendData = {
 				"pageInfo" : {
 					"pageNum" : $("#pageNum").val(),
 					"pageSize" : pageSize
@@ -120,6 +128,11 @@ var pageNum = 1;
 					"ifName" : $("#ifName").val()
 				}
 			}
+		};
+	    
+		 loadInterFacePage({
+			url : url,
+			data : sendData
 		}); 
 		 
 		 

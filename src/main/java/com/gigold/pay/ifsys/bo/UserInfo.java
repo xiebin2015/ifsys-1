@@ -5,9 +5,11 @@ import java.io.Serializable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.gigold.pay.framework.core.Domain;
+
 @Component
 @Scope("prototype")
-public class UserInfo  implements Serializable {
+public class UserInfo extends Domain implements Serializable {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 1L;

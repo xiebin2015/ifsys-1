@@ -72,11 +72,12 @@
     </pluginRepositories>
   
    <dependencies>
+   
             <!-- modules begin -->
             <dependency>
                 <groupId>com.gigold.pay</groupId>
                 <artifactId>pay-framework-version</artifactId>
-                <version>0.1.0-SNAPSHOT</version>
+                <version>0.1.2-SNAPSHOT</version>
             </dependency>
             
             <!-- modules end -->

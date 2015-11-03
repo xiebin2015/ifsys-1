@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.ifsys.bo.UserInfo;
@@ -20,14 +21,14 @@ public class UserController extends BaseController{
 	UserInfoService userInfoService;
 
 	
-	@RequestMapping(value = "/login")
+	@RequestMapping(value = "/login.do")
 	public @ResponseBody UserResDto login2(@RequestBody  UserIReqDto rdto,HttpSession sessin) {
 		UserInfo user = userInfoService.login(rdto.getUserInfo());
 		UserResDto dto=new UserResDto();
 		if (user == null) {
 			dto.setRspCd(CodeItem.IF_FAILURE);
 		} else {
-		    sessin.setAttribute("userInfo", user);
+		    sessin.setAttribute(SystemPropertyConfigure.getLoginKey(), user);
 			dto.setUserInfo(user);
 			dto.setRspCd(SysCode.SUCCESS);
 		}
