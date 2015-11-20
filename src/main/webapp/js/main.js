@@ -98,6 +98,10 @@ $(function() {
 		});
     
     $('#ifProId').change(function(){ 
+    	loadInterFacePageFor();
+    });
+    
+    function loadInterFacePageFor(){
     	 var sendData = {
 					"pageInfo": {
 						"pageNum": $("#pageNum").val()
@@ -113,9 +117,7 @@ $(function() {
 					url: "queryByCondition.do",
 					data: sendData
 				});
-    });
-    
-    
+    }
     
   $('#ifSysId').change(function(){ 
 		var sysId=	$(this).children('option:selected').val();
@@ -142,21 +144,7 @@ $(function() {
 				}
 			});
 		  
-		  var sendData = {
-					"pageInfo": {
-						"pageNum": $("#pageNum").val()
-					},
-					"interFaceInfo": {
-						"ifName" : $("#ifName").val(),
-						"ifSysId" : $("#ifSysId").val()||0,
-						"ifProId" : $("#ifProId").val()||0
-					}
-				};
-
-				loadInterFacePage({
-					url: "queryByCondition.do",
-					data: sendData
-				});
+		  loadInterFacePageFor();
 		  
 		});
 		
