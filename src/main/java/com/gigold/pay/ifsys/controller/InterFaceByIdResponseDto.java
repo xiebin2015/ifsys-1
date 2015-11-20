@@ -11,6 +11,8 @@ import com.gigold.pay.ifsys.bo.UserInfo;
 
 public class InterFaceByIdResponseDto extends ResponseDto {
 
+	/** serialVersionUID */
+	private static final long serialVersionUID = 1L;
 	private InterFaceInfo interFaceInfo;
 	private UserInfo userInfo;
 	private InterFaceSysTem system;
