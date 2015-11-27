@@ -7,7 +7,7 @@
  */
 package wit;
 
-import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -29,26 +29,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+
 /**
  * Title: LOGIN_API<br/>
- * Description: 吉高宝登录接口功能测试<br/>
+ * Description: 吉高宝登录接口功能测试demo<br/>
  * Company: gigold<br/>
  * @author hailongchen
  * @date 2015-11-23下午9:12:30
  *
  */
 
-
-/**
- * ==================================================
- * 登录功能接口测试要点
- * 1.输入错误的账户/非手机号时，进行登录
- * 2.输入错误的密码时，进行登录
- * 3.输入的密码格式不正确时，进行登录
- * 4.输入不存在的账号时，进行登录
- * 5.输入正确的账号密码时，进行登录
- * ==================================================
- */
 
 public class WIT {
     URL url;
