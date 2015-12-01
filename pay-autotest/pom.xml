@@ -146,5 +146,6 @@
     <module>pay-autotest-web</module>
     <module>pay-autotest-domain</module>
     <module>pay-autotest-threadpool</module>
+    <module>pay-autotest-script</module>
   </modules>
 </project>

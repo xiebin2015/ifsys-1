@@ -5,7 +5,7 @@
  * Company: gigold<br/>
  *
  */
-package wit;
+package com.gigold.pay.script;
 
 
 import java.io.IOException;
@@ -28,7 +28,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alibaba.dubbo.common.json.JSONObject;
+import net.sf.json.JSONObject;
+
 
 
 /**

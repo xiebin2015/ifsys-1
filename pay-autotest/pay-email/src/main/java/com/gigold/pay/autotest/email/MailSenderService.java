@@ -12,6 +12,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.gigold.pay.framework.core.Domain;
@@ -25,6 +26,7 @@ import com.gigold.pay.framework.core.Domain;
  * @date 2015年11月25日下午3:56:25
  *
  */
+@Service
 public class MailSenderService extends Domain{
 	/** serialVersionUID */
 	private static final long serialVersionUID = 1L;
