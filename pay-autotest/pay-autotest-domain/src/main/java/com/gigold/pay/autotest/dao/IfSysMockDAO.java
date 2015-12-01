@@ -16,6 +16,7 @@ import com.gigold.pay.autotest.bo.IfSysMock;
  * Title: IfSysMockDAO<br/>
  * Description: <br/>
  * Company: gigold<br/>
+ * 
  * @author xiebin
  * @date 2015年11月26日下午4:07:08
  *
@@ -26,6 +27,7 @@ public interface IfSysMockDAO {
 	 * 
 	 * Title: addIfSysMock<br/>
 	 * Description: 新增接口测试数据<br/>
+	 * 
 	 * @author xiebin
 	 * @date 2015年11月30日上午11:15:29
 	 *
@@ -33,14 +35,40 @@ public interface IfSysMockDAO {
 	 * @return
 	 */
 	public int addIfSysMock(IfSysMock ifSysMock);
+
 	/**
 	 * 
 	 * Title: getIfSysMock<br/>
 	 * Description: 获取所有的测试数据<br/>
+	 * 
 	 * @author xiebin
 	 * @date 2015年11月30日上午11:15:51
 	 *
 	 * @return
 	 */
-	public List<Map<String,String>>getIfSysMock();
+	public List<Map<String, Object>> getIfSysMock();
+
+	/**
+	 * 
+	 * Title: getAllIfSys<br/>
+	 * Description:获取所有的接口信息 <br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月1日下午2:59:07
+	 *
+	 * @return
+	 */
+	public List<Map<String, Object>> getAllIfSys();
+
+	/**
+	 * 
+	 * Title: getMockInfoByIfId<br/>
+	 * Description: 根据接口ID获取所有测试信息<br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月1日下午2:59:28
+	 *
+	 * @return
+	 */
+	public List<Map<String, Object>> getMockInfoByIfId(int ifId);
 }
