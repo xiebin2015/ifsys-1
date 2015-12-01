@@ -7,14 +7,10 @@
  */
 package com.gigold.pay.autotest.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.gigold.pay.autotest.bo.IfSysMock;
-import com.gigold.pay.autotest.service.IfSysMockService;
+import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
 
 /**
@@ -28,7 +24,6 @@ import com.gigold.pay.framework.base.SpringContextHolder;
  */
 public class Test {
 
-	
 	/**
 	 * Title: main<br/>
 	 * Description: <br/>
@@ -40,16 +35,13 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 
-		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:/spring/*Beans.xml");
-		IfSysMockService ss=(IfSysMockService)SpringContextHolder.getBean("ifSysMockService");
-		//IfSysMockService ss = (IfSysMockService) context.getBean("ifSysMockService");
-		List list=ss.getIfSysMock();
-		
-		
-		
-		
-		System.out.println(list.size());
+		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
 
+		IfsysCheckThreadPool pool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
+		long ss = System.currentTimeMillis();
+		pool.execure();
+		// 获取总的执行时间
+		System.out.println(System.currentTimeMillis() - ss);
 		System.out.println("成功！");
 
 	}
