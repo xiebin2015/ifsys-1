@@ -57,6 +57,7 @@
 		select ID,
 		ii.IF_NAME,
 		ii.IF_DESC,
+		ii.IF_URL,
 		(select sys.IF_SYS_NAME from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
 		SYS_NAME,
 		(select pro.IF_PRO_NAME from T_IF_PRO pro where pro.id=ii.IF_PRO_ID and
