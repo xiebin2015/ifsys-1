@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.dao.IfSysMockDAO;
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * Title: IfSysMockService<br/>
@@ -62,8 +65,8 @@ public class IfSysMockService {
 	 *
 	 * @return
 	 */
-	public List<Map<String,String>> getIfSysMock(){
-		List<Map<String,String>> list =null;
+	public List<Map<String,Object>> getIfSysMock(){
+		List<Map<String,Object>> list =null;
 		try {
 			list = ifSysMockDao.getIfSysMock();
 		} catch (Exception e) {
@@ -71,7 +74,46 @@ public class IfSysMockService {
 		}
 		return list;
 	}
-	
+	/**
+	 * 
+	 * Title: getAllIfSys<br/>
+	 * Description: 获取所有的接口信息<br/>
+	 * @author xiebin
+	 * @date 2015年12月1日下午3:02:29
+	 *
+	 * @return
+	 */
+	public PageInfo<Map<String,Object>> getAllIfSys(int curPageNum){
+		PageInfo<Map<String,Object>> pageInfo=null;
+		PageHelper.startPage(curPageNum,Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize")));
+		List<Map<String,Object>> list =null;
+		try {
+			list = ifSysMockDao.getAllIfSys();
+			 pageInfo=new PageInfo<Map<String,Object>>(list);
+		} catch (Exception e) {
+			pageInfo=null;
+		}
+		return pageInfo;
+	}
+	/**
+	 * 
+	 * Title: getMockInfoByIfId<br/>
+	 * Description: 根据接口ID获取所有测试信息<br/>
+	 * @author xiebin
+	 * @date 2015年12月1日下午3:02:46
+	 *
+	 * @param ifId
+	 * @return
+	 */
+	public List<Map<String,Object>> getMockInfoByIfId(int ifId){
+		List<Map<String,Object>> list =null;
+		try {
+			list = ifSysMockDao.getMockInfoByIfId(ifId);
+		} catch (Exception e) {
+			list=null;
+		}
+		return list;
+	}
 	
 
 }

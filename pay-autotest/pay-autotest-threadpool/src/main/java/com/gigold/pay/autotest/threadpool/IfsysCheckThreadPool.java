@@ -7,8 +7,16 @@
  */
 package com.gigold.pay.autotest.threadpool;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gigold.pay.autotest.service.IfSysMockService;
+import com.github.pagehelper.PageInfo;
 
 /**
  * Title: SimpleThreadPool<br/>
@@ -19,26 +27,53 @@ import java.util.concurrent.Executors;
  * @date 2015年11月27日下午5:46:16
  *
  */
+@Service
 public class IfsysCheckThreadPool {
-	// 测试
-	public static void main(String[] args) {
-		System.out.println(System.currentTimeMillis());
+	@Autowired
+	IfSysMockService ifSysMockService;
+	// 获取核心数
+	private static final int CPUCORECOUNT = Runtime.getRuntime().availableProcessors();
+	private static final ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT + 1);
 
-		long ss = System.currentTimeMillis();
-		// 获取核心数
-		int n = Runtime.getRuntime().availableProcessors();
-		System.out.println(n);
-		ExecutorService executor = Executors.newFixedThreadPool(n + 1);
-		// ExecutorService executor = Executors.newFixedThreadPool(1);
-		for (int i = 0; i < 10; i++) {
-			Runnable worker = new CheckThread(null, "" + i);
+	public void execure(){
+		//当前页
+		int curPageNum=1;
+		//总页数
+		int pages=1;
+		while(curPageNum<=pages){
+			PageInfo<Map<String,Object>> pageInfo=ifSysMockService.getAllIfSys(curPageNum);
+			List<Map<String,Object>> ifsyslist=pageInfo.getList();
+			//创建线程
+			Runnable worker = new CheckThread(ifSysMockService,ifsyslist);
 			executor.execute(worker);
+			pages=pageInfo.getPages();
+			curPageNum++;
 		}
 		executor.shutdown();
-		while (!executor.isTerminated()) {
+		while (!executor.isTerminated()) { //
 		}
-		System.out.println("Finished all threads");
-		System.out.println(System.currentTimeMillis() - ss);
+		
+		
+		
+	}
+
+	// 测试
+	public static void main(String[] args) {
+		
+//		System.out.println(System.currentTimeMillis());
+//
+//		long ss = System.currentTimeMillis();
+//
+//		ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT + 1);
+//		for (int i = 0; i < 10; i++) {
+//			Runnable worker = new CheckThread(null);
+//			executor.execute(worker);
+//		}
+//		executor.shutdown();
+//		while (!executor.isTerminated()) {
+//		}
+//		System.out.println("Finished all threads");
+//		System.out.println(System.currentTimeMillis() - ss);
 	}
 
 }

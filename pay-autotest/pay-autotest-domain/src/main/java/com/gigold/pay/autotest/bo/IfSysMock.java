@@ -27,10 +27,23 @@ public class IfSysMock {
 	private String rspCode;
 	private String requestJson;
 	private String responseJson;
+	private String testResult;
 	
 	
 	
 	
+	/**
+	 * @return the testResult
+	 */
+	public String getTestResult() {
+		return testResult;
+	}
+	/**
+	 * @param testResult the testResult to set
+	 */
+	public void setTestResult(String testResult) {
+		this.testResult = testResult;
+	}
 	/**
 	 * @return the ifId
 	 */
