@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gigold.pay.autotest.dao.IfSysMockDAO">
+
+	<resultMap type="com.gigold.pay.autotest.bo.IfSysMock" id="ifSysMockResultMap">
+		<id property="id" column="ID" />
+		<result property="ifId" column="IF_ID" />
+		<result property="rspCode" column="RSP_CODE" />
+		<result property="requestJson" column="REQUEST_JSON" />
+		<result property="responseJson" column="RESPONSE_JSON" />
+	</resultMap>
+
+	<insert id="addIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
+		useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[  
+        insert into
+        T_IF_AUTO_MOCK
+        (
+         IF_ID,
+         RSP_CODE,
+         REQUEST_JSON,
+         RESPONSE_JSON
+        )
+        values(
+        #{ifId},
+        #{rspCode},
+        #{requestJson},
+        #{responseJson})
+    ]]>
+	</insert>
+	<!--  -->
+	<select id="getIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
+		resultType="java.util.Map">
+        <![CDATA[  
+select ii.ID,
+ii.IF_NAME,
+ii.IF_DESC,
+(select sys.IF_SYS_NAME from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID) SYS_NAME,
+(select pro.IF_PRO_NAME from T_IF_PRO pro where pro.id=ii.IF_PRO_ID and pro.IF_SYS_ID=ii.IF_SYS_ID) PRO_NAME,
+(select sys.ADDRESS_URL from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID) ADDRESS_URL,
+mm.RSP_CODE,
+mm.REQUEST_JSON,
+mm.RESPONSE_JSON
+from T_IF_INTERFACE ii left join T_IF_AUTO_MOCK mm on ii.ID=mm.IF_ID
+where ii.ISVALID='Y'
+        ]]>
+	</select>
+
+</mapper>
+ 
+ 
+ 
+ 
+ 
+ 
