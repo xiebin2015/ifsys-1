@@ -8,6 +8,7 @@
 package com.gigold.pay.autotest.threadpool;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Title: CheckThread<br/>
@@ -21,9 +22,9 @@ public class CheckThread implements Runnable {
     
     private String command;  
     //存放待检测的接口列表
-    private List list;
+    private List<Map<String,String>> list;
        
-    public CheckThread(List  list,String s){  
+    public CheckThread(List<Map<String,String>>  list,String s){  
     	this.list=list;
         this.command=s;  
     }  
@@ -37,6 +38,9 @@ public class CheckThread implements Runnable {
    
     private void processCommand() {  
     	//写检测接口的代码
+    	for(Map<String,String> map:list){
+    		
+    	}
         try {  
             Thread.sleep(5000);  
         } catch (InterruptedException e) {  
