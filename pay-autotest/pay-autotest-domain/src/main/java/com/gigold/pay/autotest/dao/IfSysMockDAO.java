@@ -42,5 +42,5 @@ public interface IfSysMockDAO {
 	 *
 	 * @return
 	 */
-	public List<Map<String,Object>>getIfSysMock();
+	public List<Map<String,String>>getIfSysMock();
 }

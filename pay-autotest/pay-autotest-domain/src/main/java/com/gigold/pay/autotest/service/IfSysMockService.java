@@ -62,8 +62,8 @@ public class IfSysMockService {
 	 *
 	 * @return
 	 */
-	public List<Map<String,Object>> getIfSysMock(){
-		List<Map<String,Object>> list =null;
+	public List<Map<String,String>> getIfSysMock(){
+		List<Map<String,String>> list =null;
 		try {
 			list = ifSysMockDao.getIfSysMock();
 		} catch (Exception e) {
