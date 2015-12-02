@@ -8,6 +8,8 @@
 		<result property="rspCode" column="RSP_CODE" />
 		<result property="requestJson" column="REQUEST_JSON" />
 		<result property="responseJson" column="RESPONSE_JSON" />
+		<result property="realRspCode" column="REAL_RSP_CODE" />
+		<result property="realResponseJson" column="REAL_RESPONSE_JSON" />
 		<result property="testResult" column="TEST_RESULT" />
 	</resultMap>
 
@@ -29,7 +31,37 @@
         #{responseJson})
     ]]>
 	</insert>
-	<!--获取列表信息 -->
+	 <!-- 修改模拟数据  -->
+	<update id="updateIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock">
+		update T_IF_AUTO_MOCK
+		<set>
+			<if test="realRspCode!=null and realRspCode!=''">
+				REAL_RSP_CODE=#{realRspCode},
+			</if>
+			<if test="realResponseJson!=null and realResponseJson!=''">
+				REAL_RESPONSE_JSON=#{realResponseJson},
+			</if>
+			<if test="testResult!=null and testResult!=''">
+				TEST_RESULT=#{testResult},
+			</if>
+		</set>
+		where ID =#{id}
+	</update>
+	
+	 <!-- 根据ID删除模拟数据  -->
+	<update id="deleteIfSysMockById" parameterType="int">
+		update T_IF_AUTO_MOCK
+		set STATUS='N'
+		where ID =#{id}
+	</update>
+	<!-- 根据IF_ID删除模拟数据  -->
+	<update id="deleteIfSysMockByIfId" parameterType="int">
+		update T_IF_AUTO_MOCK
+		set STATUS='N'
+		where IF_ID =#{ifId}
+	</update>
+	
+	<!--获取测试数据维护列表信息 -->
 	<select id="getIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
 		resultType="java.util.Map">
     <![CDATA[  

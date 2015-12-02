@@ -114,6 +114,71 @@ public class IfSysMockService {
 		}
 		return list;
 	}
-	
+	/**
+	 * 
+	 * Title: updateIfSysMock<br/>
+	 * Description:修改模拟数据<br/>
+	 * @author xiebin
+	 * @date 2015年12月2日上午10:54:05
+	 *
+	 * @param ifSysMock
+	 * @return
+	 */
+	public boolean updateIfSysMock(IfSysMock ifSysMock){
+		boolean flag=false;
+		try {
+			int count = ifSysMockDao.updateIfSysMock(ifSysMock);
+			if(count>0){
+				flag=true;
+			}
+		} catch (Exception e) {
+			flag=true;
+		}
+		return flag;
+	}
+	/**
+	 * 
+	 * Title: deleteIfSysMockById<br/>
+	 * Description: 根据ID删除模拟数据<br/>
+	 * @author xiebin
+	 * @date 2015年12月2日上午10:56:13
+	 *
+	 * @param id
+	 * @return
+	 */
+	public boolean  deleteIfSysMockById(int id){
+		boolean flag=false;
+		try {
+			int count = ifSysMockDao.deleteIfSysMockById(id);
+			if(count>0){
+				flag=true;
+			}
+		} catch (Exception e) {
+			flag=true;
+		}
+		return flag;
+	}
+	/**
+	 * 
+	 * Title: deleteIfSysMockByIfId<br/>
+	 * Description: 根据IF_ID删除模拟数据<br/>
+	 * @author xiebin
+	 * @date 2015年12月2日上午10:56:31
+	 *
+	 * @param ifId
+	 * @return
+	 */
+    public boolean  deleteIfSysMockByIfId(int ifId){
+    	boolean flag=false;
+		try {
+			int count = ifSysMockDao.deleteIfSysMockByIfId(ifId);
+			if(count>0){
+				flag=true;
+			}
+		} catch (Exception e) {
+			flag=true;
+		}
+		return flag;
+	}
 
 }

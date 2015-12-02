@@ -28,10 +28,33 @@ public class IfSysMock {
 	private String requestJson;
 	private String responseJson;
 	private String testResult;
+	private String realRspCode;
+	private String realResponseJson;
 	
-	
-	
-	
+	/**
+	 * @return the realRspCode
+	 */
+	public String getRealRspCode() {
+		return realRspCode;
+	}
+	/**
+	 * @param realRspCode the realRspCode to set
+	 */
+	public void setRealRspCode(String realRspCode) {
+		this.realRspCode = realRspCode;
+	}
+	/**
+	 * @return the realResponseJson
+	 */
+	public String getRealResponseJson() {
+		return realResponseJson;
+	}
+	/**
+	 * @param realResponseJson the realResponseJson to set
+	 */
+	public void setRealResponseJson(String realResponseJson) {
+		this.realResponseJson = realResponseJson;
+	}
 	/**
 	 * @return the testResult
 	 */

@@ -36,9 +36,7 @@ public class CheckThread implements Runnable {
    
     @Override  
     public void run() {  
-        System.out.println(Thread.currentThread().getName()+" Start. Command = ");  
         processCommand();  
-        System.out.println(Thread.currentThread().getName()+" End.");  
     }  
     //处理接口测试
     private void processCommand() {  
