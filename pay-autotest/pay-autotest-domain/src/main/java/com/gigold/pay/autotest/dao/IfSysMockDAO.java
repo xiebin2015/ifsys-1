@@ -71,4 +71,38 @@ public interface IfSysMockDAO {
 	 * @return
 	 */
 	public List<Map<String, Object>> getMockInfoByIfId(int ifId);
+	
+	/**
+	 * 
+	 * Title: updateIfSysMock<br/>
+	 * Description: 修改模拟数据<br/>
+	 * @author xiebin
+	 * @date 2015年12月2日上午10:50:33
+	 *
+	 * @param ifSysMock
+	 * @return
+	 */
+	public int updateIfSysMock(IfSysMock ifSysMock);
+	/**
+	 * 
+	 * Title: deleteIfSysMockById<br/>
+	 * Description: 根据ID删除模拟数据 <br/>
+	 * @author xiebin
+	 * @date 2015年12月2日上午10:51:18
+	 *
+	 * @param id
+	 * @return
+	 */
+	public int deleteIfSysMockById(int id);
+	/**
+	 * 
+	 * Title: deleteIfSysMockByIfId<br/>
+	 * Description:  根据IF_ID删除模拟数据<br/>
+	 * @author xiebin
+	 * @date 2015年12月2日上午10:51:43
+	 *
+	 * @param id
+	 * @return
+	 */
+	public int deleteIfSysMockByIfId(int id);
 }
