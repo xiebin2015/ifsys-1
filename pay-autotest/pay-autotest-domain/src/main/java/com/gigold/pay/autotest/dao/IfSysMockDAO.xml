@@ -48,13 +48,13 @@
 		where ID =#{id}
 	</update>
 	
-	 <!-- 更具ID删除模拟数据  -->
+	 <!-- 根据ID删除模拟数据  -->
 	<update id="deleteIfSysMockById" parameterType="int">
 		update T_IF_AUTO_MOCK
 		set STATUS='N'
 		where ID =#{id}
 	</update>
-	<!-- 更具IF_ID删除模拟数据  -->
+	<!-- 根据IF_ID删除模拟数据  -->
 	<update id="deleteIfSysMockByIfId" parameterType="int">
 		update T_IF_AUTO_MOCK
 		set STATUS='N'
