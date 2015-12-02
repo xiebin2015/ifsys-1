@@ -35,45 +35,24 @@ public class IfsysCheckThreadPool {
 	private static final int CPUCORECOUNT = Runtime.getRuntime().availableProcessors();
 	private static final ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT + 1);
 
-	public void execure(){
-		//当前页
-		int curPageNum=1;
-		//总页数
-		int pages=1;
-		while(curPageNum<=pages){
-			PageInfo<Map<String,Object>> pageInfo=ifSysMockService.getAllIfSys(curPageNum);
-			List<Map<String,Object>> ifsyslist=pageInfo.getList();
-			//创建线程
-			Runnable worker = new CheckThread(ifSysMockService,ifsyslist);
+	public void execure() {
+		// 当前页
+		int curPageNum = 1;
+		// 总页数
+		int pages = 1;
+		while (curPageNum <= pages) {
+			PageInfo<Map<String, Object>> pageInfo = ifSysMockService.getAllIfSys(curPageNum);
+			List<Map<String, Object>> ifsyslist = pageInfo.getList();
+			// 创建线程
+			Runnable worker = new CheckThread(ifSysMockService, ifsyslist);
 			executor.execute(worker);
-			pages=pageInfo.getPages();
+			pages = pageInfo.getPages();
 			curPageNum++;
 		}
 		executor.shutdown();
 		while (!executor.isTerminated()) { //
 		}
-		
-		
-		
-	}
 
-	// 测试
-	public static void main(String[] args) {
-		
-//		System.out.println(System.currentTimeMillis());
-//
-//		long ss = System.currentTimeMillis();
-//
-//		ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT + 1);
-//		for (int i = 0; i < 10; i++) {
-//			Runnable worker = new CheckThread(null);
-//			executor.execute(worker);
-//		}
-//		executor.shutdown();
-//		while (!executor.isTerminated()) {
-//		}
-//		System.out.println("Finished all threads");
-//		System.out.println(System.currentTimeMillis() - ss);
 	}
 
 }

@@ -28,8 +28,11 @@
         #{requestJson},
         #{responseJson})
     ]]>
+    
+    
+    
 	</insert>
-	<!--获取列表信息 -->
+	<!--获取测试数据维护列表信息 -->
 	<select id="getIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
 		resultType="java.util.Map">
     <![CDATA[  
