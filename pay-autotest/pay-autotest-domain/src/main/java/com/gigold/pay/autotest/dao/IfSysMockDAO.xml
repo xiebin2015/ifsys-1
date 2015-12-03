@@ -70,10 +70,9 @@
 		where IF_ID =#{ifId}
 	</update>
 	
-	<!--获取测试数据维护列表信息 -->
+	<!--获取测试数据维护列表信息  可以根据接口ID 或者测试数据ID查询-->
 	<select id="getIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
 		resultType="java.util.Map">
-    <![CDATA[  
 		select ii.ID,
 		ii.IF_NAME,
 		ii.IF_DESC,
@@ -86,10 +85,17 @@
 		mm.RSP_CODE,
 		mm.REQUEST_JSON,
 		mm.RESPONSE_JSON,
-		mm.TEST_RESULT
+		mm.TEST_RESULT,
+		mm.REAL_RESPONSE_JSON,
+		mm.REAL_RSP_CODE
 		from T_IF_INTERFACE ii left join T_IF_AUTO_MOCK mm on ii.ID=mm.IF_ID
 		where ii.ISVALID='Y'
-]]>
+		<if test="ifId!=null and ifId!=''">
+		and ii.ID=#{ifId}
+		</if>
+		<if test="id!=null and id!=''">
+		and mm.ID=#{id}
+		</if>
 	</select>
 
 	<!-- 获取所有的接口信息 -->

@@ -39,7 +39,7 @@ public interface IfSysMockDAO {
 	/**
 	 * 
 	 * Title: getIfSysMock<br/>
-	 * Description: 获取所有的测试数据<br/>
+	 * Description: 获取接口基本信息<br/>
 	 * 
 	 * @author xiebin
 	 * @date 2015年11月30日上午11:15:51

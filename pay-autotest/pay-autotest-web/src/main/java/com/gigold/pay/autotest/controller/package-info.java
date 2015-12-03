@@ -19,10 +19,14 @@ package com.gigold.pay.autotest.controller;
 
 class CodeItem {
     
-    //bia
-   public static final String IF_FAILURE = "D0000";
-   //
-   public static final String USER_FAILURE = "D1000";
+    //调用失败
+   public static final String FAILURE = "A0000";
+   //创建BO失败
+   public static final String CREATE_BO_FAILURE = "A1000";
+   //期望返回值不能为空
+   public static final String RETURN_CODE_IS_NULL = "A1001";
+   //期望请求报文不能为空
+   public static final String REQ_JSON_IS_NULL = "A1002";
    
     
 }
