@@ -48,17 +48,6 @@ public interface IfSysMockDAO {
 	 */
 	public List<Map<String, Object>> getIfSysMock();
 
-	/**
-	 * 
-	 * Title: getAllIfSys<br/>
-	 * Description:获取所有的接口信息 <br/>
-	 * 
-	 * @author xiebin
-	 * @date 2015年12月1日下午2:59:07
-	 *
-	 * @return
-	 */
-	public List<Map<String, Object>> getAllIfSys();
 
 	/**
 	 * 
@@ -70,7 +59,7 @@ public interface IfSysMockDAO {
 	 *
 	 * @return
 	 */
-	public List<Map<String, Object>> getMockInfoByIfId(int ifId);
+	public List<IfSysMock> getMockInfoByIfId(int ifId);
 	
 	/**
 	 * 

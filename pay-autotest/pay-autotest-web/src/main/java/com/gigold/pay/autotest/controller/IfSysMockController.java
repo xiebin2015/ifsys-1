@@ -8,7 +8,6 @@
 package com.gigold.pay.autotest.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
+import com.gigold.pay.autotest.bo.InterFaceField;
+import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.service.IfSysMockService;
+import com.gigold.pay.autotest.service.InterFaceFieldService;
+import com.gigold.pay.autotest.service.InterFaceService;
+import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.core.exception.PendingException;
+import com.gigold.pay.framework.util.common.StringUtil;
 import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.framework.web.ResponseDto;
 import com.github.pagehelper.PageInfo;
@@ -39,7 +44,22 @@ public class IfSysMockController extends BaseController {
 
 	@Autowired
 	IfSysMockService ifSysMockService;
+	@Autowired
+	InterFaceFieldService interFaceFieldService;
+	@Autowired
+	InterFaceService interFaceService;
 
+	/**
+	 * 
+	 * Title: addIfSysMock<br/>
+	 * Description: 新增接口测试数据<br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月4日下午1:20:56
+	 *
+	 * @param dto
+	 * @return
+	 */
 	@RequestMapping("/addifsysmock.do")
 	public @ResponseBody ResponseDto addIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
 		ResponseDto reDto = new ResponseDto();
@@ -65,7 +85,16 @@ public class IfSysMockController extends BaseController {
 		}
 		return reDto;
 	}
-
+   /**
+    * 
+    * Title: deleteIfSysMockById<br/>
+    * Description: 根据ID删除测试数据<br/>
+    * @author xiebin
+    * @date 2015年12月4日下午1:22:36
+    *
+    * @param dto
+    * @return
+    */
 	@RequestMapping("/deleteifsysmockbyid.do")
 	public @ResponseBody ResponseDto deleteIfSysMockById(@RequestBody IfSysMockDelReqDto dto) {
 		ResponseDto reDto = new ResponseDto();
@@ -78,6 +107,17 @@ public class IfSysMockController extends BaseController {
 		return reDto;
 	}
 
+	/**
+	 * 
+	 * Title: deleteIfSysMockByIfId<br/>
+	 * Description: 根据接口ID删除测试数据<br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月4日下午1:21:34
+	 *
+	 * @param dto
+	 * @return
+	 */
 	@RequestMapping("/deleteifsysmockbyifId.do")
 	public @ResponseBody ResponseDto deleteIfSysMockByIfId(@RequestBody IfSysMockDelReqDto dto) {
 		ResponseDto reDto = new ResponseDto();
@@ -90,6 +130,17 @@ public class IfSysMockController extends BaseController {
 		return reDto;
 	}
 
+	/**
+	 * 
+	 * Title: updateIfSysMock<br/>
+	 * Description: 修改测试数据<br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月4日下午1:21:54
+	 *
+	 * @param dto
+	 * @return
+	 */
 	@RequestMapping("/updateifsysmock.do")
 	public @ResponseBody ResponseDto updateIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
 		ResponseDto reDto = new ResponseDto();
@@ -131,7 +182,7 @@ public class IfSysMockController extends BaseController {
 	public @ResponseBody IfSysMockRspDto getAllIfSys(@RequestBody IfSysMockPageDto dto) {
 		IfSysMockRspDto reDto = new IfSysMockRspDto();
 		int pageNum = dto.getPageNum();
-		PageInfo<Map<String, Object>> pageInfo = ifSysMockService.getAllIfSys(pageNum);
+		PageInfo<InterFaceInfo> pageInfo = interFaceService.getAllIfSys(pageNum);
 		if (pageInfo != null) {
 			reDto.setPageInfo(pageInfo);
 			reDto.setRspCd(SysCode.SUCCESS);
@@ -144,7 +195,7 @@ public class IfSysMockController extends BaseController {
 	/**
 	 * 
 	 * Title: getIfSysMockByIfId<br/>
-	 * Description: 根据接口ID获取测试数据信息  编辑页,新增页<br/>
+	 * Description: 根据接口ID获取测试数据信息 编辑页,新增页<br/>
 	 * 
 	 * @author xiebin
 	 * @date 2015年12月2日下午3:08:21
@@ -155,13 +206,43 @@ public class IfSysMockController extends BaseController {
 	@RequestMapping("/getifsysmockbyifid.do")
 	public @ResponseBody IfStsMockRspListDto getIfSysMockByIfId(@RequestBody IfSysMockAddReqDto dto) {
 		IfStsMockRspListDto reDto = new IfStsMockRspListDto();
-		int ifId = dto.getId();
-		List<Map<String, Object>> list = ifSysMockService.getMockInfoByIfId(ifId);
-		reDto.setList(list);
-		if (list != null) {
-			reDto.setList(list);
+		try {
+			int ifId = dto.getId();
+			// 获取接口基本信息
+			InterFaceInfo interFaceInfo = interFaceService.getInterFaceById(ifId);
+			if (interFaceInfo == null) {
+				reDto.setRspCd(CodeItem.FAILURE);
+				return reDto;
+			}
+			// 获取接口请求字段的JSON展示字符串
+			InterFaceField interFaceField = (InterFaceField) SpringContextHolder.getBean(InterFaceField.class);
+			interFaceField.setIfId(ifId);
+			interFaceField.setFieldFlag("1");
+			String reqJson = interFaceFieldService.getJsonStr(interFaceField);
+			if (StringUtil.isNotBlank(reqJson)) {
+				interFaceInfo.setReqJsonStr(reqJson);
+			}
+			// 获取接口响应字段的JSON展示字符串
+			interFaceField.setFieldFlag("2");
+			String rspJson = interFaceFieldService.getJsonStr(interFaceField);
+			if (StringUtil.isNotBlank(rspJson)) {
+				interFaceInfo.setRspJsonStr(rspJson);
+			}
+			// 获取接口测试数据
+			List<IfSysMock> list = ifSysMockService.getMockInfoByIfId(ifId);
+			if (list == null||list.size()==0) {
+				// 如果还没有测试数据 则默认添加一条
+				IfSysMock mock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
+				mock.setIfId(ifId);
+				mock.setRequestJson(reqJson);
+				mock.setResponseJson(rspJson);
+				interFaceInfo.getMockList().add(mock);
+			} else {
+				interFaceInfo.setMockList(list);
+			}
 			reDto.setRspCd(SysCode.SUCCESS);
-		} else {
+			reDto.setInterFaceInfo(interFaceInfo);
+		} catch (Exception e) {
 			reDto.setRspCd(CodeItem.FAILURE);
 		}
 		return reDto;

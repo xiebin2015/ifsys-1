@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.dao.IfSysMockDAO;
-import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 /**
  * Title: IfSysMockService<br/>
@@ -74,27 +71,7 @@ public class IfSysMockService {
 		}
 		return list;
 	}
-	/**
-	 * 
-	 * Title: getAllIfSys<br/>
-	 * Description: 获取所有的接口信息<br/>
-	 * @author xiebin
-	 * @date 2015年12月1日下午3:02:29
-	 *
-	 * @return
-	 */
-	public PageInfo<Map<String,Object>> getAllIfSys(int curPageNum){
-		PageInfo<Map<String,Object>> pageInfo=null;
-		PageHelper.startPage(curPageNum,Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize")));
-		List<Map<String,Object>> list =null;
-		try {
-			list = ifSysMockDao.getAllIfSys();
-			 pageInfo=new PageInfo<Map<String,Object>>(list);
-		} catch (Exception e) {
-			pageInfo=null;
-		}
-		return pageInfo;
-	}
+	
 	/**
 	 * 
 	 * Title: getMockInfoByIfId<br/>
@@ -105,8 +82,8 @@ public class IfSysMockService {
 	 * @param ifId
 	 * @return
 	 */
-	public List<Map<String,Object>> getMockInfoByIfId(int ifId){
-		List<Map<String,Object>> list =null;
+	public List<IfSysMock> getMockInfoByIfId(int ifId){
+		List<IfSysMock> list =null;
 		try {
 			list = ifSysMockDao.getMockInfoByIfId(ifId);
 		} catch (Exception e) {
@@ -127,12 +104,18 @@ public class IfSysMockService {
 	public boolean updateIfSysMock(IfSysMock ifSysMock){
 		boolean flag=false;
 		try {
-			int count = ifSysMockDao.updateIfSysMock(ifSysMock);
+			int count = 0;
+			int id=ifSysMock.getId();
+			if(id<=0){
+				count=ifSysMockDao.addIfSysMock(ifSysMock);
+			}else{
+				count=ifSysMockDao.updateIfSysMock(ifSysMock);
+			}
 			if(count>0){
 				flag=true;
 			}
 		} catch (Exception e) {
-			flag=true;
+			flag=false;
 		}
 		return flag;
 	}
@@ -154,7 +137,7 @@ public class IfSysMockService {
 				flag=true;
 			}
 		} catch (Exception e) {
-			flag=true;
+			flag=false;
 		}
 		return flag;
 	}
@@ -176,7 +159,7 @@ public class IfSysMockService {
 				flag=true;
 			}
 		} catch (Exception e) {
-			flag=true;
+			flag=false;
 		}
 		return flag;
 	}
