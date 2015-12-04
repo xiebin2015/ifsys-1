@@ -16,37 +16,30 @@ import com.gigold.pay.ifsys.service.UserInfoService;
 
 @Controller
 @RequestMapping("/")
-public class UserController extends BaseController{
+public class UserController extends BaseController {
 	@Autowired
 	UserInfoService userInfoService;
 
-	
 	@RequestMapping(value = "/login.do")
-	public @ResponseBody UserResDto login2(@RequestBody  UserIReqDto rdto,HttpSession sessin) {
+	public @ResponseBody UserResDto login2(@RequestBody UserIReqDto rdto, HttpSession sessin) {
+		UserResDto dto = new UserResDto();
+		// 验证请求参数合法性
+		String code = rdto.validation();
+		// 没有通过则返回对应的返回码
+		if (!"00000".equals(code)) {
+			dto.setRspCd(code);
+			return dto;
+		}
 		UserInfo user = userInfoService.login(rdto.getUserInfo());
-		UserResDto dto=new UserResDto();
 		if (user == null) {
 			dto.setRspCd(CodeItem.IF_FAILURE);
 		} else {
-		    sessin.setAttribute(SystemPropertyConfigure.getLoginKey(), user);
+			sessin.setAttribute(SystemPropertyConfigure.getLoginKey(), user);
 			dto.setUserInfo(user);
 			dto.setRspCd(SysCode.SUCCESS);
 		}
 
 		return dto;
 	}
-	
-	
-	
-	@RequestMapping("/addUser")
-	public String addUser(UserInfo userInfo) {
-		boolean flag = userInfoService.addUser(userInfo);
-		if (flag) {
-			return "main";
-		}
-		return "index";
-	}
-
-	
 
 }

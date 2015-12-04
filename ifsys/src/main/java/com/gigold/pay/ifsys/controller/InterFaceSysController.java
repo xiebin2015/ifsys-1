@@ -37,21 +37,6 @@ public class InterFaceSysController extends BaseController{
         return dto;
 
     }
-    
-    @RequestMapping(value = "/queryTest.do")
-    public @ResponseBody InterFaceSysResponseDto queryTest(@RequestBody InterFaceSysRequestDto qdto ) {
-        InterFaceSysResponseDto dto = new InterFaceSysResponseDto();
-        List<InterFaceSysTem> rlist= interFaceSysService.queryTest(qdto.getInterFaceSysTem());
-        if (rlist != null) {
-            dto.setSysList(rlist);
-            dto.setRspCd(SysCode.SUCCESS);
-        } else {
-            dto.setRspCd(CodeItem.IF_FAILURE);
-        }
-
-        return dto;
-
-    }
 
     @RequestMapping(value = "/getAllSysInfo.do")
     public @ResponseBody InterFaceSysResponseDto getAllSysInfo( ) {

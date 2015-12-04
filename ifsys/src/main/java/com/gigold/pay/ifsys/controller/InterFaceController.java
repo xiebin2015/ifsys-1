@@ -46,31 +46,34 @@ public class InterFaceController extends BaseController{
 
     /**
      * 根据Id获取接口明细信息
-     * 
+     * 用户接口修改页
      * @param id
      * @return
      */
     @RequestMapping(value = "/queryInterFaceById")
     public @ResponseBody InterFaceByIdResponseDto getInterFaceById(@RequestBody InterFaceRequestDto qdto) {
         //debug("调用getInterFaceById：");
+    	//获取接口信息
         InterFaceInfo interFaceInfo = interFaceService.getInterFaceById(qdto.getInterFaceInfo());
        
         InterFaceByIdResponseDto dto = new InterFaceByIdResponseDto();
        if (interFaceInfo != null) {
+    	   //获取所属系统信息
            InterFaceSysTem interFaceSysTem=(InterFaceSysTem) SpringContextHolder.getBean(InterFaceSysTem.class);
            interFaceSysTem.setId(interFaceInfo.getIfSysId());
            interFaceSysTem=interFaceSysService.getSysInfoById(interFaceSysTem);
            dto.setSystem(interFaceSysTem);
-           
+         //获取所属产品信息
            InterFacePro interFacePro= DomainFactory.getInstance().getDomain(InterFacePro.class);
            interFacePro.setId(interFaceInfo.getIfProId());
            interFacePro=interFaceProService.getProInfoById(interFacePro);
            dto.setPro(interFacePro);
-           
+         //获取设计者信息
            UserInfo userInfo= DomainFactory.getInstance().getDomain(UserInfo.class);
            userInfo.setId(interFaceInfo.getUid());
            userInfo=userInfoService.getUser(interFaceInfo.getUid());
            dto.setUserInfo(userInfo);
+         //获取接口定义字段信息
            InterFaceField interFaceField= DomainFactory.getInstance().getDomain(InterFaceField.class);
            interFaceField.setIfId(interFaceInfo.getId());
            List<InterFaceField> fieldList=interFaceFieldService.getFieldByIfId(interFaceField);
@@ -82,7 +85,16 @@ public class InterFaceController extends BaseController{
         }
         return dto;
     }
-    
+    /**
+     * 
+     * Title: queryInterFaceByPage<br/>
+     * Description: 查询接口列表<br/>
+     * @author xiebin
+     * @date 2015年12月3日下午2:41:50
+     *
+     * @param qdto
+     * @return
+     */
     @RequestMapping("/queryByCondition")
     public @ResponseBody InterFacePageResponseDto queryInterFaceByPage(@RequestBody InterFaceFuzzyQueryRequestDto qdto) {
     	int pageSize=Integer.parseInt(SystemPropertyConfigure.getProperty(Constant.SYSTEMPARAM_PAGESIZE, String.valueOf(Constant.PAGE_SIZE)));
@@ -99,34 +111,34 @@ public class InterFaceController extends BaseController{
         }
         return dto;
     }
+//    /**
+//     * 分页查询
+//     * 
+//     * @param qdto
+//     * @return
+//     */
+//
+//    @RequestMapping("/getInterFaceByPage")
+//    public @ResponseBody InterFacePageResponseDto getAllInterFace(@RequestBody InterFacePageRequestDto qdto) {
+//        debug("调用getInterFaceByPage：");
+//        int pageSize=Integer.parseInt(SystemPropertyConfigure.getProperty(Constant.SYSTEMPARAM_PAGESIZE, String.valueOf(Constant.PAGE_SIZE)));
+//		PageHelper.startPage(qdto.getPageInfo().getPageNum(), pageSize);
+//        List<InterFaceInfo> list = interFaceService.getAllInterFaceByPage();
+//        debug("传入的参数：" + qdto.getPageInfo().getPageNum() + "====" + qdto.getPageInfo().getPageSize());
+//        InterFacePageResponseDto dto = new InterFacePageResponseDto();
+//        if (list != null) {
+//            PageInfo<InterFaceInfo> pageInfo = new PageInfo<InterFaceInfo>(list);
+//            dto.setPageInfo(pageInfo);
+//            dto.setRspCd(SysCode.SUCCESS);
+//        } else {
+//            dto.setRspCd(CodeItem.IF_FAILURE);
+//        }
+//        return dto;
+//
+//    }
+
     /**
-     * 分页查询
-     * 
-     * @param qdto
-     * @return
-     */
-
-    @RequestMapping("/getInterFaceByPage")
-    public @ResponseBody InterFacePageResponseDto getAllInterFace(@RequestBody InterFacePageRequestDto qdto) {
-        debug("调用getInterFaceByPage：");
-        int pageSize=Integer.parseInt(SystemPropertyConfigure.getProperty(Constant.SYSTEMPARAM_PAGESIZE, String.valueOf(Constant.PAGE_SIZE)));
-		PageHelper.startPage(qdto.getPageInfo().getPageNum(), pageSize);
-        List<InterFaceInfo> list = interFaceService.getAllInterFaceByPage();
-        debug("传入的参数：" + qdto.getPageInfo().getPageNum() + "====" + qdto.getPageInfo().getPageSize());
-        InterFacePageResponseDto dto = new InterFacePageResponseDto();
-        if (list != null) {
-            PageInfo<InterFaceInfo> pageInfo = new PageInfo<InterFaceInfo>(list);
-            dto.setPageInfo(pageInfo);
-            dto.setRspCd(SysCode.SUCCESS);
-        } else {
-            dto.setRspCd(CodeItem.IF_FAILURE);
-        }
-        return dto;
-
-    }
-
-    /**
-     * 新增接口纪录
+     * 新增接口基本信息
      * 
      * @param interFaceInfo
      * @return
@@ -175,7 +187,7 @@ public class InterFaceController extends BaseController{
     }
 
     /**
-     * 修改接口
+     * 修改接口基本信息
      * 
      * @param interFaceInfo
      * @return

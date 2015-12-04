@@ -55,7 +55,7 @@ public class InterFaceInvokerController extends BaseController {
 		// 在session中取uid
 		UserInfo userInfo = (UserInfo) session.getAttribute(SystemPropertyConfigure.getLoginKey());
 		if (userInfo == null) {
-			rdto.setRspCd(CodeItem.USER_FAILURE);
+			rdto.setRspCd(SysCode.SYS_FAIL);
 			rdto.setRspInf("用户未登录");
 			//return rdto;
 		}
