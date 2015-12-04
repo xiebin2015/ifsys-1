@@ -38,19 +38,6 @@ public interface IfSysMockDAO {
 
 	/**
 	 * 
-	 * Title: getIfSysMock<br/>
-	 * Description: 获取接口基本信息<br/>
-	 * 
-	 * @author xiebin
-	 * @date 2015年11月30日上午11:15:51
-	 *
-	 * @return
-	 */
-	public List<Map<String, Object>> getIfSysMock();
-
-
-	/**
-	 * 
 	 * Title: getMockInfoByIfId<br/>
 	 * Description: 根据接口ID获取所有测试信息<br/>
 	 * 
