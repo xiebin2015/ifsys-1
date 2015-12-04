@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.service.IfSysMockService;
-import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.core.exception.PendingException;
 import com.gigold.pay.framework.web.BaseController;
@@ -157,9 +156,7 @@ public class IfSysMockController extends BaseController {
 	public @ResponseBody IfStsMockRspListDto getIfSysMockByIfId(@RequestBody IfSysMockAddReqDto dto) {
 		IfStsMockRspListDto reDto = new IfStsMockRspListDto();
 		int ifId = dto.getId();
-		IfSysMock mock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
-		mock.setIfId(ifId);
-		List<Map<String, Object>> list = ifSysMockService.getIfSysMock(mock);
+		List<Map<String, Object>> list = ifSysMockService.getMockInfoByIfId(ifId);
 		reDto.setList(list);
 		if (list != null) {
 			reDto.setList(list);
