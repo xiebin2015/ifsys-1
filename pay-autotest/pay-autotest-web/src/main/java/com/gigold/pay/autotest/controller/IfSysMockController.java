@@ -49,6 +49,46 @@ public class IfSysMockController extends BaseController {
 	@Autowired
 	InterFaceService interFaceService;
 
+	
+	
+	
+	
+	/**
+	 * @return the ifSysMockService
+	 */
+	public IfSysMockService getIfSysMockService() {
+		return ifSysMockService;
+	}
+	/**
+	 * @param ifSysMockService the ifSysMockService to set
+	 */
+	public void setIfSysMockService(IfSysMockService ifSysMockService) {
+		this.ifSysMockService = ifSysMockService;
+	}
+	/**
+	 * @return the interFaceFieldService
+	 */
+	public InterFaceFieldService getInterFaceFieldService() {
+		return interFaceFieldService;
+	}
+	/**
+	 * @param interFaceFieldService the interFaceFieldService to set
+	 */
+	public void setInterFaceFieldService(InterFaceFieldService interFaceFieldService) {
+		this.interFaceFieldService = interFaceFieldService;
+	}
+	/**
+	 * @return the interFaceService
+	 */
+	public InterFaceService getInterFaceService() {
+		return interFaceService;
+	}
+	/**
+	 * @param interFaceService the interFaceService to set
+	 */
+	public void setInterFaceService(InterFaceService interFaceService) {
+		this.interFaceService = interFaceService;
+	}
 	/**
 	 * 
 	 * Title: addIfSysMock<br/>

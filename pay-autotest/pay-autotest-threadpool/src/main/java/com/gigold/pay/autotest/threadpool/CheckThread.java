@@ -7,9 +7,7 @@
  */
 package com.gigold.pay.autotest.threadpool;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.bo.InterFaceInfo;

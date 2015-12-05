@@ -19,6 +19,21 @@ public class InterFaceService {
 	InterFaceDao interFaceDao;
 
 	/**
+	 * @return the interFaceDao
+	 */
+	public InterFaceDao getInterFaceDao() {
+		return interFaceDao;
+	}
+
+	/**
+	 * @param interFaceDao
+	 *            the interFaceDao to set
+	 */
+	public void setInterFaceDao(InterFaceDao interFaceDao) {
+		this.interFaceDao = interFaceDao;
+	}
+
+	/**
 	 * 
 	 * Title: getInterFaceById<br/>
 	 * Description:根据ID查询接口信息<br/>
@@ -38,25 +53,30 @@ public class InterFaceService {
 		}
 		return inteFaceInfo;
 	}
+
 	/**
 	 * 
 	 * Title: getAllIfSys<br/>
 	 * Description: 获取所有的接口信息<br/>
+	 * 
 	 * @author xiebin
 	 * @date 2015年12月1日下午3:02:29
 	 *
 	 * @return
 	 */
-	public PageInfo<InterFaceInfo> getAllIfSys(int curPageNum){
-		PageInfo<InterFaceInfo> pageInfo=null;
-		PageHelper.startPage(curPageNum,Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize")));
-		List<InterFaceInfo> list =null;
+	public PageInfo<InterFaceInfo> getAllIfSys(int curPageNum) {
+		PageInfo<InterFaceInfo> pageInfo = null;
+		PageHelper.startPage(curPageNum, Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize")));
+		List<InterFaceInfo> list = null;
 		try {
 			list = interFaceDao.getAllIfSys();
-			 pageInfo=new PageInfo<InterFaceInfo>(list);
+			if (list != null) {
+				pageInfo = new PageInfo<InterFaceInfo>(list);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			pageInfo=null;
+			pageInfo = null;
 		}
 		return pageInfo;
 	}

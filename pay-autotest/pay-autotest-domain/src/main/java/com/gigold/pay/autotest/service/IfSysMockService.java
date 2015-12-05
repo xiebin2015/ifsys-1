@@ -30,7 +30,26 @@ public class IfSysMockService {
 
 	@Autowired
 	IfSysMockDAO ifSysMockDao;
+	
+	
+	
+	
+	
   /**
+	 * @return the ifSysMockDao
+	 */
+	public IfSysMockDAO getIfSysMockDao() {
+		return ifSysMockDao;
+	}
+
+	/**
+	 * @param ifSysMockDao the ifSysMockDao to set
+	 */
+	public void setIfSysMockDao(IfSysMockDAO ifSysMockDao) {
+		this.ifSysMockDao = ifSysMockDao;
+	}
+
+/**
    * 
    * Title: addIfSysMock<br/>
    * Description: 新增接口测试数据<br/>

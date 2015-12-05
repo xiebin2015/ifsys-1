@@ -16,6 +16,22 @@ public class InterFaceFieldService {
 	@Autowired
 	InterFaceFieldDao interFaceFieldDao;
 
+	
+	
+	/**
+	 * @return the interFaceFieldDao
+	 */
+	public InterFaceFieldDao getInterFaceFieldDao() {
+		return interFaceFieldDao;
+	}
+
+	/**
+	 * @param interFaceFieldDao the interFaceFieldDao to set
+	 */
+	public void setInterFaceFieldDao(InterFaceFieldDao interFaceFieldDao) {
+		this.interFaceFieldDao = interFaceFieldDao;
+	}
+
 	/**
 	 * 
 	 * Title: getFirstReqFieldByIfId<br/>

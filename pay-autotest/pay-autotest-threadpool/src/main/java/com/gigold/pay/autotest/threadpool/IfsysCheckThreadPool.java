@@ -8,7 +8,6 @@
 package com.gigold.pay.autotest.threadpool;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
