@@ -30,4 +30,6 @@ class CodeItem {
 	public static final String IF_ID_FAILURE = "D0004";
 	// ID不能为空
 	public static final String ID_FAILURE = "D0005";
+	// 关注者调用信息不能为空
+    public static final String REMARK_FAILURE = "D0006";
 }

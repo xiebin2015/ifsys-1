@@ -7,6 +7,8 @@
  */
 package com.gigold.pay.ifsys.controller;
 
+import org.springframework.util.StringUtils;
+
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.web.RequestDto;
 
@@ -72,6 +74,9 @@ public class InterFaceInvokerReqDto extends RequestDto {
 	}
 
 	public String vaildate() {
+		if(StringUtils.isEmpty(this.remark)){
+			return CodeItem.REMARK_FAILURE;
+		}
 		return SysCode.SUCCESS;
 	}
 
