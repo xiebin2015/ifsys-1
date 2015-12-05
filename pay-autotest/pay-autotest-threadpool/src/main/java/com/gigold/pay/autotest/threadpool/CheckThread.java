@@ -49,6 +49,7 @@ public class CheckThread implements Runnable {
 			interFaceInfo.setMockList(mockList);
 			//fun(interFaceInfo);
 			// 调用 httpclient代码访问接口
+			
 
 		}
 	}
