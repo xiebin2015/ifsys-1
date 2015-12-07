@@ -69,81 +69,21 @@
 		set STATUS='N'
 		where IF_ID =#{ifId}
 	</update>
-	
-	<!--获取测试数据维护列表信息  可以根据接口ID 或者测试数据ID查询-->
-	<select id="getIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
-		resultType="java.util.Map">
-		select ii.ID,
-		ii.IF_NAME,
-		ii.IF_DESC,
-		(select sys.IF_SYS_NAME from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
-		SYS_NAME,
-		(select pro.IF_PRO_NAME from T_IF_PRO pro where pro.id=ii.IF_PRO_ID and
-		pro.IF_SYS_ID=ii.IF_SYS_ID) PRO_NAME,
-		(select sys.ADDRESS_URL from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
-		ADDRESS_URL,
-		mm.RSP_CODE,
-		mm.REQUEST_JSON,
-		mm.RESPONSE_JSON,
-		mm.TEST_RESULT,
-		mm.REAL_RESPONSE_JSON,
-		mm.REAL_RSP_CODE
-		from T_IF_INTERFACE ii left join T_IF_AUTO_MOCK mm on ii.ID=mm.IF_ID
-		where ii.ISVALID='Y'
-		<if test="ifId!=null and ifId!=''">
-		and ii.ID=#{ifId}
-		</if>
-		<if test="id!=null and id!=''">
-		and mm.ID=#{id}
-		</if>
-	</select>
-
-	<!-- 分页获取接口基本信息 列表页 -->
-	<select id="getAllIfSys" resultType="java.util.Map">
-		<![CDATA[  
-		select ID,
-		ii.IF_NAME,
-		ii.IF_DESC,
-		ii.IF_URL,
-		(select sys.IF_SYS_NAME from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
-		SYS_NAME,
-		(select pro.IF_PRO_NAME from T_IF_PRO pro where pro.id=ii.IF_PRO_ID and
-		pro.IF_SYS_ID=ii.IF_SYS_ID) PRO_NAME,
-		(select sys.ADDRESS_URL from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
-		ADDRESS_URL
-		from T_IF_INTERFACE ii
-		where ii.ISVALID='Y'
-		  ]]>
-	</select>
 	<!-- 根据接口ID获取测试数据信息  编辑页,新增页 -->
-	<select id="getMockInfoByIfId" parameterType="int" resultType="java.util.Map">
+	<select id="getMockInfoByIfId" parameterType="int" resultMap="ifSysMockResultMap">
      <![CDATA[ 
-		select 
-ID,
-IF_ID,
-IF_NAME,
-(select sys.IF_SYS_NAME from T_IF_SYSTEM sys where sys.id=a.SYS_ID) SYS_NAME,
-(select pro.IF_PRO_NAME from T_IF_PRO pro where pro.id=a.PRO_ID and
-		pro.IF_SYS_ID=a.SYS_ID) PRO_NAME,
-RSP_CODE,
-		REQUEST_JSON,
-		RESPONSE_JSON,
-		TEST_RESULT
-from(select ID,
+		select ID,
 		IF_ID,
-        (select ii.IF_NAME from T_IF_INTERFACE ii where ii.id=mm.IF_ID) IF_NAME,
-		(select ii.IF_SYS_ID from T_IF_INTERFACE ii where ii.id=mm.IF_ID)
-		SYS_ID,
-		(select ii.IF_PRO_ID from T_IF_INTERFACE ii where ii.id=mm.IF_ID)
-		PRO_ID,
 		RSP_CODE,
 		REQUEST_JSON,
 		RESPONSE_JSON,
+		REAL_RSP_CODE,
+		REAL_RESPONSE_JSON,
 		TEST_RESULT
-		from T_IF_AUTO_MOCK mm
-		where STATUS='Y'
-        and IF_ID=#{ifId}
-) a
+		from T_IF_AUTO_MOCK
+		where IF_ID=#{ifId}
+		and STATUS='Y'
+		 
       ]]>
 	</select>
 

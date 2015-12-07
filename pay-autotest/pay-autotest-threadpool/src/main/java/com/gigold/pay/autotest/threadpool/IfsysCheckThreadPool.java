@@ -8,14 +8,15 @@
 package com.gigold.pay.autotest.threadpool;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.service.IfSysMockService;
+import com.gigold.pay.autotest.service.InterFaceService;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -31,6 +32,8 @@ import com.github.pagehelper.PageInfo;
 public class IfsysCheckThreadPool {
 	@Autowired
 	IfSysMockService ifSysMockService;
+	@Autowired
+	InterFaceService interFaceService;
 	// 获取核心数
 	private static final int CPUCORECOUNT = Runtime.getRuntime().availableProcessors();
 	private static final ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT + 1);
@@ -41,8 +44,8 @@ public class IfsysCheckThreadPool {
 		// 总页数
 		int pages = 1;
 		while (curPageNum <= pages) {
-			PageInfo<Map<String, Object>> pageInfo = ifSysMockService.getAllIfSys(curPageNum);
-			List<Map<String, Object>> ifsyslist = pageInfo.getList();
+			PageInfo<InterFaceInfo> pageInfo = interFaceService.getAllIfSys(curPageNum);
+			List<InterFaceInfo> ifsyslist = pageInfo.getList();
 			// 创建线程
 			Runnable worker = new CheckThread(ifSysMockService, ifsyslist);
 			executor.execute(worker);

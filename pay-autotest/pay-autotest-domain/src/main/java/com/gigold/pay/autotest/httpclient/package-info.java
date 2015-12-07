@@ -9,8 +9,8 @@
  * Title: package-info<br/>
  * Description: <br/>
  * Company: gigold<br/>
- * @author Devin
- * @date 2015年9月16日下午2:08:40
+ * @author xiebin
+ * @date 2015年11月6日上午11:27:42
  *
  */
-package com.gigold.pay.ifsys.bo;
+package com.gigold.pay.autotest.httpclient;

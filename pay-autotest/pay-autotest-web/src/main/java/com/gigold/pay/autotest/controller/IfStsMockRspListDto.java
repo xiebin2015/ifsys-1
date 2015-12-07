@@ -7,9 +7,7 @@
  */
 package com.gigold.pay.autotest.controller;
 
-import java.util.List;
-import java.util.Map;
-
+import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.framework.web.ResponseDto;
 
 /**
@@ -24,21 +22,20 @@ import com.gigold.pay.framework.web.ResponseDto;
 public class IfStsMockRspListDto extends ResponseDto {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 1L;
-	private List<Map<String, Object>> list;
-
+	private InterFaceInfo interFaceInfo;
 	/**
-	 * @return the list
+	 * @return the interFaceInfo
 	 */
-	public List<Map<String, Object>> getList() {
-		return list;
+	public InterFaceInfo getInterFaceInfo() {
+		return interFaceInfo;
+	}
+	/**
+	 * @param interFaceInfo the interFaceInfo to set
+	 */
+	public void setInterFaceInfo(InterFaceInfo interFaceInfo) {
+		this.interFaceInfo = interFaceInfo;
 	}
 
-	/**
-	 * @param list
-	 *            the list to set
-	 */
-	public void setList(List<Map<String, Object>> list) {
-		this.list = list;
-	}
+	
 
 }

@@ -10,6 +10,8 @@ package com.gigold.pay.autotest.controller;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.gigold.pay.autotest.bo.InterFaceField;
+import com.gigold.pay.autotest.service.InterFaceFieldService;
 import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
 
@@ -36,7 +38,6 @@ public class Test {
 	public static void main(String[] args) {
 
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
-
 		IfsysCheckThreadPool pool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
 		long ss = System.currentTimeMillis();
 		pool.execure();

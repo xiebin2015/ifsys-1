@@ -49,7 +49,6 @@ public class InterFaceInvokerController extends BaseController {
 		String recode = dto.vaildate();
 		if (!SysCode.SUCCESS.equals(recode)) {
 			rdto.setRspCd(recode);
-			rdto.setRspInf("验证失败");
 			return rdto;
 		}
 		// 在session中取uid
@@ -57,10 +56,9 @@ public class InterFaceInvokerController extends BaseController {
 		if (userInfo == null) {
 			rdto.setRspCd(SysCode.SYS_FAIL);
 			rdto.setRspInf("用户未登录");
-			//return rdto;
+			return rdto;
 		}
-		userInfo=new UserInfo();
-		userInfo.setId(1);
+		userInfo= (UserInfo)SpringContextHolder.getBean(UserInfo.class);
 		InterFaceInvoker invoker=null;
 		try {
 			invoker = createBO(dto, InterFaceInvoker.class);
@@ -99,12 +97,6 @@ public class InterFaceInvokerController extends BaseController {
 	public @ResponseBody InterFaceInvokerResDto getInvokerListByFollowId(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
 		debug("调用 getInvokerListByFollowId");
 		InterFaceInvokerResDto rdto=new InterFaceInvokerResDto();
-		String recode = dto.vaildate();
-		if (!SysCode.SUCCESS.equals(recode)) {
-			rdto.setRspCd(recode);
-			rdto.setRspInf("验证失败");
-			return rdto;
-		}
 		InterFaceInvoker invoker = (InterFaceInvoker) SpringContextHolder.getBean(InterFaceInvoker.class);
 		invoker.setIfFollowedId(dto.getIfFollowedId());
 		List<Map<String,Object>> list=interFaceInvokerService.getInvokerList(invoker);
