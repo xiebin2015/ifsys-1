@@ -60,6 +60,20 @@
 		where IF_ID=#{ifId}
 		 ]]>
 	</select>
+	
+	<!-- 根据ID获取所有返回码 -->
+	<select id="getReturnCodeById" parameterType="int" resultMap="returnResultMap">
+	<![CDATA[  
+		select
+		ID,
+		IF_ID,
+		RSP_CODE,
+		RSP_CODE_DESC
+		from T_IF_RETRUN_CODE
+		where ID=#{id}
+		 ]]>
+	</select>
+	
 
 </mapper>
  
