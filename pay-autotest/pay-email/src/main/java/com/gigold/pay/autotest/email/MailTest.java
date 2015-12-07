@@ -48,7 +48,8 @@ public class MailTest {
 		model.put("sys", "独孤九剑");  
 		model.put("pro", "产品1");  
 		model.put("interFace", "登录接口");  
-		mailSender.sendWithTemplate(model);  
+		mailSender.sendWithTemplateForHTML(model);  
+		//mailSender.sendHtml();
 		System.out.println("邮件发送成功！");  
 
 	}

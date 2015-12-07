@@ -9,8 +9,11 @@ package com.gigold.pay.autotest.threadpool;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.bo.InterFaceInfo;
+import com.gigold.pay.autotest.service.IfSysAutoTestService;
 import com.gigold.pay.autotest.service.IfSysMockService;
 
 /**
@@ -24,7 +27,8 @@ import com.gigold.pay.autotest.service.IfSysMockService;
  */
 public class CheckThread implements Runnable {
 	IfSysMockService ifSysMockService;
-
+    @Autowired
+    IfSysAutoTestService ifSysAutoTestService;
 	// 存放接口列表
 	private List<InterFaceInfo> ifsyslist;
 
@@ -45,10 +49,7 @@ public class CheckThread implements Runnable {
 			int ifId = interFaceInfo.getId();
 			List<IfSysMock> mockList = ifSysMockService.getMockInfoByIfId(ifId);
 			interFaceInfo.setMockList(mockList);
-			//fun(interFaceInfo);
-			// 调用 httpclient代码访问接口
-			
-
+			ifSysAutoTestService.autoTest(interFaceInfo);
 		}
 	}
 
