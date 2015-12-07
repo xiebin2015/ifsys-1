@@ -15,6 +15,7 @@ import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.service.IfSysAutoTestService;
 import com.gigold.pay.autotest.service.IfSysMockService;
+import com.gigold.pay.framework.base.SpringContextHolder;
 
 /**
  * Title: CheckThread<br/>
@@ -27,7 +28,6 @@ import com.gigold.pay.autotest.service.IfSysMockService;
  */
 public class CheckThread implements Runnable {
 	IfSysMockService ifSysMockService;
-    @Autowired
     IfSysAutoTestService ifSysAutoTestService;
 	// 存放接口列表
 	private List<InterFaceInfo> ifsyslist;
@@ -35,6 +35,7 @@ public class CheckThread implements Runnable {
 	public CheckThread(IfSysMockService ifSysMockService, List<InterFaceInfo> ifsyslist) {
 		this.ifsyslist = ifsyslist;
 		this.ifSysMockService = ifSysMockService;
+		ifSysAutoTestService=(IfSysAutoTestService)SpringContextHolder.getBean(IfSysAutoTestService.class);
 	}
 
 	@Override

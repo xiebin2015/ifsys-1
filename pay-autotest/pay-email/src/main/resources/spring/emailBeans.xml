@@ -54,7 +54,7 @@
             </props>     
         </property>     
    </bean>  
-    <bean id="mailsenderService" class="com.gigold.pay.autotest.email.MailSenderService">    
+    <bean id="mailSenderService" class="com.gigold.pay.autotest.email.MailSenderService">    
           <property name="mailSender" ref="mailSender" />  
           <property name="simpleMailMessage" ref="simpleMailMessage" />  
           <property name="velocityEngine" ref="velocityEngine" />  

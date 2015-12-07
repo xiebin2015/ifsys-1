@@ -35,7 +35,8 @@ public class MailTest {
 	 */
 	public static void main(String[] args) {
 		
-		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/emailBeansTest.xml");
+		//ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/emailBeansTest.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
 		MailSenderService mailSender = (MailSenderService) context.getBean("mailsenderService");
         List<String> addressTo=new ArrayList<String>();
         //addressTo.add("xiebin163126@163.com");
