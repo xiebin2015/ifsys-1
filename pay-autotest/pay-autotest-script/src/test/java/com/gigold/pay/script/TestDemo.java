@@ -47,7 +47,7 @@ public class TestDemo {
 	@Test
 	public void testAutoTest() {
 		//ifsysCheckThreadPool.execure();
-	}
+	} 
 	
 	@Test
 	public void testSendMail() {
