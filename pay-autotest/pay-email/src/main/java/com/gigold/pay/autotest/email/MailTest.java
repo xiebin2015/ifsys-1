@@ -35,7 +35,8 @@ public class MailTest {
 	 */
 	public static void main(String[] args) {
 		
-		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/emailBeansTest.xml");
+		//ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/emailBeansTest.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
 		MailSenderService mailSender = (MailSenderService) context.getBean("mailsenderService");
         List<String> addressTo=new ArrayList<String>();
         //addressTo.add("xiebin163126@163.com");
@@ -48,7 +49,8 @@ public class MailTest {
 		model.put("sys", "独孤九剑");  
 		model.put("pro", "产品1");  
 		model.put("interFace", "登录接口");  
-		mailSender.sendWithTemplate(model);  
+		mailSender.sendWithTemplateForHTML(model);  
+		//mailSender.sendHtml();
 		System.out.println("邮件发送成功！");  
 
 	}

@@ -113,7 +113,41 @@ public class MailSenderService extends Domain{
 		}
 		mailSender.send(mimeMessage);
 	}
-
+    /**
+     * 
+     * Title: sendWithTemplateForHTML<br/>
+     * Description: 利用模版发送HTML邮件<br/>
+     * @author xiebin
+     * @date 2015年12月5日下午3:56:23
+     *
+     * @param model
+     */
+	public void sendWithTemplateForHTML(Map<String,Object> model){
+		mailSender = this.getMailSender();
+		MimeMessage mimeMessage = mailSender.createMimeMessage();
+		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+		try {
+			messageHelper.setTo(getAddressTo());
+			messageHelper.setFrom(simpleMailMessage.getFrom());
+			messageHelper.setSubject(this.getSubject());
+			String result = null;
+			try {
+				result = VelocityEngineUtils.mergeTemplateIntoString(this.getVelocityEngine(), this.getTemplateName(),
+						"UTF-8", model);
+			} catch (Exception e) {
+				debug("调用模版失败");
+			}
+			messageHelper.setText(result, true);
+		} catch (MessagingException e) {
+			
+			e.printStackTrace();
+		}
+		mailSender.send(mimeMessage);
+	}
+	
+	
+	
+	
 	/**
 	 * 
 	 * Title: sendHtmlWithImage<br/>
