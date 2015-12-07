@@ -37,9 +37,9 @@ public class ReturnCodeController extends BaseController {
 	private RetrunCodeService retrunCodeService;
 
 	@RequestMapping("/addrspcd.do")
-	public @ResponseBody ResponseDto addRetrunCode(@RequestBody ReturnCodeReqDto dto) {
+	public @ResponseBody RetrunCodeAddRspDto addRetrunCode(@RequestBody ReturnCodeReqDto dto) {
 		debug("调用addRetrunCode");
-		ResponseDto rdto = new ResponseDto();
+		RetrunCodeAddRspDto rdto = new RetrunCodeAddRspDto();
 		String rcode = dto.validation();
 		if (!"00000".equals(rcode)) {
 			rdto.setRspCd(rcode);
@@ -54,8 +54,9 @@ public class ReturnCodeController extends BaseController {
 			e.printStackTrace();
 			return rdto;
 		}
-		boolean flag = retrunCodeService.addRetrunCode(returnCode);
-		if (flag) {
+		returnCode = retrunCodeService.addRetrunCode(returnCode);
+		if (returnCode != null) {
+			rdto.setId(returnCode.getId());
 			rdto.setRspCd(SysCode.SUCCESS);
 		} else {
 			rdto.setRspCd(CodeItem.IF_FAILURE);
@@ -67,8 +68,8 @@ public class ReturnCodeController extends BaseController {
 	public @ResponseBody ResponseDto deleteReturnCodeByIfId(@RequestBody ReturnCodeReqDto dto) {
 		debug("调用deleteReturnCodeByIfId");
 		ResponseDto rdto = new ResponseDto();
-		int ifId=dto.getIfId();
-		if(ifId==0){
+		int ifId = dto.getIfId();
+		if (ifId == 0) {
 			rdto.setRspCd(CodeItem.IF_ID_FAILURE);
 			return rdto;
 		}
@@ -80,12 +81,13 @@ public class ReturnCodeController extends BaseController {
 		}
 		return rdto;
 	}
+
 	@RequestMapping("/delrspcdbyid.do")
 	public @ResponseBody ResponseDto deleteReturnCodeById(@RequestBody ReturnCodeReqDto dto) {
 		debug("调用deleteReturnCodeById");
 		ResponseDto rdto = new ResponseDto();
-		int id=dto.getId();
-		if(id==0){
+		int id = dto.getId();
+		if (id == 0) {
 			rdto.setRspCd(CodeItem.ID_FAILURE);
 			return rdto;
 		}
@@ -97,7 +99,7 @@ public class ReturnCodeController extends BaseController {
 		}
 		return rdto;
 	}
-	
+
 	@RequestMapping("/updaterspcdbyid.do")
 	public @ResponseBody ResponseDto updateReturnCodeById(@RequestBody ReturnCodeReqDto dto) {
 		debug("调用updateReturnCodeById");
@@ -124,17 +126,18 @@ public class ReturnCodeController extends BaseController {
 		}
 		return rdto;
 	}
+
 	@RequestMapping("/getrspcdbyifid.do")
 	public @ResponseBody ResponseDto getReturnCodeByIfId(@RequestBody ReturnCodeReqDto dto) {
 		debug("调用getReturnCodeByIfId");
 		RetrunCodeRspDto rdto = new RetrunCodeRspDto();
-		int ifId=dto.getIfId();
-		if(ifId==0){
+		int ifId = dto.getIfId();
+		if (ifId == 0) {
 			rdto.setRspCd(CodeItem.IF_ID_FAILURE);
 			return rdto;
 		}
-		List<ReturnCode> list= retrunCodeService.getReturnCodeByIfId(ifId);
-		if (list!=null) {
+		List<ReturnCode> list = retrunCodeService.getReturnCodeByIfId(ifId);
+		if (list != null) {
 			rdto.setList(list);
 			rdto.setRspCd(SysCode.SUCCESS);
 		} else {

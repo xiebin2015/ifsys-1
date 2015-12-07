@@ -75,6 +75,17 @@ public interface ReturnCodeDao {
 	 * @return
 	 */
 	public List<ReturnCode> getReturnCodeByIfId(int ifId);
+	/**
+	 * 
+	 * Title: getReturnCodeById<br/>
+	 * Description: 根据ID获取返回码信息<br/>
+	 * @author xiebin
+	 * @date 2015年12月7日下午1:33:42
+	 *
+	 * @param id
+	 * @return
+	 */
+	public ReturnCode getReturnCodeById(int id);
 	
 
 }
