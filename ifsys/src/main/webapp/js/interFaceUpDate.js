@@ -33,6 +33,40 @@ $(function(){
 
 	});
 	
+	//添加返回码
+	$(document).on("click",".addRspBtn",function(){
+		  var recordForm = $(this).parent().parent();
+		  console.log(recordForm);
+		  var cloneForm = $(recordForm).clone();
+		//在当前form后面新增一个form
+	        $(recordForm).after(cloneForm);
+	});
+	
+	
+	//保存返回码
+	$(document).on("click",".saveRspBtn",function(){
+		 var recordForm = $(this).parent().parent();
+		var sendData = {};
+		sendData = $(recordForm).serializeJson();
+		sendData.ifId=$("#ifId").val();
+		
+		gigold.pay.interFace.ajaxHandler({
+                "url":"addrspcd.do",
+                "data":JSON.stringify(sendData),
+                "onSuccess":function(data){
+                	console.log(data);
+                	 if (data.rspCd == "00000") {
+                          alert("保存成功");
+                      }else{
+                          alert(data.rspInf);
+                      }
+                }
+            });
+		
+	});
+	
+	
+	
 	
 	//添加同级字段
 	$(document).on("click",".addPropBtn",function(){

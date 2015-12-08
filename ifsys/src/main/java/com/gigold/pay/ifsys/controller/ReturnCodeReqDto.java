@@ -81,7 +81,7 @@ public class ReturnCodeReqDto extends RequestDto {
 			return CodeItem.IF_ID_FAILURE;
 		}
 		if (StringUtil.isBlank(this.rspCode)) {
-			return CodeItem.RSP_CODE_DESC_FAILURE;
+			return CodeItem.RSP_CODE_FAILURE;
 		}
 		if (StringUtil.isBlank(this.rspCodeDesc)) {
 			return CodeItem.RSP_CODE_DESC_FAILURE;
