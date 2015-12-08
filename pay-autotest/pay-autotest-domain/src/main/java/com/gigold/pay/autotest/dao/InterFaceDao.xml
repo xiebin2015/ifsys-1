@@ -41,20 +41,29 @@
         ]]>
 	</select>
 <!-- 分页获取接口基本信息 列表页 -->
-	<select id="getAllIfSys" resultMap="ifResultMap">
-		<![CDATA[  
-		select ID,
-		ii.IF_NAME,
-		ii.IF_URL,
-		(select sys.IF_SYS_NAME from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
-		SYS_NAME,
-		(select pro.IF_PRO_NAME from T_IF_PRO pro where pro.id=ii.IF_PRO_ID and
-		pro.IF_SYS_ID=ii.IF_SYS_ID) PRO_NAME,
-		(select sys.ADDRESS_URL from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
-		ADDRESS_URL
-		from T_IF_INTERFACE ii
-		where ii.ISVALID='Y'
-		  ]]>
+	<select id="getAllIfSys" resultMap="ifResultMap" parameterType="com.gigold.pay.autotest.bo.InterFaceInfo">
+		select
+		inteFace.ID,
+		IF_NAME,
+		IF_SYS_NAME SYS_NAME,
+		IF_PRO_NAME PRO_NAME,
+		USERNAME
+		from T_IF_INTERFACE inteFace
+		left join T_IF_SYSTEM sys on inteFace.IF_SYS_ID=sys.ID
+		left join T_IF_PRO PRO on inteFace.IF_PRO_ID=PRO.ID
+		left join T_IF_USER user on inteFace.IF_CREATEBY=user.ID
+		where (inteFace.IF_NAME like '%${ifName}%'
+		or inteFace.IF_DESC like '%${ifName}%'
+		or IF_SYS_NAME like '%${ifName}%'
+		or IF_PRO_NAME like '%${ifName}%'
+		or USERNAME like '%${ifName}%' )
+		and inteFace.ISVALID='Y'
+		<if test="ifSysId != null and ifSysId!=0">
+			and inteFace.IF_SYS_ID = #{ifSysId}
+		</if>
+		<if test="ifProId != null and ifProId!=0">
+            and inteFace.IF_PRO_ID = #{ifProId}
+        </if>
 	</select>
 </mapper>
  
