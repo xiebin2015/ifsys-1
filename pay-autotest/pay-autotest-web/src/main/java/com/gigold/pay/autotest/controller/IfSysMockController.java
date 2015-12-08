@@ -22,11 +22,13 @@ import com.gigold.pay.autotest.service.IfSysMockService;
 import com.gigold.pay.autotest.service.InterFaceFieldService;
 import com.gigold.pay.autotest.service.InterFaceService;
 import com.gigold.pay.framework.base.SpringContextHolder;
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.core.exception.PendingException;
 import com.gigold.pay.framework.util.common.StringUtil;
 import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.framework.web.ResponseDto;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -220,10 +222,21 @@ public class IfSysMockController extends BaseController {
 	 */
 	@RequestMapping("/getallifsys.do")
 	public @ResponseBody IfSysMockRspDto getAllIfSys(@RequestBody IfSysMockPageDto dto) {
+		debug("getAllIfSys方法");
 		IfSysMockRspDto reDto = new IfSysMockRspDto();
-		int pageNum = dto.getPageNum();
-		PageInfo<InterFaceInfo> pageInfo = interFaceService.getAllIfSys(pageNum);
-		if (pageInfo != null) {
+		int curPageNum = dto.getPageNum();
+		PageInfo<InterFaceInfo> pageInfo = null;
+		PageHelper.startPage(curPageNum, Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize")));
+		InterFaceInfo interFaceInfo=null;
+		try {
+			interFaceInfo = createBO(dto, InterFaceInfo.class);
+		} catch (PendingException e) {
+			debug("转换bo异常");
+			e.printStackTrace();
+		}
+		List<InterFaceInfo> list = interFaceService.getAllIfSys(interFaceInfo);
+		if (list != null) {
+			pageInfo=new PageInfo<InterFaceInfo>(list);
 			reDto.setPageInfo(pageInfo);
 			reDto.setRspCd(SysCode.SUCCESS);
 		} else {

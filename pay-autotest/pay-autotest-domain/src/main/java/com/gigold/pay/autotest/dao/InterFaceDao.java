@@ -23,5 +23,5 @@ public interface InterFaceDao {
 	 *
 	 * @return
 	 */
-	public List<InterFaceInfo> getAllIfSys();
+	public List<InterFaceInfo> getAllIfSys(InterFaceInfo interFaceInfo);
 }

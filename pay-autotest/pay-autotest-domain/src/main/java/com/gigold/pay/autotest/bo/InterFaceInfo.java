@@ -32,10 +32,39 @@ public class InterFaceInfo {
 	private String reqJsonStr;
 	private String rspJsonStr;
 	
+	private String ifSysId;
+	private String ifProId;
 	
 	
 	
-	
+	/**
+	 * @return the ifSysId
+	 */
+	public String getIfSysId() {
+		return ifSysId;
+	}
+
+	/**
+	 * @param ifSysId the ifSysId to set
+	 */
+	public void setIfSysId(String ifSysId) {
+		this.ifSysId = ifSysId;
+	}
+
+	/**
+	 * @return the ifProId
+	 */
+	public String getIfProId() {
+		return ifProId;
+	}
+
+	/**
+	 * @param ifProId the ifProId to set
+	 */
+	public void setIfProId(String ifProId) {
+		this.ifProId = ifProId;
+	}
+
 	/**
 	 * @return the id
 	 */

@@ -21,6 +21,54 @@ public class IfSysMockPageDto extends RequestDto {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 1L;
 	private int pageNum;
+	private String ifName;
+	private int ifSysId;
+	private int ifProId;
+
+	
+	
+	
+	/**
+	 * @return the ifName
+	 */
+	public String getIfName() {
+		return ifName;
+	}
+
+	/**
+	 * @param ifName the ifName to set
+	 */
+	public void setIfName(String ifName) {
+		this.ifName = ifName;
+	}
+
+	/**
+	 * @return the ifSysId
+	 */
+	public int getIfSysId() {
+		return ifSysId;
+	}
+
+	/**
+	 * @param ifSysId the ifSysId to set
+	 */
+	public void setIfSysId(int ifSysId) {
+		this.ifSysId = ifSysId;
+	}
+
+	/**
+	 * @return the ifProId
+	 */
+	public int getIfProId() {
+		return ifProId;
+	}
+
+	/**
+	 * @param ifProId the ifProId to set
+	 */
+	public void setIfProId(int ifProId) {
+		this.ifProId = ifProId;
+	}
 
 	/**
 	 * @return the pageNum
