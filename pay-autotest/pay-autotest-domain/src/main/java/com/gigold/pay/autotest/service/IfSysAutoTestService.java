@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.httpclient.HttpClientService;
+import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.core.Domain;
 import com.gigold.pay.framework.util.common.StringUtil;
 
@@ -32,35 +33,50 @@ public class IfSysAutoTestService extends Domain{
 	private static final long serialVersionUID = 1L;
 	@Autowired
     HttpClientService httpClientService;
-	public void autoTest(InterFaceInfo interFaceInfo){
-
-		String _host = interFaceInfo.getAddressUrl();
-		if(StringUtil.isNotBlank(_host)) {
-
-			String url = _host + "/" + interFaceInfo.getIfUrl();
-
-			for (IfSysMock mock : interFaceInfo.getMockList()) {
-				//期望请求报文
-				String postData = mock.getRequestJson();
-
-				String responseJson = httpClientService.httpPost(url, postData);
-				if (StringUtil.isBlank(responseJson)) {
-					debug("接口返回报文为空");
-					continue;
-					// 发邮件
-					//接口测试数据 状态回写 异常
-				}
-				JSONObject jsonObject = JSONObject.fromObject(responseJson);
-				String relRspCode = String.valueOf(jsonObject.get("rspCd"));
-				//进行比对 并发邮件
-				//接口测试数据 状态回写 异常
-
-
-				//
-				//接口测试数据 状态回写 成功
-			}
+	@Autowired
+	IfSysMockService ifSysMockService;
+	
+	
+	public void writeBackContent(IfSysMock mock,String responseJson){
+		JSONObject jsonObject = null;
+		IfSysMock ifsysmock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
+		ifsysmock.setId(mock.getId());
+		ifsysmock.setRealResponseJson(responseJson);
+		try{
+			 jsonObject = JSONObject.fromObject(responseJson);
+		}catch(Exception e){
+			
 		}
+		String relRspCode=String.valueOf(jsonObject.get("rspCd"));
+		ifsysmock.setRealRspCode(relRspCode);
+		
+		// 1-正常  2-失败  3-请求或响应存在其他异常
+		if(relRspCode == mock.getRspCode()){
+			//实际响应返回码与预期的一致的情况
+			ifsysmock.setTestResult("1");
+			
+		}else 
+			
+			if(StringUtil.isBlank(responseJson)){
+			//实际响应报文为空的情况
+			ifsysmock.setTestResult("0");
+			
+		}else {
+			ifsysmock.setTestResult("-1");
+		}
+		ifSysMockService.writeBackRealRsp(ifsysmock);
 	}
 	
+	public void autoTest(InterFaceInfo interFaceInfo){
+		String url=interFaceInfo.getAddressUrl()+"/"+interFaceInfo.getIfUrl();
+		for(IfSysMock mock :interFaceInfo.getMockList()){
+			// 期望请求报文
+			String postData=mock.getRequestJson();
+			// 实际请求后，返回的报文（返回码和返回实体）
+			String responseJson = httpClientService.httpPost(url, postData);
+			// 实际结果回写
+			writeBackContent(mock,responseJson);			
+		}
+	}
 	
 }
