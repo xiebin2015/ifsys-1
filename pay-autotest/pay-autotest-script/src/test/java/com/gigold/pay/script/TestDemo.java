@@ -60,26 +60,28 @@ public class TestDemo {
 	 */
 	public void testSendMail() {
 		//List<IfSysMock> resulteMocks = ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
-
 		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
 		for(int i=0;i<resulteMocks.size();i++){
 			System.out.println(resulteMocks.get(i).getIfName());
 		}
-//		 List<String> addressTo = new ArrayList<String>();
-//		 // addressTo.add("xiebin163126@163.com");
-//		 addressTo.add("xiebin@gigold.com");
-//		 // 设置收件人地址
-//		 mailSenderService.setTo(addressTo);
-//		 // 设置标题
-//		 mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
-//		 // 设置模版名
-//		 mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
-//		 Map model = new HashMap();
-//		 model.put("username", "zhansan");
-//		 model.put("sys", "独孤九剑");
-//		 model.put("pro", "产品1");
-//		 model.put("interFace", "登录接口");
-//		 mailSenderService.sendWithTemplateForHTML(model);
-//		 System.out.println("邮件发送成功！");
+
+		List<String> addressTo = new ArrayList<String>();
+		// addressTo.add("xiebin163126@163.com");
+		addressTo.add("chenkuan@gigold.com");
+		// 设置收件人地址
+		mailSenderService.setTo(addressTo);
+		// 设置标题
+		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+		// 设置模版名
+		mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
+
+		Map model = new HashMap();
+		model.put("resulteMocks", resulteMocks);
+		model.put("username", "陈宽");
+		//		 model.put("sys", "独孤九剑");
+		//		 model.put("pro", "产品1");
+		//		 model.put("interFace", "登录接口");
+		mailSenderService.sendWithTemplateForHTML(model);
+		System.out.println("邮件发送成功！");
 	}
 }
