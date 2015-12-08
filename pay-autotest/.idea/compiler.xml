@@ -17,6 +17,49 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
+      <profile default="false" name="Annotation profile for pay-email" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="pay-email" />
+      </profile>
+      <profile default="false" name="Annotation profile for pay-autotest-web" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="pay-autotest-web" />
+      </profile>
+      <profile default="false" name="Annotation profile for pay-autotest-domain" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="pay-autotest-domain" />
+      </profile>
+      <profile default="false" name="Annotation profile for pay-autotest-threadpool" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="pay-autotest-threadpool" />
+      </profile>
+      <profile default="false" name="Annotation profile for pay-autotest-script" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="pay-autotest-script" />
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="pay-autotest" target="1.7" />
+      <module name="pay-autotest-domain" target="1.7" />
+      <module name="pay-autotest-script" target="1.7" />
+      <module name="pay-autotest-threadpool" target="1.7" />
+      <module name="pay-autotest-web" target="1.7" />
+      <module name="pay-email" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
