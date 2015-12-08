@@ -65,6 +65,23 @@
             and inteFace.IF_PRO_ID = #{ifProId}
         </if>
 	</select>
+	
+	<!-- 分页获取接口基本信息 测试脚本 -->
+	<select id="getAllIfSysForTest" resultMap="ifResultMap" parameterType="com.gigold.pay.autotest.bo.InterFaceInfo">
+		select ID,
+		ii.IF_NAME,
+		ii.IF_URL,
+		(select sys.IF_SYS_NAME from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
+		SYS_NAME,
+		(select pro.IF_PRO_NAME from T_IF_PRO pro where pro.id=ii.IF_PRO_ID and
+		pro.IF_SYS_ID=ii.IF_SYS_ID) PRO_NAME,
+		(select sys.ADDRESS_URL from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
+		ADDRESS_URL
+		from T_IF_INTERFACE ii
+		where ii.ISVALID='Y'
+	</select>
+	
+	
 </mapper>
  
  

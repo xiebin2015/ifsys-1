@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.dao.InterFaceDao;
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service
 public class InterFaceService {
@@ -81,15 +84,20 @@ public class InterFaceService {
 	 *
 	 * @return
 	 */
-	public List<InterFaceInfo> getAllIfSys(int curPageNum) {
+	public PageInfo<InterFaceInfo> getAllIfSys(int curPageNum) {
 		List<InterFaceInfo> list = null;
+		PageInfo<InterFaceInfo> pageInfo = null;
+		PageHelper.startPage(curPageNum, Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize")));
 		try {
-			list = interFaceDao.getAllIfSys(interFaceInfo);
+			list = interFaceDao.getAllIfSysForTest();
 		} catch (Exception e) {
 			e.printStackTrace();
 			list = null;
 		}
-		return list;
+		if(list!=null){
+			pageInfo=new PageInfo<InterFaceInfo>(list);
+		}
+		return pageInfo;
 	}
 	
 }
