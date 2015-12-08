@@ -63,7 +63,7 @@ public class TestDemo {
 
 		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
 		for(int i=0;i<resulteMocks.size();i++){
-			System.out.println(resulteMocks.get(i));
+			System.out.println(resulteMocks.get(i).getIfName());
 		}
 //		 List<String> addressTo = new ArrayList<String>();
 //		 // addressTo.add("xiebin163126@163.com");
