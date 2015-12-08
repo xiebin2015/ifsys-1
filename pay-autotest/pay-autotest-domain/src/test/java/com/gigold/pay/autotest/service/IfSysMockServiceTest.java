@@ -124,5 +124,12 @@ public class IfSysMockServiceTest {
 		boolean flag1 = fSysMockService.deleteIfSysMockByIfId(1);
 		Assert.assertTrue(flag1);
 	}
+
+	/* @陈宽 2015-12-08*/
+	@Test
+	public void testFilterMocksByStatus(){
+		// 待补充
+		Assert.assertTrue(false);
+	}
 	
 }

@@ -18,7 +18,7 @@ import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.service.IfSysMockService;
 import com.gigold.pay.autotest.service.InterFaceService;
 import com.github.pagehelper.PageInfo;
-
+import com.gigold.pay.autotest.resulte.*;
 /**
  * Title: SimpleThreadPool<br/>
  * Description: <br/>
@@ -38,7 +38,9 @@ public class IfsysCheckThreadPool {
 	private static final int CPUCORECOUNT = Runtime.getRuntime().availableProcessors();
 	private static final ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT + 1);
 
-	public void execure() {
+	public TestResulteData execure() {
+		// 测试数据
+		TestResulteData testResulteData = new TestResulteData();
 		// 当前页
 		int curPageNum = 1;
 		// 总页数
@@ -56,6 +58,7 @@ public class IfsysCheckThreadPool {
 		while (!executor.isTerminated()) { //
 		}
 
+		return testResulteData;
 	}
 
 }
