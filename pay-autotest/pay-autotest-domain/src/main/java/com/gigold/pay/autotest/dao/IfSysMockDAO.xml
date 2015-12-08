@@ -11,6 +11,12 @@
 		<result property="realRspCode" column="REAL_RSP_CODE" />
 		<result property="realResponseJson" column="REAL_RESPONSE_JSON" />
 		<result property="testResult" column="TEST_RESULT" />
+		<!-- 额外的接口信息数据 @chenkuan 2015.12.08 -->
+		<result property="ifName" column="IF_NAME" />
+		<result property="ifURL" column="IF_URL" />
+		<result property="ifPROTOCOL" column="IF_PROTOCOL" />
+		<result property="ifDESC" column="IF_DESC" />
+
 	</resultMap>
 
 	<insert id="addIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock"

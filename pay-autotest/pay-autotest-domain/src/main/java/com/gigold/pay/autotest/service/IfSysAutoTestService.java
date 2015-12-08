@@ -50,14 +50,12 @@ public class IfSysAutoTestService extends Domain{
 		String relRspCode=String.valueOf(jsonObject.get("rspCd"));
 		ifsysmock.setRealRspCode(relRspCode);
 		
-		// 1-正常  2-失败  3-请求或响应存在其他异常
+		// 1-正常  0-失败  -1-请求或响应存在其他异常
 		if(relRspCode == mock.getRspCode()){
 			//实际响应返回码与预期的一致的情况
 			ifsysmock.setTestResult("1");
 			
-		}else 
-			
-			if(StringUtil.isBlank(responseJson)){
+		}else if(StringUtil.isBlank(responseJson)){
 			//实际响应报文为空的情况
 			ifsysmock.setTestResult("0");
 			
