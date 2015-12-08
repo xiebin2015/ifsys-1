@@ -1,4 +1,11 @@
 
+<<<<<<< HEAD
+*.xml
+
+pay-autotest/.idea/.name
+
+*.iml
+=======
 *.iml
 
 *.iml
@@ -22,5 +29,11 @@ pay-autotest/pay-autotest-script/pay-autotest-script.iml
 pay-autotest/pay-autotest-script/pay-autotest-script.iml
 
 pay-autotest/pay-autotest-script/pay-autotest-script.iml
+<<<<<<< HEAD
+>>>>>>> master
+
+pay-autotest/pay-autotest-script/pay-autotest-script.iml
+=======
+>>>>>>> master
 
 .idea/.name
