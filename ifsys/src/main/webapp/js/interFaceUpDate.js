@@ -83,6 +83,7 @@ $(function(){
 		var sendData = {};
 		sendData = $(recordForm).serializeJson();
 		sendData.ifId=$("#ifId").val();
+		console.log(sendData);
 		gigold.pay.interFace.ajaxHandler({
                 "url":"addrspcd.do",
                 "data":JSON.stringify(sendData),
