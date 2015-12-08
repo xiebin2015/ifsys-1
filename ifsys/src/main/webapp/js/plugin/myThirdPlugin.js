@@ -8,6 +8,11 @@
 			return serializeObj;
 		};
 		
+		//将表单清空
+		$.fn.clear = function() {
+			$(this).find("input").val("");
+		};
+		
 		//获取URL参数
 		 $.getUrlParam = function (name) {
              var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
