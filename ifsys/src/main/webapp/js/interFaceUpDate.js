@@ -33,11 +33,45 @@ $(function(){
 
 	});
 	
+	//加载接口返回码信息
+	var postData={"ifId":userId};
+	gigold.pay.interFace.ajaxHandler({
+		"url" : "getrspcdbyifid.do",
+		"data" : JSON.stringify(postData),
+		"onSuccess" : function(data) {
+			if (data.rspCd == "00000") {
+				var formObj=$("form[name=resForm]");
+				var size=data.list.length;
+				
+				$.each(data.list,function(index,row){
+					$(formObj).find("input[name=id]").val(row.id);
+					$(formObj).find("input[name=rspCode]").val(row.rspCode);
+					$(formObj).find("input[name=rspCodeDesc]").val(row.rspCodeDesc);
+					if(index<size-1){
+						var colneFrom=formObj.clone();
+						$(formObj).after(colneFrom);
+						formObj=colneFrom;
+					}
+					
+				});
+			} else {
+				alert(data.rspInf);
+			}
+		}
+	});
+	
+	
+	
+	
+	
+	
 	//添加返回码
 	$(document).on("click",".addRspBtn",function(){
 		  var recordForm = $(this).parent().parent();
 		  console.log(recordForm);
 		  var cloneForm = $(recordForm).clone();
+		   //清空表单元素的值
+		  $(cloneForm).clear();
 		//在当前form后面新增一个form
 	        $(recordForm).after(cloneForm);
 	});
@@ -49,7 +83,7 @@ $(function(){
 		var sendData = {};
 		sendData = $(recordForm).serializeJson();
 		sendData.ifId=$("#ifId").val();
-		
+		console.log(sendData);
 		gigold.pay.interFace.ajaxHandler({
                 "url":"addrspcd.do",
                 "data":JSON.stringify(sendData),
@@ -64,7 +98,26 @@ $(function(){
             });
 		
 	});
-	
+	// 删除返回码
+	$(document).on("click",".delRspBtn",function() {
+				var recordForm = $(this).parent().parent();
+				var sendData = {};
+				sendData = $(recordForm).serializeJson();
+				sendData.ifId = $("#ifId").val();
+				console.log(sendData);
+				gigold.pay.interFace.ajaxHandler({
+							"url" : "delrspcdbyid.do",
+							"data" : JSON.stringify(sendData),
+							"onSuccess" : function(data) {
+								if (data.rspCd == "00000") {
+									$(recordForm).remove();
+								} else {
+									alert(data.rspInf);
+								}
+							}
+						});
+
+			});
 	
 	
 	

@@ -11,7 +11,9 @@ import com.gigold.pay.framework.web.RequestDto;
 import com.gigold.pay.ifsys.bo.InterFaceField;
 
 public class InterFaceFieldReqDto extends RequestDto {
-    private InterFaceField interFaceField;
+    /** serialVersionUID */
+	private static final long serialVersionUID = 1L;
+	private InterFaceField interFaceField;
 
     /**
      * @return the interFaceField

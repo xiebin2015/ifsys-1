@@ -38,8 +38,8 @@ $(function() {
 		var recordForm = $(this).parent().parent();
 		console.log(recordForm);
 		var cloneForm = $(recordForm).clone();
-		// 将id的值置空
-		$(recordForm).find("input[name=id]").val("");
+		// 将form表单元素的值置空
+		$(cloneForm).clear();
 		// 在当前form后面新增一个form
 		$(recordForm).after(cloneForm);
 	});
@@ -67,7 +67,7 @@ $(function() {
 		});
 
 	});
-	// 保存返回码
+	// 删除返回码
 	$(document).on("click",".delRspBtn",function() {
 				var recordForm = $(this).parent().parent();
 				var sendData = {};
