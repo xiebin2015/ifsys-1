@@ -204,13 +204,13 @@ $(function() {
 			textNum = 1;
 		}
 		if ("上一页" == textNum) {
-			textNum = parseInt(pageNum,10) - 1;
+			textNum = pageNum - 1;
 		}
 		if ("最末页" == textNum) {
 			textNum = pages;
 		}
 		if ("下一页" == textNum) {
-			textNum = parseInt(pageNum,10) + 1;
+			textNum = pageNum + 1;
 		}
 
 		var sendData = {
