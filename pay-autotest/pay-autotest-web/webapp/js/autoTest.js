@@ -54,12 +54,39 @@ $(function(){
 		  
 		});
 	
+    
+    
+  //搜索事件
+	$("#search").click(function() {
+		$('#srearchFrom').submit(function() {
+			 var postData={
+						"pageNum":1,
+						"ifName":$("#ifName").val(),
+						"ifSysId":$("#ifSysId").val(),
+						"ifProId":$("ifProId").val(),
+						"ifName":$("#ifName").val()
+					};
+			 getAjaxData(postData);
+
+			return false;
+		});
+	});
+    
 	//加载接口信息
 	getAjaxData({
 		"pageNum":1
 	});
 	
-	
+	 $('#ifProId').change(function(){ 
+		 var proId=	$(this).children('option:selected').val();
+		 getAjaxData({
+				"pageNum":1,
+				"ifName":$("#ifName").val(),
+				"ifSysId":$("#ifSysId").val(),
+				"ifProId":proId
+				
+			});
+	    });
 	
 	$(document).on("click", ".pageUl li", function() {
 		var textNum = $(this).text();
@@ -77,7 +104,11 @@ $(function(){
 		}
 
 		getAjaxData({
-			"pageNum":textNum
+			"pageNum":textNum,
+			"ifName":$("#ifName").val(),
+			"ifSysId":$("#ifSysId").val(),
+			"ifProId":$("ifProId").val(),
+			"ifName":$("#ifName").val()
 		});
 
 	});
