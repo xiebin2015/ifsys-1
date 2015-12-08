@@ -70,4 +70,26 @@ public class InterFaceService {
 		}
 		return list;
 	}
+	
+	/**
+	 * 
+	 * Title: getAllIfSys<br/>
+	 * Description: 获取所有的接口信息<br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月1日下午3:02:29
+	 *
+	 * @return
+	 */
+	public List<InterFaceInfo> getAllIfSys(int curPageNum) {
+		List<InterFaceInfo> list = null;
+		try {
+			list = interFaceDao.getAllIfSys(interFaceInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			list = null;
+		}
+		return list;
+	}
+	
 }

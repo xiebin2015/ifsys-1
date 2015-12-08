@@ -138,7 +138,7 @@ public class IfSysMockControllerTest {
 	public void testGetAllIfSys() {
 		PageInfo<InterFaceInfo> pageInfo = new PageInfo<InterFaceInfo>();
 		IfSysMockPageDto dto = new IfSysMockPageDto();
-		when(interFaceService.getAllIfSys(any(int.class))).thenReturn(null).thenReturn(pageInfo);
+	//	when(interFaceService.getAllIfSys(any(int.class))).thenReturn(null).thenReturn(pageInfo);
 		// /查询失败
 		ResponseDto rdto = ifSysMockController.getAllIfSys(dto);
 		Assert.assertEquals(CodeItem.FAILURE, rdto.getRspCd());
