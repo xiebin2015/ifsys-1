@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.gigold.pay:pay-framework-rpc:0.1.2-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/com/gigold/pay/pay-framework-rpc/0.1.2-SNAPSHOT/pay-framework-rpc-0.1.2-20151124.021116-27.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.m2/repository/com/gigold/pay/pay-framework-rpc/0.1.2-SNAPSHOT/pay-framework-rpc-0.1.2-20151124.021116-27-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.m2/repository/com/gigold/pay/pay-framework-rpc/0.1.2-SNAPSHOT/pay-framework-rpc-0.1.2-20151124.021116-27-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

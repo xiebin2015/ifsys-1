@@ -7,8 +7,10 @@
  */
 package com.gigold.pay.autotest.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -164,4 +166,63 @@ public class IfSysMockService {
 		return flag;
 	}
 
+	/**
+	 *
+	 * Title: filterMocksByStatus<br/>
+	 * Description: 根据条件筛选结果数据<br/>
+	 * @author chenkuan
+	 * @date 2015年12月8日上午11:56:31
+	 *
+	 * @param flag
+	 * @return
+	 */
+	public List<IfSysMock> filterMocksByStatus(String flag){
+		//筛选数据
+		List<IfSysMock> list =null;
+		try {
+			list = ifSysMockDao.filterMocksByStatus(flag);
+		} catch (Exception e) {
+			list=null;
+		}
+		return list;
+	}
+	/**
+	 *
+	 * Title: filterMocksByStatus<br/>
+	 * Description: 筛选出所有没有通过测试的结果<br/>
+	 * @author chenkuan
+	 * @date 2015年12月8日上午11:56:31
+	 *
+	 * @return list
+	 */
+	public List<IfSysMock> filterMocksByFailed(){
+		//筛选数据
+		List<IfSysMock> list =null;
+		try {
+			list = ifSysMockDao.filterMocksByFailed();
+		} catch (Exception e) {
+			list=null;
+		}
+		return list;
+	}
+
+	/**
+	 *
+	 * Title: filterMocksByStatus<br/>
+	 * Description: 筛选出所有测试过的结果<br/>
+	 * @author chenkuan
+	 * @date 2015年12月8日上午11:56:31
+	 *
+	 * @return list
+	 */
+	public List<IfSysMock> filterAllTestedMocks(){
+		//筛选数据
+		List<IfSysMock> list =null;
+		try {
+			list = ifSysMockDao.filterMocksByFailed();
+		} catch (Exception e) {
+			list=null;
+		}
+		return list;
+	}
 }

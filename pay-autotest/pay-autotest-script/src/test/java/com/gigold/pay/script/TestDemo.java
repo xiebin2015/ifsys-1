@@ -7,11 +7,9 @@
  */
 package com.gigold.pay.script;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.gigold.pay.autotest.bo.IfSysMock;
+import com.gigold.pay.autotest.service.IfSysMockService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -20,7 +18,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.gigold.pay.autotest.email.MailSenderService;
 import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
-
+import java.util.*;
 /**
  * Title: Test<br/>
  * Description: <br/>
@@ -34,20 +32,24 @@ public class TestDemo {
 
 	private IfsysCheckThreadPool ifsysCheckThreadPool;
 	private MailSenderService mailSenderService;
+	private IfSysMockService ifSysMockService;
+
 
 	@Before
 	public void setup() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
 		ifsysCheckThreadPool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
 		mailSenderService = (MailSenderService) SpringContextHolder.getBean(MailSenderService.class);
+		ifSysMockService = (IfSysMockService) SpringContextHolder.getBean(IfSysMockService.class);
 	}
 
 	@Test
 	public void testAutoTest() {
+//		ResulteData resulteData = ifsysCheckThreadPool.execure();
 		ifsysCheckThreadPool.execure();
 	}
 
-	@Test
+	@After
 	/**
 	 * 
 	 * Title: testSendMail<br/>
@@ -57,6 +59,12 @@ public class TestDemo {
 	 *
 	 */
 	public void testSendMail() {
+		//List<IfSysMock> resulteMocks = ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
+
+		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
+		for(int i=0;i<resulteMocks.size();i++){
+			System.out.println(resulteMocks.get(i));
+		}
 //		 List<String> addressTo = new ArrayList<String>();
 //		 // addressTo.add("xiebin163126@163.com");
 //		 addressTo.add("xiebin@gigold.com");
@@ -72,6 +80,6 @@ public class TestDemo {
 //		 model.put("pro", "产品1");
 //		 model.put("interFace", "登录接口");
 //		 mailSenderService.sendWithTemplateForHTML(model);
-		 System.out.println("邮件发送成功！");
+//		 System.out.println("邮件发送成功！");
 	}
 }

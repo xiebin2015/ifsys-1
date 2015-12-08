@@ -47,6 +47,42 @@ public interface IfSysMockDAO {
 	 * @return
 	 */
 	public List<IfSysMock> getMockInfoByIfId(int ifId);
+
+	/**
+	 *
+	 * Title: filterMocksByStatus<br/>
+	 * Description: 根据筛选条件获取所有测试结果<br/>
+	 *
+	 * @author chenkuan
+	 * @date 2015年12月1日下午2:59:28
+	 *
+	 * @return
+	 */
+	public List<IfSysMock> filterMocksByStatus(String flag);
+
+	/**
+	 *
+	 * Title: filterMocksByStatus<br/>
+	 * Description: 获取所有没有通过测试的结果<br/>
+	 *
+	 * @author chenkuan
+	 * @date 2015年12月1日下午2:59:28
+	 *
+	 * @return
+	 */
+	public List<IfSysMock> filterMocksByFailed();
+
+	/**
+	 *
+	 * Title: filterMocksByStatus<br/>
+	 * Description: 获取所有已经测试的结果<br/>
+	 *
+	 * @author chenkuan
+	 * @date 2015年12月1日下午2:59:28
+	 *
+	 * @return
+	 */
+	public List<IfSysMock> filterAllTestedMocks();
 	
 	/**
 	 * 
