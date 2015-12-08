@@ -1,6 +1,34 @@
 
+<<<<<<< HEAD
 *.xml
 
 pay-autotest/.idea/.name
 
 *.iml
+=======
+*.iml
+
+*.iml
+
+pay-autotest/.idea/.name
+
+pay-autotest/pay-autotest-script/pay-autotest-script.iml
+
+*.xml
+
+*.iml
+
+pay-autotest/pay-autotest-script/pay-autotest-script.iml
+
+pay-autotest/pay-autotest-script/pay-autotest-script.iml
+
+pay-autotest/pay-autotest-script/pay-autotest-script.iml
+
+pay-autotest/pay-autotest-script/pay-autotest-script.iml
+
+pay-autotest/pay-autotest-script/pay-autotest-script.iml
+
+pay-autotest/pay-autotest-script/pay-autotest-script.iml
+>>>>>>> master
+
+pay-autotest/pay-autotest-script/pay-autotest-script.iml
