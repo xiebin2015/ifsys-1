@@ -1,16 +1,12 @@
 package com.gigold.pay.autotest.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.dao.InterFaceDao;
-import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 @Service
 public class InterFaceService {
@@ -64,20 +60,14 @@ public class InterFaceService {
 	 *
 	 * @return
 	 */
-	public PageInfo<InterFaceInfo> getAllIfSys(int curPageNum) {
-		PageInfo<InterFaceInfo> pageInfo = null;
-		PageHelper.startPage(curPageNum, Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize")));
+	public List<InterFaceInfo> getAllIfSys(InterFaceInfo interFaceInfo) {
 		List<InterFaceInfo> list = null;
 		try {
-			list = interFaceDao.getAllIfSys();
-			if (list != null) {
-				pageInfo = new PageInfo<InterFaceInfo>(list);
-			}
-
+			list = interFaceDao.getAllIfSys(interFaceInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
-			pageInfo = null;
+			list = null;
 		}
-		return pageInfo;
+		return list;
 	}
 }
