@@ -24,4 +24,15 @@ public interface InterFaceDao {
 	 * @return
 	 */
 	public List<InterFaceInfo> getAllIfSys(InterFaceInfo interFaceInfo);
+	/**
+	 * 
+	 * Title: getAllIfSys<br/>
+	 * Description:获取所有的接口信息 <br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月1日下午2:59:07
+	 *
+	 * @return
+	 */
+	public List<InterFaceInfo> getAllIfSysForTest();
 }
