@@ -10,7 +10,9 @@ package com.gigold.pay.ifsys.controller;
 import com.gigold.pay.framework.web.ResponseDto;
 
 public class InterFaceFieldResJsonDto extends ResponseDto {
-    private String jsonStr;
+    /** serialVersionUID */
+	private static final long serialVersionUID = 1L;
+	private String jsonStr;
 
     /**
      * @return the jsonStr

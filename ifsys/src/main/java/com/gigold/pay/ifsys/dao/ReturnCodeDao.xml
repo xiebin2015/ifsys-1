@@ -58,6 +58,7 @@
 		RSP_CODE_DESC
 		from T_IF_RETRUN_CODE
 		where IF_ID=#{ifId}
+		and STATUS='Y'
 		 ]]>
 	</select>
 	
@@ -71,6 +72,7 @@
 		RSP_CODE_DESC
 		from T_IF_RETRUN_CODE
 		where ID=#{id}
+		and STATUS='Y'
 		 ]]>
 	</select>
 	
