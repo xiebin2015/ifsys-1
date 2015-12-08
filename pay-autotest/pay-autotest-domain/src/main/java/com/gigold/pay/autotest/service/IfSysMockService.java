@@ -225,4 +225,28 @@ public class IfSysMockService {
 		}
 		return list;
 	}
+	
+	/**
+	 * 
+	 * Title: writeBackRealRsp<br/>
+	 * Description: 根据实际响应报文，回写该数据成功后进行计数<br/>
+	 * @author chenhl
+	 * @date 2015年12月2日上午10:56:31
+	 *
+	 * @param ifsysmock
+	 * @return
+	 */
+    public boolean writeBackRealRsp(IfSysMock ifsysmock){
+    	boolean flag = false;
+    	try {
+    		int count=ifSysMockDao.writeBack(ifsysmock);
+    		if(count > 0){
+    			flag=true;
+    		}
+    	} catch (Exception e) {
+    		e.printStackTrace();
+			flag=false;
+		}
+		return flag;    	
+    }
 }

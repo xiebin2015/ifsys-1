@@ -117,4 +117,15 @@ public interface IfSysMockDAO {
 	 * @return
 	 */
 	public int deleteIfSysMockByIfId(int id);
+	/**
+	 * 
+	 * Title: writeBack<br/>
+	 * Description:  根据IfSysMock对象，回写预期数据信息<br/>
+	 * @author chenhl
+	 * @date 2015年12月2日上午10:51:43
+	 *
+	 * @param ifsysmock
+	 * @return
+	 */
+	public int writeBack(IfSysMock ifsysmock);
 }
