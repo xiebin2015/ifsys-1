@@ -33,28 +33,32 @@ public class IfSysAutoTestService extends Domain{
 	@Autowired
     HttpClientService httpClientService;
 	public void autoTest(InterFaceInfo interFaceInfo){
-		String url=interFaceInfo.getAddressUrl()+"/"+interFaceInfo.getIfUrl();
-		
-		for(IfSysMock mock :interFaceInfo.getMockList()){
-			//期望请求报文
-			String postData=mock.getRequestJson();
-			
-			String responseJson = httpClientService.httpPost(url, postData);
-			if(StringUtil.isBlank(responseJson)){
-				debug("接口返回报文为空");
-				continue;
-				// 发邮件
+
+		String _host = interFaceInfo.getAddressUrl();
+		if(StringUtil.isNotBlank(_host)) {
+
+			String url = _host + "/" + interFaceInfo.getIfUrl();
+
+			for (IfSysMock mock : interFaceInfo.getMockList()) {
+				//期望请求报文
+				String postData = mock.getRequestJson();
+
+				String responseJson = httpClientService.httpPost(url, postData);
+				if (StringUtil.isBlank(responseJson)) {
+					debug("接口返回报文为空");
+					continue;
+					// 发邮件
+					//接口测试数据 状态回写 异常
+				}
+				JSONObject jsonObject = JSONObject.fromObject(responseJson);
+				String relRspCode = String.valueOf(jsonObject.get("rspCd"));
+				//进行比对 并发邮件
 				//接口测试数据 状态回写 异常
+
+
+				//
+				//接口测试数据 状态回写 成功
 			}
-			JSONObject jsonObject = JSONObject.fromObject(responseJson);
-			String relRspCode=String.valueOf(jsonObject.get("rspCd"));
-			//进行比对 并发邮件
-			//接口测试数据 状态回写 异常
-			
-			
-			
-			//
-			//接口测试数据 状态回写 成功
 		}
 	}
 	
