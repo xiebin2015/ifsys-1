@@ -1,0 +1,128 @@
+body {
+	background-color: #f3f3f3;
+	font-family: "YaHei Consolas Hybrid";
+}
+
+
+.win4{
+	width:40% !important;
+}
+.countdown{
+	float: right;color:#aaa;
+}
+table{
+	margin-top:10px;
+}
+
+ul {
+	list-style: none;
+}
+
+fieldset {
+	margin: 0;
+}
+
+.rightBtn {
+	float: right !important;
+	margin-left: 10px;
+}
+
+.win60 {
+	width: 60% !important;
+}
+
+.exitBtn {
+	cursor: pointer;
+}
+
+.logPanel {
+	width: 330px;
+	margin: 100px auto 0;
+}
+
+.navHint {
+	text-align: center;
+	margin: 0;
+	width: 220px;
+	height: 39px;
+	margin-left: 38.5px;
+	position: absolute;
+	display: none;
+}
+
+.noteBox {
+	position: relative;
+}
+
+.noteSty {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.operTab {
+	margin-top: 30px;
+}
+
+
+.am-selected {
+	width: 100px;
+}
+.operFun{
+	padding-left:20px;
+}
+.operFun input, textarea,section {
+	border: 1px solid #ccc;
+	height: 100%;
+	background: none;
+	padding: 10px;
+}
+
+.operFun input:focus, textarea:focus {
+	background: #fff;
+	outline: none;
+}
+
+.operFun{
+	width:1200px;
+}
+.serchBox{
+	position: relative;
+	display:inline-block;
+}
+.serchBox i{
+	color: #ccc;
+	position: absolute;
+	top:5px;
+	right:9px;
+}
+.serchBox i:hover{
+	transform: scale(1.3);
+	color: #009CDA;
+}
+.scollBox{
+	overflow: scroll;
+	border-radius:5px;
+}
+#doc-modal{
+	border-radius:5px;
+}
+.rspBox{
+	border:1px solid #aaa;
+	padding:30px;
+	margin:20px;
+}
+.rspBox span{
+	color: #009CDA;
+	font-size:17px;
+}
+.rspBox p{
+	text-align: left !important;
+}
+.rspBox code,pre:focus{
+	outline:none;
+}
+.bianjiBtn{
+	text-align: right;
+}
+
