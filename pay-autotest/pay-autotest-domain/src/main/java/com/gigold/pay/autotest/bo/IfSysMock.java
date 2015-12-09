@@ -30,7 +30,66 @@ public class IfSysMock {
 	private String testResult;
 	private String realRspCode;
 	private String realResponseJson;
-	
+
+	//所属接口信息
+	private String ifName;
+	private String ifURL;
+	private String ifPROTOCOL;
+	private String ifDESC;
+
+	/**
+	 *接口信息的setter@chenkuan
+	 */
+	public void setIfName(String ifName){
+		this.ifName=ifName;
+	}
+	/**
+	 *接口信息的setter@chenkuan
+	 */
+	public void setIfURL(String ifURL){
+		this.ifURL=ifURL;
+	}
+	/**
+	 *接口信息的setter@chenkuan
+	 */
+	public void setIfDESC(String ifDESC){
+		this.ifDESC=ifDESC;
+	}
+	/**
+	 *接口信息的setter@chenkuan
+	 */
+	public void setIfPROTOCOL(String ifPROTOCOL){
+		this.ifPROTOCOL=ifPROTOCOL;
+	}
+
+	/**
+	 *接口信息的getter@chenkuan
+	 */
+	public String getIfName(){
+		return ifName;
+	}
+
+	/**
+	 *接口信息的getter@chenkuan
+	 */
+	public String getIfURL(){
+		return ifURL;
+	}
+
+	/**
+	 *接口信息的getter@chenkuan
+	 */
+	public String getIfPROTOCOL(){
+		return ifPROTOCOL;
+	}
+
+	/**
+	 *接口信息的getter@chenkuan
+	 */
+	public String getIfDESC(){
+		return ifDESC;
+	}
+
 	/**
 	 * @return the realRspCode
 	 */
