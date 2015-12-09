@@ -33,6 +33,7 @@
         <tr>
             <td rowspan='2'>$mock.getIfId()</td>
             <td rowspan='2'>$mock.getIfName()</td>
+<<<<<<< HEAD
             <td rowspan='2' title='$mock.getIfDESC()'>$mock.getIfDESC()</td>
             <td>预期:$mock.getRspCode()</td>
             <td rowspan='2'>$mock.getRequestJson()</td>
@@ -62,6 +63,18 @@
                 unknow
             #end
             '>实际:$mock.getRealRspCode()</td>
+=======
+            <td rowspan='2'>$mock.getIfDESC()</td>
+            <td>预期:$mock.getRspCode()</td>
+            <td rowspan='2'>$mock.getRequestJson()</td>
+            <td>预期:$mock.getResponseJson()</td>
+            <td rowspan='2'>$mock.getTestResult()</td>
+            <td rowspan='2'>$mock.getIfURL()</td>
+            <td rowspan='2'>$mock.getIfPROTOCOL()</td>
+        </tr>
+        <tr>
+            <td>实际:$mock.getRealRspCode()</td>
+>>>>>>> mailModel
             <td>实际:$mock.getRealResponseJson()</td>
         </tr>
     #end

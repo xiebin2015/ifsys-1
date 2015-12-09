@@ -41,3 +41,11 @@ pay-autotest/pay-autotest-script/pay-autotest-script.iml
 *.ipr
 
 *.iws
+
+*.iml
+
+*.iml
+
+pay-autotest/pay-autotest-threadpool/pay-autotest-threadpool.iml
+
+pay-autotest/pay-autotest-web/pay-autotest-web.iml
