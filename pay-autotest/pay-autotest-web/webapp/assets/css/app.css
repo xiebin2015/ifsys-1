@@ -21,7 +21,9 @@ ul {
 fieldset {
 	margin: 0;
 }
-
+pre{
+	text-align: left !important; 
+}
 .rightBtn {
 	float: right !important;
 }
@@ -130,4 +132,16 @@ fieldset {
 }
 #propDateShow a{
 	cursor: pointer;
+}
+.pageUl{
+	text-align:center;
+}
+#propDateShowBody tr td:nth-child(2){
+	text-align: left;
+}
+#propDateShowBody tr td:nth-child(3){
+	text-align: left;
+}
+#propDateShowBody tr td:nth-child(4){
+	text-align: left;
 }
