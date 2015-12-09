@@ -7,17 +7,19 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.druid.util.StringUtils;
 import com.gigold.pay.autotest.bo.InterFaceField;
+import com.gigold.pay.autotest.bo.ReturnCode;
 import com.gigold.pay.autotest.dao.InterFaceFieldDao;
 import com.gigold.pay.autotest.util.ForMatJSONStr;
+import com.gigold.pay.framework.core.SysCode;
 
 @Service
 public class InterFaceFieldService {
 
 	@Autowired
 	InterFaceFieldDao interFaceFieldDao;
+	@Autowired
+	RetrunCodeService retrunCodeService;
 
-	
-	
 	/**
 	 * @return the interFaceFieldDao
 	 */
@@ -26,7 +28,8 @@ public class InterFaceFieldService {
 	}
 
 	/**
-	 * @param interFaceFieldDao the interFaceFieldDao to set
+	 * @param interFaceFieldDao
+	 *            the interFaceFieldDao to set
 	 */
 	public void setInterFaceFieldDao(InterFaceFieldDao interFaceFieldDao) {
 		this.interFaceFieldDao = interFaceFieldDao;
@@ -69,15 +72,48 @@ public class InterFaceFieldService {
 		try {
 			StringBuilder ss = new StringBuilder();
 			ss.append("{");
-			List<InterFaceField> rlist = this.getFirstReqFieldByIfId(interFaceField);
+			if ("2".equals(interFaceField.getFieldFlag())) {
+				ss.append("\"rspCd\"").append(":\"").append(getRspCode(interFaceField.getIfId())).append("\",");
+			}
+			List<InterFaceField> rlist = getFirstReqFieldByIfId(interFaceField);
 			proJSON(ss, rlist, interFaceField.getFieldCheck());
 			jsonStr = ss.toString().replaceAll(",\\}", "}").replaceAll(",\\]", "]");
 			jsonStr = jsonStr.substring(0, jsonStr.length() - 1);
 			jsonStr = ForMatJSONStr.format(jsonStr);
+
 		} catch (Exception e) {
 			jsonStr = "";
 		}
 		return jsonStr;
+
+	}
+
+	/**
+	 * 
+	 * Title: getRspCode<br/>
+	 * Description: 获取接口对应的返回码信息<br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月8日上午9:32:03
+	 *
+	 * @param ifId
+	 * @return
+	 */
+	public String getRspCode(int ifId) {
+		List<ReturnCode> rspCdList = retrunCodeService.getReturnCodeByIfId(ifId);
+		StringBuilder sbui = new StringBuilder();
+		if (rspCdList != null) {
+			int size = rspCdList.size();
+			int i = 0;
+			for (ReturnCode rspCd : rspCdList) {
+				sbui.append(rspCd.getRspCode()).append(":").append(rspCd.getRspCodeDesc());
+				if (i < size - 1) {
+					sbui.append("; ");
+				}
+				i++;
+			}
+		}
+		return sbui.toString();
 
 	}
 
