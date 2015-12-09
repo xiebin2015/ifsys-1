@@ -37,3 +37,7 @@ pay-autotest/pay-autotest-script/pay-autotest-script.iml
 >>>>>>> master
 
 .idea/.name
+
+*.ipr
+
+*.iws
