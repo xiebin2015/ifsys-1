@@ -110,8 +110,12 @@ $(function(){
 		});
 
 	});
-	$(document).on("click", ".admin-content a", function() {
-		$("#doc-modal").modal('open')
+	$(document).on("click", "#propDateShow a", function() {
+		$("#doc-modal").modal('open');
+		
+		
+		
+		
 
 	});
 	
