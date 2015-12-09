@@ -103,6 +103,7 @@ fieldset {
 .scollBox{
 	overflow: scroll;
 	border-radius:5px;
+	height:600px;
 }
 #doc-modal{
 	border-radius:5px;

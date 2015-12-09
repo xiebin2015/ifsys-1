@@ -31,8 +31,6 @@ $(function(){
 				"url":"getProInfoBySysId.do",
 				"data":JSON.stringify(sendData),
 				"onSuccess":function(data){
-					console.log("sssssss");
-					console.log(data);
 					if (data.rspCd == "00000") {
 						$("#ifProId").removeAttr("disabled");  
 						 var optionStr='<option value="0" selected>请选择产品</option>';
@@ -94,13 +92,13 @@ $(function(){
 			textNum = 1;
 		}
 		if ("上一页" == textNum) {
-			textNum = pageNum - 1;
+			textNum = pageNum--;
 		}
 		if ("最末页" == textNum) {
 			textNum = pages;
 		}
 		if ("下一页" == textNum) {
-			textNum = pageNum + 1;
+			textNum = pageNum++;
 		}
 
 		getAjaxData({
@@ -112,7 +110,10 @@ $(function(){
 		});
 
 	});
-	
+	$(document).on("click", ".admin-content a", function() {
+		$("#doc-modal").modal('open')
+
+	});
 	
    
 });
