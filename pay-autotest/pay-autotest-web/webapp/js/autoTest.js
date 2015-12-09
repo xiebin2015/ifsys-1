@@ -140,19 +140,16 @@ $(function() {
 				"onSuccess":function(data){
 					if (data.rspCd == "00000") {
 						var divObj=$(".rspBox");
+						var htmlStr="";
 						var size=data.interFaceInfo.mockList.length;
 						$.each(data.interFaceInfo.mockList,function(index,mock){
 							$(divObj).find("#rspCd").html(mock.rspCode);
 							$(divObj).find("#rspCdDesc").html(mock.rspCodeDesc);
 							$(divObj).find("#reqJson").html(mock.requestJson);
 							$(divObj).find("#rspJson").html(mock.responseJson);
-							if(index<size-1){
-								var colneDiv=divObj.clone();
-								$(divObj).after(colneDiv);
-								fordivObjmObj=colneDiv;
-							}
-							
+							htmlStr+=$(divObj).html();
 						});
+						$(".am-modal-bd").html(htmlStr);
 	              }
 				}
 			});
