@@ -51,7 +51,7 @@ public interface IfSysMockDAO {
 	/**
 	 * 
 	 * Title: getMockInfoById<br/>
-	 * Description: 根据接口ID和返回码ID获取测试数据信息<br/>
+	 * Description: 根据ID获取测试数据信息<br/>
 	 * @author xiebin
 	 * @date 2015年12月9日上午11:05:09
 	 *
@@ -59,6 +59,18 @@ public interface IfSysMockDAO {
 	 * @return
 	 */
 	public IfSysMock getMockInfoById(IfSysMock ifSysMock); 
+	
+	/**
+	 * 
+	 * Title: getMockInfoByIfIdAndRspCdId<br/>
+	 * Description: 根据接口ID和返回码ID获取测试数据信息<br/>
+	 * @author xiebin
+	 * @date 2015年12月9日上午11:05:09
+	 *
+	 * @param ifSysMock
+	 * @return
+	 */
+	public IfSysMock getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock);  
 
 	/**
 	 *

@@ -33,7 +33,7 @@
         )
         values(
         #{ifId},
-        #{rspCode},
+        #{rspCodeId},
         #{requestJson},
         #{responseJson})
     ]]>
@@ -93,8 +93,27 @@
 		 
       ]]>
 	</select>
+	
+	<!-- 根据ID获取测试数据信息 -->
+	<select id="getMockInfoById" parameterType="int" resultMap="ifSysMockResultMap">
+     <![CDATA[ 
+		select ID,
+		IF_ID,
+		RSP_CODE_ID,
+		REQUEST_JSON,
+		RESPONSE_JSON,
+		REAL_RSP_CODE,
+		REAL_RESPONSE_JSON,
+		TEST_RESULT
+		from T_IF_AUTO_MOCK
+		where ID=#{id}
+		and STATUS='Y'
+		 
+      ]]>
+	</select>
+	
 <!-- 根据接口ID和返回码ID获取测试数据信息-->
-	<select id="getMockInfoById" parameterType="com.gigold.pay.autotest.bo.IfSysMock" resultMap="ifSysMockResultMap">
+	<select id="getMockInfoByIfIdAndRspCdId" parameterType="com.gigold.pay.autotest.bo.IfSysMock" resultMap="ifSysMockResultMap">
      <![CDATA[ 
 		select ID,
 		IF_ID,
