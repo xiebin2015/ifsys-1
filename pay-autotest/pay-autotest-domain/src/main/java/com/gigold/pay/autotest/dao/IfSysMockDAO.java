@@ -47,6 +47,18 @@ public interface IfSysMockDAO {
 	 * @return
 	 */
 	public List<IfSysMock> getMockInfoByIfId(int ifId);
+	
+	/**
+	 * 
+	 * Title: getMockInfoById<br/>
+	 * Description: 根据ID获取测试数据<br/>
+	 * @author xiebin
+	 * @date 2015年12月9日上午11:05:09
+	 *
+	 * @param id
+	 * @return
+	 */
+	public IfSysMock getMockInfoById(int id); 
 
 	/**
 	 *

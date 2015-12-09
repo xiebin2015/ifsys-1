@@ -5,6 +5,7 @@
 	<resultMap type="com.gigold.pay.autotest.bo.IfSysMock" id="ifSysMockResultMap">
 		<id property="id" column="ID" />
 		<result property="ifId" column="IF_ID" />
+		<result property="rspCode" column="RSP_CODE_ID" />
 		<result property="rspCode" column="RSP_CODE" />
 		<result property="requestJson" column="REQUEST_JSON" />
 		<result property="responseJson" column="RESPONSE_JSON" />
@@ -26,7 +27,7 @@
         T_IF_AUTO_MOCK
         (
          IF_ID,
-         RSP_CODE,
+         RSP_CODE_ID,
          REQUEST_JSON,
          RESPONSE_JSON
         )
@@ -41,8 +42,8 @@
 	<update id="updateIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock">
 		update T_IF_AUTO_MOCK
 		<set>
-		<if test="rspCode!=null and rspCode!=''">
-				RSP_CODE=#{rspCode},
+		<if test="rspCodeId!=null and rspCodeId!=''">
+				RSP_CODE_ID=#{rspCodeId},
 			</if>
 			<if test="requestJson!=null and requestJson!=''">
 				REQUEST_JSON=#{requestJson},
@@ -80,7 +81,7 @@
      <![CDATA[ 
 		select ID,
 		IF_ID,
-		RSP_CODE,
+		RSP_CODE_ID,
 		REQUEST_JSON,
 		RESPONSE_JSON,
 		REAL_RSP_CODE,
@@ -92,7 +93,23 @@
 		 
       ]]>
 	</select>
-
+<!-- 根据接口ID获取测试数据信息-->
+	<select id="getMockInfoById" parameterType="int" resultMap="ifSysMockResultMap">
+     <![CDATA[ 
+		select ID,
+		IF_ID,
+		RSP_CODE_ID,
+		REQUEST_JSON,
+		RESPONSE_JSON,
+		REAL_RSP_CODE,
+		REAL_RESPONSE_JSON,
+		TEST_RESULT
+		from T_IF_AUTO_MOCK
+		where ID=#{id}
+		and STATUS='Y'
+		 
+      ]]>
+	</select>
 	<!-- 根据筛选条件获取测试数据信息 chenkuan @2015-12-08 -->
 	<select id="filterMocksByStatus" parameterType="String" resultMap="ifSysMockResultMap">
 		<![CDATA[
