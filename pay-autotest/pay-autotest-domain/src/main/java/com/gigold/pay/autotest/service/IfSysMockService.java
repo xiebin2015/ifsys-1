@@ -116,6 +116,7 @@ public class IfSysMockService {
 			if (ifMock==null) {
 				count = ifSysMockDao.addIfSysMock(ifSysMock);
 			} else {
+				ifSysMock.setId(ifMock.getId());
 				count = ifSysMockDao.updateIfSysMock(ifSysMock);
 			}
 			if (count > 0) {
@@ -126,6 +127,38 @@ public class IfSysMockService {
 		}
 		return flag;
 	}
+	
+	
+	/**
+	 * 
+	 * Title: createIfSysMock<br/>
+	 * Description:初始化测试数据
+	 * <br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月2日上午10:54:05
+	 *
+	 * @param ifSysMock
+	 * @return
+	 */
+	public boolean createIfSysMock(IfSysMock ifSysMock) {
+		boolean flag = false;
+		try {
+			int count = 0;
+			IfSysMock ifMock=getMockInfoByIfIdAndRspCdId(ifSysMock);
+			if (ifMock==null) {
+				count = ifSysMockDao.addIfSysMock(ifSysMock);
+			} 
+			if (count > 0) {
+				flag = true;
+			}
+		} catch (Exception e) {
+			flag = false;
+		}
+		return flag;
+	}
+	
+	
 
 	/**
 	 * 
@@ -196,6 +229,28 @@ public class IfSysMockService {
 		return ifmock;
 	}
 
+	
+	/**
+	 * 
+	 * Title: getMockInfoById<br/>
+	 * Description: <br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月9日上午11:12:43
+	 *
+	 * @param id
+	 * @return
+	 */
+	public IfSysMock getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock) {
+		IfSysMock ifmock = null;
+		try {
+			ifmock = ifSysMockDao.getMockInfoByIfIdAndRspCdId(ifSysMock);
+		} catch (Exception e) {
+			ifmock = null;
+		}
+		return ifmock;
+	}
+	
 	/**
 	 *
 	 * Title: filterMocksByStatus<br/>
