@@ -90,7 +90,7 @@ public class TestDemo {
 		//List<IfSysMock> resulteMocks = ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
 		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
 		for(int i=0;i<resulteMocks.size();i++){
-			System.out.println(resulteMocks.get(i).getIfName());
+			System.out.println(resulteMocks.get(i).getRealRspCode());
 		}
 
 		List<String> addressTo = new ArrayList<String>();
