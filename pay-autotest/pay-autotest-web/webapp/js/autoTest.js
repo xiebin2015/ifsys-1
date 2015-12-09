@@ -4,23 +4,6 @@ $(function() {
 		$(this).removeClass("am-field-valid");
 	});
 	
-	
-	
-	//编辑按钮功能
-	$(document).on("click", "#propDateShow a", function() {
-		
-		
-		
-		
-		
-		$("#doc-modal").modal({
-			relatedTarget: this,
-			closeViaDimmer:false
-		});
-		
-	});
-
-
 	//加载系统信息
 	gigold.pay.interFace.ajaxHandler({
 		"url": "getAllSysInfo.do",
@@ -125,7 +108,7 @@ $(function() {
 			textNum = 1;
 		}
 		if ("上一页" == textNum) {
-			textNum = pageNum - 1;
+			textNum = pageNum--;
 		}
 		if ("最末页" == textNum) {
 			textNum = $(this).attr("data-pages");
@@ -149,9 +132,36 @@ $(function() {
 		});
 
 	});
-
-
-
+	$(document).on("click", "#propDateShow a", function() {
+		var sendData={"ifId":$(this).attr("id")};
+		  gigold.pay.interFace.ajaxHandler({
+				"url":"autotest/getifsysmockbyifid.do",
+				"data":JSON.stringify(sendData),
+				"onSuccess":function(data){
+					if (data.rspCd == "00000") {
+						var divObj=$(".rspBox");
+						var size=data.interFaceInfo.mockList.length;
+						$.each(data.interFaceInfo.mockList,function(index,mock){
+							$(divObj).find("#rspCd").html(mock.rspCode);
+							$(divObj).find("#rspCdDesc").html(mock.rspCodeDesc);
+							$(divObj).find("#reqJson").html(mock.requestJson);
+							$(divObj).find("#rspJson").html(mock.responseJson);
+							if(index<size-1){
+								var colneDiv=divObj.clone();
+								$(divObj).after(colneDiv);
+								fordivObjmObj=colneDiv;
+							}
+							
+						});
+	              }
+				}
+			});
+		$("#doc-modal").modal({
+			relatedTarget: this,
+			closeViaDimmer:false
+		});
+		
+	});
 });
 
 function getAjaxData(sendData) {
@@ -177,16 +187,15 @@ function loadInterFaceInfoByPage(pageInfo) {
 				'<td class="textLeft">' + rowData.ifName + '</td>' +
 				'<td class="textLeft">' + rowData.sysName +
 				'</td>' + '<td class="textLeft">' + rowData.proName + '</td>' +
-				'<td width=200>' + '<a data-id='+rowData.id+'>编辑</a>' + '</td>' + '</tr>';
+				'<td width=200>' + '<a id='+rowData.id+'>编辑</a>' + '</td>' + '</tr>';
 		});
 	$("#propDateShowBody").html(listStr);	
 
 		var str = "";
-		var pages = pageInfo.pages;
 		//添加页码
 		var pagesStr = '';
 		pageNum = parseInt(pageInfo.pageNum);
-		pages = parseInt(pageInfo.pages);
+		var pages = parseInt(pageInfo.pages);
 		
 		//判断当前页是否为首页
 		var hasFirPage = pageInfo.isFirstPage?"am-disabled":"";

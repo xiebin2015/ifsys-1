@@ -26,6 +26,8 @@ public class InterFaceInfo {
 	private String sysName;
 	private String proName;
 	private String ifUrl;
+	private String ifDesc;
+	
 	private String addressUrl;
 	private String method;
 	private String methodVersion;
@@ -35,9 +37,19 @@ public class InterFaceInfo {
 	private int ifSysId;
 	private int ifProId;
 	
-	
-	
-	
+	/**
+	 * @return the ifDesc
+	 */
+	public String getIfDesc() {
+		return ifDesc;
+	}
+
+	/**
+	 * @param ifDesc the ifDesc to set
+	 */
+	public void setIfDesc(String ifDesc) {
+		this.ifDesc = ifDesc;
+	}
 
 	/**
 	 * @return the ifSysId

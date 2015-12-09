@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.bo.InterFaceField;
 import com.gigold.pay.autotest.bo.InterFaceInfo;
+import com.gigold.pay.autotest.bo.ReturnCode;
 import com.gigold.pay.autotest.service.IfSysMockService;
 import com.gigold.pay.autotest.service.InterFaceFieldService;
 import com.gigold.pay.autotest.service.InterFaceService;
+import com.gigold.pay.autotest.service.RetrunCodeService;
 import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
@@ -50,6 +52,8 @@ public class IfSysMockController extends BaseController {
 	InterFaceFieldService interFaceFieldService;
 	@Autowired
 	InterFaceService interFaceService;
+	@Autowired
+	private RetrunCodeService retrunCodeService;
 
 	
 	
@@ -260,7 +264,7 @@ public class IfSysMockController extends BaseController {
 	public @ResponseBody IfStsMockRspListDto getIfSysMockByIfId(@RequestBody IfSysMockAddReqDto dto) {
 		IfStsMockRspListDto reDto = new IfStsMockRspListDto();
 		try {
-			int ifId = dto.getId();
+			int ifId = dto.getIfId();
 			// 获取接口基本信息
 			InterFaceInfo interFaceInfo = interFaceService.getInterFaceById(ifId);
 			if (interFaceInfo == null) {
@@ -281,18 +285,21 @@ public class IfSysMockController extends BaseController {
 			if (StringUtil.isNotBlank(rspJson)) {
 				interFaceInfo.setRspJsonStr(rspJson);
 			}
-			// 获取接口测试数据
-			List<IfSysMock> list = ifSysMockService.getMockInfoByIfId(ifId);
-			if (list == null||list.size()==0) {
+			//初始化测试数据
+			List<ReturnCode> returnList = retrunCodeService.getReturnCodeByIfId(interFaceInfo.getId());
+			// 遍历返回码 更新测试数据
+			for (ReturnCode rscdObj : returnList) {
 				// 如果还没有测试数据 则默认添加一条
 				IfSysMock mock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
 				mock.setIfId(ifId);
+				mock.setRspCodeId(rscdObj.getId());
 				mock.setRequestJson(reqJson);
 				mock.setResponseJson(rspJson);
-				interFaceInfo.getMockList().add(mock);
-			} else {
-				interFaceInfo.setMockList(list);
+				ifSysMockService.createIfSysMock(mock);
 			}
+			// 获取接口测试数据
+			List<IfSysMock> list = ifSysMockService.getMockInfoByIfId(ifId);
+			interFaceInfo.setMockList(list);
 			reDto.setRspCd(SysCode.SUCCESS);
 			reDto.setInterFaceInfo(interFaceInfo);
 		} catch (Exception e) {
