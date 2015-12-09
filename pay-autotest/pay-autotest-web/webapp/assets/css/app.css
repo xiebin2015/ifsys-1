@@ -21,10 +21,11 @@ ul {
 fieldset {
 	margin: 0;
 }
-
+pre{
+	text-align: left !important; 
+}
 .rightBtn {
 	float: right !important;
-	margin-left: 10px;
 }
 
 .win60 {
@@ -89,12 +90,14 @@ fieldset {
 .serchBox{
 	position: relative;
 	display:inline-block;
+	margin-right:100px;
 }
 .serchBox i{
 	color: #ccc;
 	position: absolute;
 	top:5px;
 	right:9px;
+	cursor: pointer;
 }
 .serchBox i:hover{
 	transform: scale(1.3);
@@ -102,11 +105,12 @@ fieldset {
 }
 .scollBox{
 	overflow: scroll;
-	border-radius:5px;
 	height:600px;
+	border-radius:5px !important;
 }
 #doc-modal{
-	border-radius:5px;
+	width:80%;
+	left:33%;
 }
 .rspBox{
 	border:1px solid #aaa;
@@ -126,4 +130,18 @@ fieldset {
 .bianjiBtn{
 	text-align: right;
 }
-
+#propDateShow a{
+	cursor: pointer;
+}
+.pageUl{
+	text-align:center;
+}
+#propDateShowBody tr td:nth-child(2){
+	text-align: left;
+}
+#propDateShowBody tr td:nth-child(3){
+	text-align: left;
+}
+#propDateShowBody tr td:nth-child(4){
+	text-align: left;
+}

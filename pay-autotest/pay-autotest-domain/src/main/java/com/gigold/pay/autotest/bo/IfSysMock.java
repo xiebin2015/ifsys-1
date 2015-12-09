@@ -26,6 +26,7 @@ public class IfSysMock {
 	private int ifId;
 	private int rspCodeId;
 	private String rspCode;
+	private String rspCodeDesc;
 	private String requestJson;
 	private String responseJson;
 	private String testResult;
@@ -37,10 +38,22 @@ public class IfSysMock {
 	private String ifURL;
 	private String ifPROTOCOL;
 	private String ifDESC;
-
+    
 	
 	
 	
+	/**
+	 * @return the rspCodeDesc
+	 */
+	public String getRspCodeDesc() {
+		return rspCodeDesc;
+	}
+	/**
+	 * @param rspCodeDesc the rspCodeDesc to set
+	 */
+	public void setRspCodeDesc(String rspCodeDesc) {
+		this.rspCodeDesc = rspCodeDesc;
+	}
 	/**
 	 * @return the rspCodeId
 	 */

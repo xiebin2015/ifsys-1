@@ -56,65 +56,30 @@ public class TestDemo {
 		interFaceService = (InterFaceService) SpringContextHolder.getBean(InterFaceService.class);
 		retrunCodeService = (RetrunCodeService) SpringContextHolder.getBean(RetrunCodeService.class);
 		interFaceFieldService = (InterFaceFieldService) SpringContextHolder.getBean(InterFaceFieldService.class);
-		initMock();
+		// 初始化测试数据
+		initData();
 	}
 
 	/**
 	 * 
-	 * Title: initMock<br/>
-	 * Description: 初始化测试数据<br/>
+	 * Title: initData<br/>
+	 * Description: 初始化测试数据 如果测试数据表中有对应返回码的测试数据则不添加 如果测试数据表中没有对应返回码的测试数据
+	 * 则新增一条对应的测试数据
+	 * 
+	 * <br/>
 	 * 
 	 * @author xiebin
 	 * @date 2015年12月9日上午11:57:21
 	 *
 	 */
-	public void initMock() {
-		// 当前页
-		int curPageNum = 1;
-		// 总页数
-		int pages = 1;
-		// 分页获取接口信息
-		while (curPageNum <= pages) {
-			PageInfo<InterFaceInfo> pageInfo = interFaceService.getAllIfSys(curPageNum);
-			List<InterFaceInfo> ifsyslist = pageInfo.getList();
-			// 遍历接口信息 获取其对应的返回码信息
-			for (InterFaceInfo interFaceInfo : ifsyslist) {
-				// 获取接口请求字段的JSON展示字符串
-				InterFaceField interFaceField = (InterFaceField) SpringContextHolder.getBean(InterFaceField.class);
-				interFaceField.setIfId(interFaceInfo.getId());
-				interFaceField.setFieldFlag("1");
-				String reqJson = interFaceFieldService.getJsonStr(interFaceField);
-				if (StringUtil.isNotBlank(reqJson)) {
-					interFaceInfo.setReqJsonStr(reqJson);
-				}
-				// 获取接口响应字段的JSON展示字符串
-				interFaceField.setFieldFlag("2");
-				String rspJson = interFaceFieldService.getJsonStr(interFaceField);
-				if (StringUtil.isNotBlank(rspJson)) {
-					interFaceInfo.setRspJsonStr(rspJson);
-				}
-				
-				List<ReturnCode> returnList = retrunCodeService.getReturnCodeByIfId(interFaceInfo.getId());
-				// 遍历返回码 更新测试数据
-				for (ReturnCode rscdObj : returnList) {
-					IfSysMock ifSysMock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
-					ifSysMock.setIfId(interFaceInfo.getId());
-					ifSysMock.setRspCodeId(rscdObj.getId());
-					ifSysMock.setRequestJson(interFaceInfo.getReqJsonStr());
-					ifSysMock.setResponseJson(interFaceInfo.getRspJsonStr());
-					ifSysMockService.createIfSysMock(ifSysMock);
-				}
-
-			}
-			pages = pageInfo.getPages();
-			curPageNum++;
-		}
+	public void initData() {
+		ifsysCheckThreadPool.initMock();
 	}
 
 	@Test
 	public void testAutoTest() {
-		// ResulteData resulteData = ifsysCheckThreadPool.execure();
-		//ifsysCheckThreadPool.execure();
+		// ResulteData resulteData = ifsysCheckThreadPool.execute();
+		// ifsysCheckThreadPool.execute();
 	}
 
 	@After
@@ -128,30 +93,31 @@ public class TestDemo {
 	 *
 	 */
 	public void testSendMail() {
-//		// List<IfSysMock> resulteMocks =
-//		// ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
-//		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
-//		for (int i = 0; i < resulteMocks.size(); i++) {
-//			System.out.println(resulteMocks.get(i).getRealRspCode());
-//		}
-//
-//		List<String> addressTo = new ArrayList<String>();
-//		// addressTo.add("xiebin163126@163.com");
-//		addressTo.add("chenkuan@gigold.com");
-//		// 设置收件人地址
-//		mailSenderService.setTo(addressTo);
-//		// 设置标题
-//		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
-//		// 设置模版名
-//		mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
-//
-//		Map model = new HashMap();
-//		model.put("resulteMocks", resulteMocks);
-//		model.put("username", "陈宽");
-//		// model.put("sys", "独孤九剑");
-//		// model.put("pro", "产品1");
-//		// model.put("interFace", "登录接口");
-//		mailSenderService.sendWithTemplateForHTML(model);
+		// // List<IfSysMock> resulteMocks =
+		// // ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
+		// List<IfSysMock> resulteMocks =
+		// ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
+		// for (int i = 0; i < resulteMocks.size(); i++) {
+		// System.out.println(resulteMocks.get(i).getRealRspCode());
+		// }
+		//
+		// List<String> addressTo = new ArrayList<String>();
+		// // addressTo.add("xiebin163126@163.com");
+		// addressTo.add("chenkuan@gigold.com");
+		// // 设置收件人地址
+		// mailSenderService.setTo(addressTo);
+		// // 设置标题
+		// mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+		// // 设置模版名
+		// mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
+		//
+		// Map model = new HashMap();
+		// model.put("resulteMocks", resulteMocks);
+		// model.put("username", "陈宽");
+		// // model.put("sys", "独孤九剑");
+		// // model.put("pro", "产品1");
+		// // model.put("interFace", "登录接口");
+		// mailSenderService.sendWithTemplateForHTML(model);
 		System.out.println("邮件发送成功！");
 	}
 }
