@@ -24,6 +24,7 @@ public class IfSysMock {
 	
 	private  int id;
 	private int ifId;
+	private int rspCodeId;
 	private String rspCode;
 	private String requestJson;
 	private String responseJson;
@@ -37,6 +38,21 @@ public class IfSysMock {
 	private String ifPROTOCOL;
 	private String ifDESC;
 
+	
+	
+	
+	/**
+	 * @return the rspCodeId
+	 */
+	public int getRspCodeId() {
+		return rspCodeId;
+	}
+	/**
+	 * @param rspCodeId the rspCodeId to set
+	 */
+	public void setRspCodeId(int rspCodeId) {
+		this.rspCodeId = rspCodeId;
+	}
 	/**
 	 *接口信息的setter@chenkuan
 	 */
