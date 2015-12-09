@@ -111,12 +111,32 @@ $(function(){
 
 	});
 	$(document).on("click", "#propDateShow a", function() {
+		var sendData={"ifId":$(this).attr("id")};
+		  gigold.pay.interFace.ajaxHandler({
+				"url":"autotest/getifsysmockbyifid.do",
+				"data":JSON.stringify(sendData),
+				"onSuccess":function(data){
+					if (data.rspCd == "00000") {
+						var divObj=$(".rspBox");
+						var size=data.interFaceInfo.mockList.length;
+						$.each(data.interFaceInfo.mockList,function(index,mock){
+							$(divObj).find("#rspCd").html(mock.rspCode);
+							$(divObj).find("#rspCdDesc").html(mock.rspCodeDesc);
+							$(divObj).find("#reqJson").html(mock.requestJson);
+							$(divObj).find("#rspJson").html(mock.responseJson);
+							if(index<size-1){
+								var colneDiv=divObj.clone();
+								$(divObj).after(colneDiv);
+								fordivObjmObj=colneDiv;
+							}
+							
+						});
+	              }
+				}
+			});
+		
 		$("#doc-modal").modal('open');
 		
-		
-		
-		
-
 	});
 	
    
@@ -146,7 +166,7 @@ function loadInterFaceInfoByPage(pageInfo){
 				 '<td class="textLeft">' + rowData.ifName + '</td>' + 
 				 '<td class="textLeft">' + rowData.sysName + 
 				 '</td>' + '<td class="textLeft">' + rowData.proName + '</td>' + 
-				 '<td width=200>' + '<a href="#" class="">编辑</a>' + '</td>' + '</tr>';
+				 '<td width=200>' + '<a id='+rowData.id+' href="#" class="">编辑</a>' + '</td>' + '</tr>';
 			});
 		$("#propDateShowBody").html(listStr);
 	
