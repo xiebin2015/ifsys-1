@@ -1,12 +1,50 @@
+<html>
 亲爱的${username}  同学
   
 欢迎加入独孤九剑 接口自动化测试!   
 
 当你收到这封邮件的时候，表示你关注的
 
-${sys}系统${pro}产品${interFace}接口可能存在问题 请及时排查
-<a href="#">ssss</a>
+<style type="text/css">
+table { border-collapse: collapse; }
+th,td { border: 1px solid #888; }
+</style>
 
+<table>
+    <tr>
+        <td rowspan='2'>接口id</td>
+        <td rowspan='2'>接口名</td>
+        <td>预期返回码</td>
+        <td rowspan='2'>预期输入参数</td>
+        <td>预期输出参数</td>
+        <td rowspan='2'>测试结果</td>
+        <td rowspan='2'>接口说明</td>
+        <td rowspan='2'>接口地址</td>
+        <td rowspan='2'>访问模式</td>
+    </tr>
+    <tr>
+        <td>实际返回码</td>
+        <td>实际输出参数</td>
+    </tr>
+
+    #foreach( $mock in $resulteMocks)
+        <tr>
+            <td rowspan='2'>$mock.getIfId()</td>
+            <td rowspan='2'>$mock.getIfName()</td>
+            <td>$mock.getRspCode()</td>
+            <td rowspan='2'>$mock.getRequestJson()</td>
+            <td>$mock.getResponseJson()</td>
+            <td rowspan='2'>$mock.getTestResult()</td>
+            <td rowspan='2'>$mock.getIfDESC()</td>
+            <td rowspan='2'>$mock.getIfURL()</td>
+            <td rowspan='2'>$mock.getIfPROTOCOL()</td>
+        </tr>
+        <tr>
+            <td>$mock.getRealRspCode()</td>
+            <td>$mock.getRealResponseJson()</td>
+        </tr>
+    #end
+</table>
     祝工作愉快
      
      
