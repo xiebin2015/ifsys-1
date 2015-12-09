@@ -8,16 +8,23 @@
 package com.gigold.pay.script;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
+import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.service.IfSysMockService;
+import com.gigold.pay.autotest.service.InterFaceService;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.gigold.pay.autotest.email.MailSenderService;
+import com.gigold.pay.autotest.threadpool.CheckThread;
 import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
+import com.github.pagehelper.PageInfo;
+
 import java.util.*;
 /**
  * Title: Test<br/>
@@ -33,16 +40,37 @@ public class TestDemo {
 	private IfsysCheckThreadPool ifsysCheckThreadPool;
 	private MailSenderService mailSenderService;
 	private IfSysMockService ifSysMockService;
-
-
+	private InterFaceService interFaceService;
 	@Before
 	public void setup() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
 		ifsysCheckThreadPool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
 		mailSenderService = (MailSenderService) SpringContextHolder.getBean(MailSenderService.class);
 		ifSysMockService = (IfSysMockService) SpringContextHolder.getBean(IfSysMockService.class);
+		interFaceService=(InterFaceService)SpringContextHolder.getBean(InterFaceService.class);
+		
 	}
 
+	
+	public void initMock(){
+		// 当前页
+				int curPageNum = 1;
+				// 总页数
+				int pages = 1;
+				while (curPageNum <= pages) {
+					PageInfo<InterFaceInfo> pageInfo = interFaceService.getAllIfSys(curPageNum);
+					List<InterFaceInfo> ifsyslist = pageInfo.getList();
+					for(InterFaceInfo interFaceInfo:ifsyslist){
+						
+					}
+					
+					
+					pages = pageInfo.getPages();
+					curPageNum++;
+				}
+	}
+	
+	
 	@Test
 	public void testAutoTest() {
 //		ResulteData resulteData = ifsysCheckThreadPool.execure();
