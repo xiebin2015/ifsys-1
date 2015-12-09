@@ -69,21 +69,22 @@ $(function() {
 	});
 	
 	//回车搜索
-	document.onkeydown=function(event){   
-		 var e = event || window.event || arguments.callee.caller.arguments[0];
-         if(e && e.keyCode==13){ // enter 键
-             var postData = {
-				"pageNum": 1,
-				"ifName": $("#ifName").val(),
-				"ifSysId": $("#ifSysId").val(),
-				"ifProId": $("ifProId").val(),
-				"ifName": $("#ifName").val()
-			 };
-			getAjaxData(postData);
-			return false;
-          }
-      }; 
-
+	$("#ifName").focus(function(){
+		document.onkeydown=function(event){   
+			 var e = event || window.event || arguments.callee.caller.arguments[0];
+	         if(e && e.keyCode==13){ 
+	             var postData = {
+					"pageNum": 1,
+					"ifName": $("#ifName").val(),
+					"ifSysId": $("#ifSysId").val(),
+					"ifProId": $("ifProId").val(),
+					"ifName": $("#ifName").val()
+				 };
+				getAjaxData(postData);
+				return false;
+	          }
+	      }; 
+	})
 
 
 	//加载接口信息
@@ -147,7 +148,7 @@ $(function() {
 							$(divObj).find("#rspCdDesc").html(mock.rspCodeDesc);
 							$(divObj).find("#reqJson").html(mock.requestJson);
 							$(divObj).find("#rspJson").html(mock.responseJson);
-							htmlStr+=$(divObj).html();
+							htmlStr+=$(divObj).parent().html();
 						});
 						$(".am-modal-bd").html(htmlStr);
 	              }
