@@ -29,6 +29,7 @@ gigold.pay.interFace.ajaxHandler = function(options) {
 		async : defaults.async,
 		error : function(request) {
 			defaults.onError(request);
+			console.log('%c error ','color: red');
 		},
 		success : function(data) {
 			defaults.onSuccess(data)
