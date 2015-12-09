@@ -7,25 +7,28 @@
  */
 package com.gigold.pay.script;
 
-import com.gigold.pay.autotest.bo.IfSysMock;
-import com.gigold.pay.autotest.bo.InterFaceInfo;
-import com.gigold.pay.autotest.service.IfSysMockService;
-import com.gigold.pay.autotest.service.InterFaceService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.gigold.pay.autotest.bo.IfSysMock;
+import com.gigold.pay.autotest.bo.InterFaceInfo;
+import com.gigold.pay.autotest.bo.ReturnCode;
 import com.gigold.pay.autotest.email.MailSenderService;
-import com.gigold.pay.autotest.threadpool.CheckThread;
+import com.gigold.pay.autotest.service.IfSysMockService;
+import com.gigold.pay.autotest.service.InterFaceService;
+import com.gigold.pay.autotest.service.RetrunCodeService;
 import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
 import com.github.pagehelper.PageInfo;
 
-import java.util.*;
 /**
  * Title: Test<br/>
  * Description: <br/>
@@ -41,40 +44,59 @@ public class TestDemo {
 	private MailSenderService mailSenderService;
 	private IfSysMockService ifSysMockService;
 	private InterFaceService interFaceService;
+	private RetrunCodeService retrunCodeService;
+
 	@Before
 	public void setup() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
 		ifsysCheckThreadPool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
 		mailSenderService = (MailSenderService) SpringContextHolder.getBean(MailSenderService.class);
 		ifSysMockService = (IfSysMockService) SpringContextHolder.getBean(IfSysMockService.class);
-		interFaceService=(InterFaceService)SpringContextHolder.getBean(InterFaceService.class);
-		
+		interFaceService = (InterFaceService) SpringContextHolder.getBean(InterFaceService.class);
+		retrunCodeService = (RetrunCodeService) SpringContextHolder.getBean(RetrunCodeService.class);
+		// 初始化测试数据
+		initMock();
 	}
 
-	
-	public void initMock(){
+	/**
+	 * 
+	 * Title: initMock<br/>
+	 * Description: 初始化测试数据<br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月9日上午11:57:21
+	 *
+	 */
+	public void initMock() {
 		// 当前页
-				int curPageNum = 1;
-				// 总页数
-				int pages = 1;
-				while (curPageNum <= pages) {
-					PageInfo<InterFaceInfo> pageInfo = interFaceService.getAllIfSys(curPageNum);
-					List<InterFaceInfo> ifsyslist = pageInfo.getList();
-					for(InterFaceInfo interFaceInfo:ifsyslist){
-						
-					}
-					
-					
-					pages = pageInfo.getPages();
-					curPageNum++;
+		int curPageNum = 1;
+		// 总页数
+		int pages = 1;
+		// 分页获取接口信息
+		while (curPageNum <= pages) {
+			PageInfo<InterFaceInfo> pageInfo = interFaceService.getAllIfSys(curPageNum);
+			List<InterFaceInfo> ifsyslist = pageInfo.getList();
+			// 遍历接口信息 获取其对应的返回码信息
+			for (InterFaceInfo interFaceInfo : ifsyslist) {
+				List<ReturnCode> returnList = retrunCodeService.getReturnCodeByIfId(interFaceInfo.getId());
+				// 遍历返回码 更新测试数据
+				for (ReturnCode rscdObj : returnList) {
+					IfSysMock ifSysMock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
+					ifSysMock.setIfId(interFaceInfo.getId());
+					ifSysMock.setRspCodeId(rscdObj.getId());
+					ifSysMockService.updateIfSysMock(ifSysMock);
 				}
+
+			}
+			pages = pageInfo.getPages();
+			curPageNum++;
+		}
 	}
-	
-	
+
 	@Test
 	public void testAutoTest() {
-//		ResulteData resulteData = ifsysCheckThreadPool.execure();
-		ifsysCheckThreadPool.execure();
+		// ResulteData resulteData = ifsysCheckThreadPool.execure();
+		//ifsysCheckThreadPool.execure();
 	}
 
 	@After
@@ -82,14 +104,16 @@ public class TestDemo {
 	 * 
 	 * Title: testSendMail<br/>
 	 * Description: 测试完成之后再发邮件的情况<br/>
+	 * 
 	 * @author xiebin
 	 * @date 2015年12月7日下午4:27:30
 	 *
 	 */
 	public void testSendMail() {
-		//List<IfSysMock> resulteMocks = ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
+		// List<IfSysMock> resulteMocks =
+		// ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
 		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
-		for(int i=0;i<resulteMocks.size();i++){
+		for (int i = 0; i < resulteMocks.size(); i++) {
 			System.out.println(resulteMocks.get(i).getRealRspCode());
 		}
 
@@ -106,9 +130,9 @@ public class TestDemo {
 		Map model = new HashMap();
 		model.put("resulteMocks", resulteMocks);
 		model.put("username", "陈宽");
-		//		 model.put("sys", "独孤九剑");
-		//		 model.put("pro", "产品1");
-		//		 model.put("interFace", "登录接口");
+		// model.put("sys", "独孤九剑");
+		// model.put("pro", "产品1");
+		// model.put("interFace", "登录接口");
 		mailSenderService.sendWithTemplateForHTML(model);
 		System.out.println("邮件发送成功！");
 	}

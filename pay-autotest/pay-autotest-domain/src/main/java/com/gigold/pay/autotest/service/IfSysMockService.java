@@ -97,7 +97,10 @@ public class IfSysMockService {
 	/**
 	 * 
 	 * Title: updateIfSysMock<br/>
-	 * Description:修改模拟数据<br/>
+	 * Description:修改模拟数据
+	 *  如果已经存在则修改
+	 *  如果不存在则新增
+	 * <br/>
 	 * 
 	 * @author xiebin
 	 * @date 2015年12月2日上午10:54:05
@@ -109,8 +112,8 @@ public class IfSysMockService {
 		boolean flag = false;
 		try {
 			int count = 0;
-			int id = ifSysMock.getId();
-			if (id <= 0) {
+			IfSysMock ifMock=getMockInfoById(ifSysMock);
+			if (ifMock==null) {
 				count = ifSysMockDao.addIfSysMock(ifSysMock);
 			} else {
 				count = ifSysMockDao.updateIfSysMock(ifSysMock);
@@ -183,14 +186,14 @@ public class IfSysMockService {
 	 * @param id
 	 * @return
 	 */
-	public IfSysMock getMockInfoById(int id) {
-		IfSysMock ifSysMock = null;
+	public IfSysMock getMockInfoById(IfSysMock ifSysMock) {
+		IfSysMock ifmock = null;
 		try {
-			ifSysMock = ifSysMockDao.getMockInfoById(id);
+			ifmock = ifSysMockDao.getMockInfoById(ifSysMock);
 		} catch (Exception e) {
-			ifSysMock = null;
+			ifmock = null;
 		}
-		return ifSysMock;
+		return ifmock;
 	}
 
 	/**
