@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gigold.pay.autotest.dao.IfSysReferDAO">
+
+	<resultMap type="com.gigold.pay.autotest.bo.IfSysRefer" id="ifSysRefResultMap">
+		<id property="id" column="ID" />
+		<result property="ifId" column="IF_ID" />
+		<result property="ifId" column="IF_ID" />
+		<result property="refId" column="REFER_ID" />
+		<result property="ordNum" column="ORD_NUM" />
+		
+
+	</resultMap>
+
+	<!-- 获取接口的依赖列表 -->
+	<select id="getReferList" parameterType="int" resultMap="ifSysRefResultMap">
+     <![CDATA[ 
+        select 
+        ID,
+        IF_ID,
+        REFER_ID,
+        ORD_NUM
+        from  T_IF_REFER
+        where IF_ID=#{ifId}
+        and STSTUS='Y'
+        order by ORD_NUM
+      ]]>
+	</select>
+
+</mapper>
+ 
+ 
+ 
+ 
+ 
+ 

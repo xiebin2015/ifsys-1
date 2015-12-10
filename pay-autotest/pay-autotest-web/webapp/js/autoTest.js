@@ -89,9 +89,10 @@ $(function() {
 
 	//点击修改按钮进入可编辑状态
 	$(document).on("click",".upDaBtn",function(){
-		var $ele = $(this).parent().parent().find("pre");
-		$ele.attr("contenteditable","true")
-		$ele[0].focus(); 
+		var $ele = $(this).parent().parent();
+		$ele.find("pre").attr("contenteditable","true")
+		$ele.find("pre")[0].focus(); 
+		$ele.find(".addRspBtn").removeClass("am-disabled");
 	});
 
 	//保存修改的返回码数据
@@ -108,7 +109,26 @@ $(function() {
 				"data":JSON.stringify(sendData),
 				"onSuccess":function(data){
 					if (data.rspCd == "00000") {
-						alert("保存成功")
+						alert("保存成功");
+						$ele.find(".addRspBtn").addClass("am-disabled");
+	              }
+				}
+			});
+			
+	});
+	
+	
+	//删除返回码模块
+	$(document).on("click",".delBtn",function(){
+		var $ele = $(this).parent().parent();
+		var sendData = {};
+		sendData.id = $ele.find(".hideInp").attr("data-id");
+		gigold.pay.interFace.ajaxHandler({
+				"url":"autotest/deleteifsysmockbyid.do",
+				"data":JSON.stringify(sendData),
+				"onSuccess":function(data){
+					if (data.rspCd == "00000") {
+						$($ele).remove();
 	              }
 				}
 			});
