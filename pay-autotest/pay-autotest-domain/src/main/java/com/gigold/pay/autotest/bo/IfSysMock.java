@@ -24,7 +24,9 @@ public class IfSysMock {
 	
 	private  int id;
 	private int ifId;
+	private int rspCodeId;
 	private String rspCode;
+	private String rspCodeDesc;
 	private String requestJson;
 	private String responseJson;
 	private String testResult;
@@ -36,7 +38,47 @@ public class IfSysMock {
 	private String ifURL;
 	private String ifPROTOCOL;
 	private String ifDESC;
-
+	private String addressUrl;
+    
+	
+	
+	
+	/**
+	 * @return the addressUrl
+	 */
+	public String getAddressUrl() {
+		return addressUrl;
+	}
+	/**
+	 * @param addressUrl the addressUrl to set
+	 */
+	public void setAddressUrl(String addressUrl) {
+		this.addressUrl = addressUrl;
+	}
+	/**
+	 * @return the rspCodeDesc
+	 */
+	public String getRspCodeDesc() {
+		return rspCodeDesc;
+	}
+	/**
+	 * @param rspCodeDesc the rspCodeDesc to set
+	 */
+	public void setRspCodeDesc(String rspCodeDesc) {
+		this.rspCodeDesc = rspCodeDesc;
+	}
+	/**
+	 * @return the rspCodeId
+	 */
+	public int getRspCodeId() {
+		return rspCodeId;
+	}
+	/**
+	 * @param rspCodeId the rspCodeId to set
+	 */
+	public void setRspCodeId(int rspCodeId) {
+		this.rspCodeId = rspCodeId;
+	}
 	/**
 	 *接口信息的setter@chenkuan
 	 */

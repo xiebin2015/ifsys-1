@@ -5,7 +5,9 @@
 	<resultMap type="com.gigold.pay.autotest.bo.IfSysMock" id="ifSysMockResultMap">
 		<id property="id" column="ID" />
 		<result property="ifId" column="IF_ID" />
+		<result property="rspCodeId" column="RSP_CODE_ID" />
 		<result property="rspCode" column="RSP_CODE" />
+		<result property="rspCodeDesc" column="RSP_CODE_DESC" />
 		<result property="requestJson" column="REQUEST_JSON" />
 		<result property="responseJson" column="RESPONSE_JSON" />
 		<result property="realRspCode" column="REAL_RSP_CODE" />
@@ -16,6 +18,7 @@
 		<result property="ifURL" column="IF_URL" />
 		<result property="ifPROTOCOL" column="IF_PROTOCOL" />
 		<result property="ifDESC" column="IF_DESC" />
+		<result property="addressUrl" column="ADDRESS_URL" />
 
 	</resultMap>
 
@@ -26,13 +29,13 @@
         T_IF_AUTO_MOCK
         (
          IF_ID,
-         RSP_CODE,
+         RSP_CODE_ID,
          REQUEST_JSON,
          RESPONSE_JSON
         )
         values(
         #{ifId},
-        #{rspCode},
+        #{rspCodeId},
         #{requestJson},
         #{responseJson})
     ]]>
@@ -41,8 +44,8 @@
 	<update id="updateIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock">
 		update T_IF_AUTO_MOCK
 		<set>
-		<if test="rspCode!=null and rspCode!=''">
-				RSP_CODE=#{rspCode},
+		<if test="rspCodeId!=null and rspCodeId!=''">
+				RSP_CODE_ID=#{rspCodeId},
 			</if>
 			<if test="requestJson!=null and requestJson!=''">
 				REQUEST_JSON=#{requestJson},
@@ -78,9 +81,47 @@
 	<!-- 根据接口ID获取测试数据信息  编辑页,新增页 -->
 	<select id="getMockInfoByIfId" parameterType="int" resultMap="ifSysMockResultMap">
      <![CDATA[ 
+		select au.ID,
+		au.IF_ID,
+		au.RSP_CODE_ID,
+		(select rc.RSP_CODE from T_IF_RETRUN_CODE rc where rc.ID=au.RSP_CODE_ID) RSP_CODE,
+        (select rc.RSP_CODE_DESC from T_IF_RETRUN_CODE rc where rc.ID=au.RSP_CODE_ID) RSP_CODE_DESC,
+		au.REQUEST_JSON,
+		au.RESPONSE_JSON,
+		au.REAL_RSP_CODE,
+		au.REAL_RESPONSE_JSON,
+		au.TEST_RESULT
+		from T_IF_AUTO_MOCK au
+		where IF_ID=#{ifId}
+		and STATUS='Y'
+		 
+      ]]>
+	</select>
+	
+	<!-- 根据ID获取测试数据信息 -->
+	<select id="getMockInfoById" parameterType="int" resultMap="ifSysMockResultMap">
+     <![CDATA[ 
 		select ID,
 		IF_ID,
-		RSP_CODE,
+		RSP_CODE_ID,
+		REQUEST_JSON,
+		RESPONSE_JSON,
+		REAL_RSP_CODE,
+		REAL_RESPONSE_JSON,
+		TEST_RESULT
+		from T_IF_AUTO_MOCK
+		where ID=#{id}
+		and STATUS='Y'
+		 
+      ]]>
+	</select>
+	
+<!-- 根据接口ID和返回码ID获取测试数据信息-->
+	<select id="getMockInfoByIfIdAndRspCdId" parameterType="com.gigold.pay.autotest.bo.IfSysMock" resultMap="ifSysMockResultMap">
+     <![CDATA[ 
+		select ID,
+		IF_ID,
+		RSP_CODE_ID,
 		REQUEST_JSON,
 		RESPONSE_JSON,
 		REAL_RSP_CODE,
@@ -88,11 +129,38 @@
 		TEST_RESULT
 		from T_IF_AUTO_MOCK
 		where IF_ID=#{ifId}
+		and RSP_CODE_ID=#{rspCodeId}
 		and STATUS='Y'
 		 
       ]]>
 	</select>
+	<!-- 根据接口ID获取依赖接口的测试数据 -->
+	<select id="getReferByIfId" parameterType="int" resultMap="ifSysMockResultMap">
+     <![CDATA[ 
+		select 
+		am.ID,
+		am.IF_ID,
+        ii.IF_URL,
+        sys.ADDRESS_URL,
+		am.RSP_CODE_ID,
+		am.REQUEST_JSON,
+		am.RESPONSE_JSON,
+		am.REAL_RSP_CODE,
+		am.REAL_RESPONSE_JSON,
+		am.TEST_RESULT
+        from T_IF_AUTO_MOCK am ,T_IF_INTERFACE ii ,T_IF_SYSTEM sys
+        where am.RSP_CODE_ID=(
+        select ID from T_IF_RETRUN_CODE re where IF_ID=#{ifId} and RSP_CODE='00000' and re.STATUS='Y')
+         and am.IF_ID=ii.ID
+and ii.IF_SYS_ID=sys.ID
+        and am.STATUS='Y' 
 
+		 
+      ]]>
+	</select>
+	
+	
+	
 	<!-- 根据筛选条件获取测试数据信息 chenkuan @2015-12-08 -->
 	<select id="filterMocksByStatus" parameterType="String" resultMap="ifSysMockResultMap">
 		<![CDATA[

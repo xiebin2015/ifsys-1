@@ -1,51 +1,12 @@
 
-<<<<<<< HEAD
-*.xml
-
-pay-autotest/.idea/.name
+ifsys/src/main/webapp/webapp.iml
 
 *.iml
-=======
-*.iml
-
-*.iml
-
-pay-autotest/.idea/.name
-
-pay-autotest/pay-autotest-script/pay-autotest-script.iml
-
-*.xml
-
-*.iml
-
-pay-autotest/pay-autotest-script/pay-autotest-script.iml
-
-pay-autotest/pay-autotest-script/pay-autotest-script.iml
-
-pay-autotest/pay-autotest-script/pay-autotest-script.iml
-
-pay-autotest/pay-autotest-script/pay-autotest-script.iml
-
-pay-autotest/pay-autotest-script/pay-autotest-script.iml
-
-pay-autotest/pay-autotest-script/pay-autotest-script.iml
-<<<<<<< HEAD
->>>>>>> master
-
-pay-autotest/pay-autotest-script/pay-autotest-script.iml
-=======
->>>>>>> master
-
-.idea/.name
 
 *.ipr
 
 *.iws
 
-*.iml
+.idea/.name
 
-*.iml
-
-pay-autotest/pay-autotest-threadpool/pay-autotest-threadpool.iml
-
-pay-autotest/pay-autotest-web/pay-autotest-web.iml
+*.xml
