@@ -141,12 +141,12 @@ public class IfSysMockAddReqDto extends RequestDto {
 	}
 	
 	public String validation(){
-		if(StringUtil.isBlank(this.rspCode)){
-			return CodeItem.RETURN_CODE_IS_NULL;
-		}
-		if(StringUtil.isBlank(this.requestJson)){
-			return CodeItem.REQ_JSON_IS_NULL;
-		}
+//		if(StringUtil.isBlank(this.rspCode)){
+//			return CodeItem.RETURN_CODE_IS_NULL;
+//		}
+//		if(StringUtil.isBlank(this.requestJson)){
+//			return CodeItem.REQ_JSON_IS_NULL;
+//		}
 		return SysCode.SUCCESS;
 	}
    

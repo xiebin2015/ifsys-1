@@ -87,6 +87,33 @@ $(function() {
 	})
 
 
+	//点击修改按钮进入可编辑状态
+	$(document).on("click",".upDaBtn",function(){
+		var $ele = $(this).parent().parent().find("pre");
+		$ele.attr("contenteditable","true")
+		$ele[0].focus(); 
+	});
+
+	//保存修改的返回码数据
+	$(document).on("click",".addRspBtn",function(){
+		var $ele = $(this).parent().parent();
+		var sendData = {};
+		sendData.id = $ele.find(".hideInp").attr("data-id");
+		sendData.ifId = $ele.find(".hideInp").attr("data-ifId");
+		sendData.requestJson = $ele.find(".reqJson").html();
+		sendData.responseJson = $ele.find(".rspJson").html();
+		
+		gigold.pay.interFace.ajaxHandler({
+				"url":"autotest/updateifsysmock.do",
+				"data":JSON.stringify(sendData),
+				"onSuccess":function(data){
+					if (data.rspCd == "00000") {
+						alert("保存成功")
+	              }
+				}
+			});
+	});
+	
 	//加载接口信息
 	getAjaxData({
 		"pageNum": 1
@@ -144,10 +171,13 @@ $(function() {
 						var htmlStr="";
 						var size=data.interFaceInfo.mockList.length;
 						$.each(data.interFaceInfo.mockList,function(index,mock){
-							$(divObj).find("#rspCd").html(mock.rspCode);
-							$(divObj).find("#rspCdDesc").html(mock.rspCodeDesc);
-							$(divObj).find("#reqJson").html(mock.requestJson);
-							$(divObj).find("#rspJson").html(mock.responseJson);
+							console.log(mock.id)
+							$(divObj).find(".hideInp").attr("data-id",mock.id);
+							$(divObj).find(".hideInp").attr("data-ifId",mock.ifId);
+							$(divObj).find(".rspCd").html(mock.rspCode);
+							$(divObj).find("rspCdDesc").html(mock.rspCodeDesc);
+							$(divObj).find(".reqJson").html(mock.requestJson);
+							$(divObj).find(".rspJson").html(mock.responseJson);
 							htmlStr+=$(divObj).parent().html();
 						});
 						$(".am-modal-bd").html(htmlStr);
