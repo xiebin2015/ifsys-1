@@ -38,10 +38,23 @@ public class IfSysMock {
 	private String ifURL;
 	private String ifPROTOCOL;
 	private String ifDESC;
+	private String addressUrl;
     
 	
 	
 	
+	/**
+	 * @return the addressUrl
+	 */
+	public String getAddressUrl() {
+		return addressUrl;
+	}
+	/**
+	 * @param addressUrl the addressUrl to set
+	 */
+	public void setAddressUrl(String addressUrl) {
+		this.addressUrl = addressUrl;
+	}
 	/**
 	 * @return the rspCodeDesc
 	 */
