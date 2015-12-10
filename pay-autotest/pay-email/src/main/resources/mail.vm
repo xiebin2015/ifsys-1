@@ -1,15 +1,21 @@
 <html>
+<head>
+    <style type="text/css">
+    table { border-collapse: collapse; }
+    th,td { border: 1px solid #888; }
+    .failed{background:#aa2116;color:#fff}
+    .passed{background:#1d953f;color:#fff}
+    .problem{background:#dea32c;color:#fff}
+    .unknow{background:#46485f;color:#fff}
+    </style>
+</head>
+<body>
 亲爱的${username}  同学
   
 欢迎加入独孤九剑 接口自动化测试!   
-
+<br>
 当你收到这封邮件的时候，表示你关注的
-
-<style type="text/css">
-table { border-collapse: collapse; }
-th,td { border: 1px solid #888; }
-</style>
-
+<br>
 <table>
     <tr>
         <td>接口id</td>
@@ -27,6 +33,37 @@ th,td { border: 1px solid #888; }
         <tr>
             <td rowspan='2'>$mock.getIfId()</td>
             <td rowspan='2'>$mock.getIfName()</td>
+<<<<<<< HEAD
+            <td rowspan='2' title='$mock.getIfDESC()'>$mock.getIfDESC()</td>
+            <td>预期:$mock.getRspCode()</td>
+            <td rowspan='2'>$mock.getRequestJson()</td>
+            <td>预期:$mock.getResponseJson()</td>
+            <td rowspan='2' class='
+                        #if($mock.getRealRspCode()==0)
+                            failed
+                        #else if($mock.getRealRspCode()==1)
+                            passed
+                        #else if($mock.getRealRspCode()==-1)
+                            problem
+                        #else
+                            unknow
+                        #end
+            '>$mock.getTestResult()</td>
+            <td rowspan='2'><a href='$mock.getIfURL()'>$mock.getIfURL()</a></td>
+            <td rowspan='2'>$mock.getIfPROTOCOL()</td>
+        </tr>
+        <tr><td class='
+            #if($mock.getRealRspCode()==0)
+                failed
+            #else if($mock.getRealRspCode()==1)
+                passed
+            #else if($mock.getRealRspCode()==-1)
+                problem
+            #else
+                unknow
+            #end
+            '>实际:$mock.getRealRspCode()</td>
+=======
             <td rowspan='2'>$mock.getIfDESC()</td>
             <td>预期:$mock.getRspCode()</td>
             <td rowspan='2'>$mock.getRequestJson()</td>
@@ -37,10 +74,14 @@ th,td { border: 1px solid #888; }
         </tr>
         <tr>
             <td>实际:$mock.getRealRspCode()</td>
+>>>>>>> mailModel
             <td>实际:$mock.getRealResponseJson()</td>
         </tr>
     #end
 </table>
     祝工作愉快
+
+    </body>
+    </html>
      
      

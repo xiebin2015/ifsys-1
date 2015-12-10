@@ -87,6 +87,53 @@ $(function() {
 	})
 
 
+	//点击修改按钮进入可编辑状态
+	$(document).on("click",".upDaBtn",function(){
+		var $ele = $(this).parent().parent();
+		$ele.find("pre").attr("contenteditable","true")
+		$ele.find("pre")[0].focus(); 
+		$ele.find(".addRspBtn").removeClass("am-disabled");
+	});
+
+	//保存修改的返回码数据
+	$(document).on("click",".addRspBtn",function(){
+		var $ele = $(this).parent().parent();
+		var sendData = {};
+		sendData.id = $ele.find(".hideInp").attr("data-id");
+		sendData.ifId = $ele.find(".hideInp").attr("data-ifId");
+		sendData.requestJson = $ele.find(".reqJson").html();
+		sendData.responseJson = $ele.find(".rspJson").html();
+		
+		gigold.pay.interFace.ajaxHandler({
+				"url":"autotest/updateifsysmock.do",
+				"data":JSON.stringify(sendData),
+				"onSuccess":function(data){
+					if (data.rspCd == "00000") {
+						alert("保存成功");
+						$ele.find(".addRspBtn").addClass("am-disabled");
+	              }
+				}
+			});
+			
+	});
+	
+	
+	//删除返回码模块
+	$(document).on("click",".delBtn",function(){
+		var $ele = $(this).parent().parent();
+		var sendData = {};
+		sendData.id = $ele.find(".hideInp").attr("data-id");
+		gigold.pay.interFace.ajaxHandler({
+				"url":"autotest/deleteifsysmockbyid.do",
+				"data":JSON.stringify(sendData),
+				"onSuccess":function(data){
+					if (data.rspCd == "00000") {
+						$($ele).remove();
+	              }
+				}
+			});
+	});
+	
 	//加载接口信息
 	getAjaxData({
 		"pageNum": 1
@@ -144,10 +191,13 @@ $(function() {
 						var htmlStr="";
 						var size=data.interFaceInfo.mockList.length;
 						$.each(data.interFaceInfo.mockList,function(index,mock){
-							$(divObj).find("#rspCd").html(mock.rspCode);
-							$(divObj).find("#rspCdDesc").html(mock.rspCodeDesc);
-							$(divObj).find("#reqJson").html(mock.requestJson);
-							$(divObj).find("#rspJson").html(mock.responseJson);
+							console.log(mock.id)
+							$(divObj).find(".hideInp").attr("data-id",mock.id);
+							$(divObj).find(".hideInp").attr("data-ifId",mock.ifId);
+							$(divObj).find(".rspCd").html(mock.rspCode);
+							$(divObj).find(".rspCdDesc").html(mock.rspCodeDesc);
+							$(divObj).find(".reqJson").html(mock.requestJson);
+							$(divObj).find(".rspJson").html(mock.responseJson);
 							htmlStr+=$(divObj).parent().html();
 						});
 						$(".am-modal-bd").html(htmlStr);

@@ -18,6 +18,7 @@
 		<result property="ifURL" column="IF_URL" />
 		<result property="ifPROTOCOL" column="IF_PROTOCOL" />
 		<result property="ifDESC" column="IF_DESC" />
+		<result property="addressUrl" column="ADDRESS_URL" />
 
 	</resultMap>
 
@@ -133,6 +134,33 @@
 		 
       ]]>
 	</select>
+	<!-- 根据接口ID获取依赖接口的测试数据 -->
+	<select id="getReferByIfId" parameterType="int" resultMap="ifSysMockResultMap">
+     <![CDATA[ 
+		select 
+		am.ID,
+		am.IF_ID,
+        ii.IF_URL,
+        sys.ADDRESS_URL,
+		am.RSP_CODE_ID,
+		am.REQUEST_JSON,
+		am.RESPONSE_JSON,
+		am.REAL_RSP_CODE,
+		am.REAL_RESPONSE_JSON,
+		am.TEST_RESULT
+        from T_IF_AUTO_MOCK am ,T_IF_INTERFACE ii ,T_IF_SYSTEM sys
+        where am.RSP_CODE_ID=(
+        select ID from T_IF_RETRUN_CODE re where IF_ID=#{ifId} and RSP_CODE='00000' and re.STATUS='Y')
+         and am.IF_ID=ii.ID
+and ii.IF_SYS_ID=sys.ID
+        and am.STATUS='Y' 
+
+		 
+      ]]>
+	</select>
+	
+	
+	
 	<!-- 根据筛选条件获取测试数据信息 chenkuan @2015-12-08 -->
 	<select id="filterMocksByStatus" parameterType="String" resultMap="ifSysMockResultMap">
 		<![CDATA[

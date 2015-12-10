@@ -36,7 +36,7 @@ public class IfsysCheckThreadPool {
 	InterFaceService interFaceService;
 	// 获取核心数
 	private static final int CPUCORECOUNT = Runtime.getRuntime().availableProcessors();
-	private static final ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT + 1);
+	private static final ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT*2 + 1);
 
 	public TestResulteData execute() {
 		// 测试数据
@@ -59,28 +59,6 @@ public class IfsysCheckThreadPool {
 		}
 
 		return testResulteData;
-	}
-	
-	
-	
-	public void initMock() {
-		// 当前页
-		int curPageNum = 1;
-		// 总页数
-		int pages = 1;
-		while (curPageNum <= pages) {
-			PageInfo<InterFaceInfo> pageInfo = interFaceService.getAllIfSys(curPageNum);
-			List<InterFaceInfo> ifsyslist = pageInfo.getList();
-			// 创建线程 用户初始化测试数据
-			Runnable worker = new InitMockTread(ifsyslist);
-			executor.execute(worker);
-			pages = pageInfo.getPages();
-			curPageNum++;
-		}
-		executor.shutdown();
-		while (!executor.isTerminated()) { //
-		}
-
 	}
 
 }
