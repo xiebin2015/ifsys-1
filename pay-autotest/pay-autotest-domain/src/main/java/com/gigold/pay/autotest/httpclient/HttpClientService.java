@@ -2,30 +2,25 @@ package com.gigold.pay.autotest.httpclient;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnRouteParams;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
-import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.core.Domain;
-import com.gigold.pay.framework.core.log.DomainLogger;
-
-import net.sf.json.JSONObject;
 
 /**
  * 
@@ -38,13 +33,14 @@ import net.sf.json.JSONObject;
  *
  */
 @Service
-@SuppressWarnings("restriction")
 public class HttpClientService extends Domain{
+	/** serialVersionUID */
+	private static final long serialVersionUID = 1L;
 	// 建立http连接超时，单位毫秒
 	private static int CONNECT_TIMEOUT = 30 * 1000;
 	private static int SO_TIMEOUT = 30 * 1000;
 	private static String CHARSET="UTF-8";
-
+	CookieStore cookieStore=new BasicCookieStore();
 	/**
 	 * 
 	 * Title: setTimeOut<br/>
@@ -92,8 +88,9 @@ public class HttpClientService extends Domain{
 	 */
 	public String httpPost(String url, String postData) {
 		String responseData = "";
-		HttpClient httpclient = getHttpClient();
-
+		DefaultHttpClient httpclient = getHttpClient();
+		//设置cookies
+		httpclient.setCookieStore(cookieStore);
 		HttpPost httppost = createPostMethed(url);
 		// 设置超时
 		setTimeOut(httpclient);
@@ -108,6 +105,8 @@ public class HttpClientService extends Domain{
 
 		try {
 			HttpResponse response = httpclient.execute(httppost);
+			//获取cookies
+			cookieStore=httpclient.getCookieStore();
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == 200) {
 				/* 读返回数据 */
@@ -127,32 +126,6 @@ public class HttpClientService extends Domain{
 
 	
 
-	/**
-	 * 
-	 * Title: httpClientRequest<br/>
-	 * POST 请求访问接口 交互数据格式 JSON: <br/>
-	 * 
-	 * @author xiebin
-	 * @date 2015年11月6日下午1:40:14
-	 *
-	 * @param url
-	 * @param dto
-	 * @return
-	 */
-	public Map<String, Object> httpClientRequest(String url, Map<String, ?> paramMap) {
-
-		Map<String, Object> responseMap = new HashMap<String, Object>();
-		JSONObject jsonObject = JSONObject.fromObject(paramMap);
-		// 获取HTF请求报文
-		String requestBody ="";
-		String responseBody = "";
-		// 调用httpClient访问htf接口
-		if (StringUtils.isNotBlank(requestBody)) {
-			responseBody = ((HttpClientService) SpringContextHolder.getBean(HttpClientService.class)).httpPost(url,
-					requestBody);
-		}
-		return responseMap;
-	}
 
 	public HttpPost createPostMethed(String url) {
 		HttpPost httpPost = new HttpPost(url);
@@ -163,7 +136,7 @@ public class HttpClientService extends Domain{
 		return new HttpGet(url);
 	}
 
-	public HttpClient getHttpClient() {
+	public DefaultHttpClient getHttpClient() {
 		return new DefaultHttpClient();
 	}
 

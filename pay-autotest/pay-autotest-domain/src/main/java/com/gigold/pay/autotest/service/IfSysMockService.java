@@ -228,7 +228,25 @@ public class IfSysMockService {
 		}
 		return ifmock;
 	}
-
+	/**
+	 * 
+	 * Title: getReferByIfId<br/>
+	 * Description: 根据接口ID获取依赖接口的测试数据<br/>
+	 * @author xiebin
+	 * @date 2015年12月10日上午10:26:03
+	 *
+	 * @param ifId
+	 * @return
+	 */
+	public IfSysMock getReferByIfId(int ifId){
+		IfSysMock ifmock = null;
+		try {
+			ifmock = ifSysMockDao.getReferByIfId(ifId);
+		} catch (Exception e) {
+			ifmock = null;
+		}
+		return ifmock;
+	}
 	
 	/**
 	 * 
