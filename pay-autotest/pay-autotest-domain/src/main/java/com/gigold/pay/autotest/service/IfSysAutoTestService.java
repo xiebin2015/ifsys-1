@@ -7,6 +7,7 @@
  */
 package com.gigold.pay.autotest.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class IfSysAutoTestService extends Domain {
 		try {
 			jsonObject = JSONObject.fromObject(responseJson);
 		} catch (Exception e) {
-           
+
 		}
 		String relRspCode = String.valueOf(jsonObject.get("rspCd"));
 		ifsysmock.setRealRspCode(relRspCode);
@@ -81,46 +82,62 @@ public class IfSysAutoTestService extends Domain {
 	 * @param interFaceInfo
 	 */
 	public void autoTest(InterFaceInfo interFaceInfo) {
-		String url = getAddressUrl(interFaceInfo.getAddressUrl(),interFaceInfo.getIfUrl());
-		for (IfSysMock mock : interFaceInfo.getMockList()) {
-			mock.setAddressUrl(url);
-			postHandler(mock);
-		}
-	}
-    /**
-     * 
-     * Title: postHandler<br/>
-     * Description: 递归调用依赖关系br/>
-     * @author xiebin
-     * @date 2015年12月10日上午10:53:55
-     *
-     * @param mock
-     */
-	public void postHandler(IfSysMock mock) {
-		// 获取被测接口依赖其他接口的列表
-		List<IfSysRefer> referList = ifSysReferService.getReferList(mock.getIfId());
-		// 如果为空则直接测试接口
-		if (referList == null || referList.size() == 0) {
+		String url = getAddressUrl(interFaceInfo.getAddressUrl(), interFaceInfo.getIfUrl());
+		// 1、获取接口调用时依赖的接口调用列表
+		List<IfSysMock> invokerOrderList = new ArrayList<IfSysMock>();
+		invokerOrder(invokerOrderList, interFaceInfo.getId());
+		// 2、依次调用被依赖的接口
+		for (int i = invokerOrderList.size() - 1; i >= 0; i--) {
+			IfSysMock mock = invokerOrderList.get(i);
 			/**
-			 *  调用HTTP请求
+			 * 调用HTTP请求
 			 */
 			// 期望请求报文
 			String postData = mock.getRequestJson();
 			// 实际请求后，返回的报文（返回码和返回实体）
-			String responseJson = httpClientService.httpPost(mock.getAddressUrl(), postData);
-			// 实际结果回写
-			writeBackContent(mock, responseJson);
-		} else {
-			// 如果有依赖 遍历依赖 列表
-			for (IfSysRefer refer : referList) {
-				// 获取依赖的接口
-				mock = ifSysMockService.getReferByIfId(refer.getIfId());
-				String url = getAddressUrl(mock.getAddressUrl(),mock.getIfURL());
-				mock.setAddressUrl(url);
-				postHandler(mock);
-			}
+			httpClientService.httpPost(mock.getAddressUrl(), postData);
+
 		}
 
+		// 3、最后调用目标接口
+		for (IfSysMock mock : interFaceInfo.getMockList()) {
+			/**
+			 * 调用HTTP请求
+			 */
+			// 期望请求报文
+			String postData = mock.getRequestJson();
+			// 实际请求后，返回的报文（返回码和返回实体）
+			String responseJson = httpClientService.httpPost(url, postData);
+			// 实际结果回写
+			writeBackContent(mock, responseJson);
+
+		}
+	}
+
+	/**
+	 * 
+	 * Title: invokerOrder<br/>
+	 * Description: 获取接口调用时依赖的接口调用列表 确定接口调用顺序<br/>
+	 * 
+	 * @author xiebin
+	 * @date 2015年12月10日下午4:06:23
+	 *
+	 * @param invokerOrderList
+	 * @param ifId
+	 */
+	public void invokerOrder(List<IfSysMock> invokerOrderList, int ifId) {
+		// 获取被测接口依赖其他接口的列表
+		List<IfSysRefer> referList = ifSysReferService.getReferList(ifId);
+		// 如果有依赖 遍历依赖 列表
+		for (int i = referList.size() - 1; i >= 0; i--) {
+			IfSysRefer refer = referList.get(i);
+			// 获取被依赖的接口
+			IfSysMock mock = ifSysMockService.getReferByIfId(refer.getRefId());
+			String url = getAddressUrl(mock.getAddressUrl(), mock.getIfURL());
+			mock.setAddressUrl(url);
+			invokerOrderList.add(mock);
+			invokerOrder(invokerOrderList, mock.getIfId());
+		}
 	}
 
 	/**
@@ -134,7 +151,7 @@ public class IfSysAutoTestService extends Domain {
 	 * @param interFaceInfo
 	 * @return
 	 */
-	public String getAddressUrl(String url,String action) {
+	public String getAddressUrl(String url, String action) {
 		String addressUrl = "";
 		if (StringUtil.isNotBlank(url) && StringUtil.isNotBlank(action)) {
 			if (url.endsWith("/")) {

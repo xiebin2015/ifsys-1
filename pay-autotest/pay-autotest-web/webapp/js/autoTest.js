@@ -195,7 +195,7 @@ $(function() {
 							$(divObj).find(".hideInp").attr("data-id",mock.id);
 							$(divObj).find(".hideInp").attr("data-ifId",mock.ifId);
 							$(divObj).find(".rspCd").html(mock.rspCode);
-							$(divObj).find("rspCdDesc").html(mock.rspCodeDesc);
+							$(divObj).find(".rspCdDesc").html(mock.rspCodeDesc);
 							$(divObj).find(".reqJson").html(mock.requestJson);
 							$(divObj).find(".rspJson").html(mock.responseJson);
 							htmlStr+=$(divObj).parent().html();
