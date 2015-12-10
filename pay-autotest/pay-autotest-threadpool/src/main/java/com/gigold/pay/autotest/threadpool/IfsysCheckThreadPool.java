@@ -62,7 +62,14 @@ public class IfsysCheckThreadPool {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * Title: initMock<br/>
+	 * Description: 线程池初始化测试数据<br/>
+	 * @author xiebin
+	 * @date 2015年12月9日下午4:21:09
+	 *
+	 */
 	public void initMock() {
 		// 当前页
 		int curPageNum = 1;
@@ -71,7 +78,7 @@ public class IfsysCheckThreadPool {
 		while (curPageNum <= pages) {
 			PageInfo<InterFaceInfo> pageInfo = interFaceService.getAllIfSys(curPageNum);
 			List<InterFaceInfo> ifsyslist = pageInfo.getList();
-			// 创建线程 用户初始化测试数据
+			// 创建线程 用于初始化测试数据
 			Runnable worker = new InitMockTread(ifsyslist);
 			executor.execute(worker);
 			pages = pageInfo.getPages();
