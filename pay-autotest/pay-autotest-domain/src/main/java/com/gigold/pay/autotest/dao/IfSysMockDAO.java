@@ -71,6 +71,17 @@ public interface IfSysMockDAO {
 	 * @return
 	 */
 	public IfSysMock getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock);  
+	/**
+	 * 
+	 * Title: getReferByIfId<br/>
+	 * Description: 根据接口ID获取依赖接口的测试数据<br/>
+	 * @author xiebin
+	 * @date 2015年12月10日上午10:25:22
+	 *
+	 * @param ifId
+	 * @return
+	 */
+	public IfSysMock getReferByIfId(int ifId);  
 
 	/**
 	 *
