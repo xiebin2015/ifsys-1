@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-亲爱的${username}  同学
+大家好:
   
 欢迎加入独孤九剑 接口自动化测试!   
 <br>
@@ -33,7 +33,6 @@
         <tr>
             <td rowspan='2'>$mock.getIfId()</td>
             <td rowspan='2'>$mock.getIfName()</td>
-<<<<<<< HEAD
             <td rowspan='2' title='$mock.getIfDESC()'>$mock.getIfDESC()</td>
             <td>预期:$mock.getRspCode()</td>
             <td rowspan='2'>$mock.getRequestJson()</td>
@@ -63,7 +62,6 @@
                 unknow
             #end
             '>实际:$mock.getRealRspCode()</td>
-=======
             <td rowspan='2'>$mock.getIfDESC()</td>
             <td>预期:$mock.getRspCode()</td>
             <td rowspan='2'>$mock.getRequestJson()</td>
@@ -74,7 +72,6 @@
         </tr>
         <tr>
             <td>实际:$mock.getRealRspCode()</td>
->>>>>>> mailModel
             <td>实际:$mock.getRealResponseJson()</td>
         </tr>
     #end
