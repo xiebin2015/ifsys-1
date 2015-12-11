@@ -43,9 +43,15 @@ input{
 .disNone{
 	display: none !important;
 }
-.am-g input{
+.am-g input,textarea{
 	color: #0084C7;
+	border:1px solid #aaa;
 }
+.am-g textarea{
+	resize: none;
+	
+}
+
 
 .titleH1{
 	display: inline-block;

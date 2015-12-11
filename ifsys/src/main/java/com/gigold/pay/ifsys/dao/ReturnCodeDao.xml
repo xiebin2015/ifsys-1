@@ -39,13 +39,15 @@
 
 	<!-- 修改返回码 -->
 	<update id="updateReturnCodeById" parameterType="com.gigold.pay.ifsys.bo.ReturnCode">
-        <![CDATA[  
         update T_IF_RETRUN_CODE
         set
+        <if test="rspCode!=null and rspCode!=''">
         RSP_CODE=#{rspCode},
+        </if>
+        <if test="rspCodeDesc!=null and rspCodeDesc!=''">
         RSP_CODE_DESC=#{rspCodeDesc}
+        </if>
         where ID=#{id}
-        ]]>
 	</update>
 
 	<!-- 根据接口ID获取所有返回码列表 -->
