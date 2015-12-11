@@ -40,13 +40,14 @@
 	<!-- 修改返回码 -->
 	<update id="updateReturnCodeById" parameterType="com.gigold.pay.ifsys.bo.ReturnCode">
         update T_IF_RETRUN_CODE
-        set
+        <set>
         <if test="rspCode!=null and rspCode!=''">
         RSP_CODE=#{rspCode},
         </if>
         <if test="rspCodeDesc!=null and rspCodeDesc!=''">
         RSP_CODE_DESC=#{rspCodeDesc}
         </if>
+        </set>
         where ID=#{id}
 	</update>
 
