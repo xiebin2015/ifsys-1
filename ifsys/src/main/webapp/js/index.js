@@ -24,8 +24,8 @@
 				               	$(".navHint").show();
 				               }
 				               if(data.rspCd=="00000"){
-				            	   cacheService.setProterties("id",data.userInfo.id);
-				            	   alert(cacheService.getProterties("id"));
+				            	   //设置参数
+				            	   cacheService.setProterties("userInfo",data.userInfo);
 			                       window.location.href="main.html?userName="+data.userInfo.userName
 			                   }
 				            }
