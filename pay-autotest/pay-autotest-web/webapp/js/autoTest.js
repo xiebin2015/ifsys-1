@@ -33,7 +33,7 @@ $(function() {
 			"onSuccess": function(data) {
 				if (data.rspCd == "00000") {
 					$("#ifProId").removeAttr("disabled");
-					var optionStr = '<option value="0" selected>请选择产品</option>';
+					var optionStr = '<option value="0">请选择产品</option>';
 					$.each(data.proList, function(index, proData) {
 						optionStr += '<option value="' + proData.id + '">' + proData.proName + '</option>';
 
@@ -116,7 +116,6 @@ $(function() {
 			});
 			
 	});
-	
 	
 	//删除返回码模块
 	$(document).on("click",".delBtn",function(){
