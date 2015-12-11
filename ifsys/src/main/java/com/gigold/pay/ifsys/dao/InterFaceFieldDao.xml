@@ -61,13 +61,13 @@
 	<!-- 获取某个接口的所有字段 -->
 	<select id="getFieldByIfId" parameterType="com.gigold.pay.ifsys.bo.InterFaceField"
 		resultMap="fieldResultMap">
-        select *
-        from T_IF_FIELD
-        where IF_ID=#{ifId} and ISVALID='Y'
-        <if test="fieldFlag != null">  
-         and FIELD_FLAG=#{fieldFlag} 
-       </if>  
-       
+		select *
+		from T_IF_FIELD
+		where IF_ID=#{ifId} and ISVALID='Y'
+		<if test="fieldFlag != null">
+			and FIELD_FLAG=#{fieldFlag}
+		</if>
+
 	</select>
 
 
@@ -112,18 +112,24 @@
         ]]>
 	</delete>
 	<update id="updateInterFaceField" parameterType="com.gigold.pay.ifsys.bo.InterFaceField">
-        <![CDATA[  
-        update T_IF_FIELD
-        set
-        FIELD_NAME=#{fieldName},
-        FIELD_DESC=#{fieldDesc},
-        FIELD_CHECK=#{fieldCheck},
-        FIELD_REFER_VALUE=#{fieldReferValue}
-        where ID=#{id}  and ISVALID='Y'
-        ]]>
-    </update>
-	
-	
+		update T_IF_FIELD
+		set
+		<if test="fieldName!=null and fieldName!=''">
+			FIELD_NAME=#{fieldName},
+		</if>
+		<if test="fieldDesc!=null and fieldDesc!=''">
+			FIELD_DESC=#{fieldDesc},
+		</if>
+		<if test="fieldCheck!=null and fieldCheck!=''">
+			FIELD_CHECK=#{fieldCheck},
+		</if>
+		<if test="fieldReferValue!=null and fieldReferValue!=''">
+			FIELD_REFER_VALUE=#{fieldReferValue}
+		</if>
+		where ID=#{id} and ISVALID='Y'
+	</update>
+
+
 
 </mapper>
  
