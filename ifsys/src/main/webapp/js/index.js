@@ -24,7 +24,8 @@
 				               	$(".navHint").show();
 				               }
 				               if(data.rspCd=="00000"){
-				            	   console.log(data);
+				            	   cacheService.setProterties("id",data.userInfo.id);
+				            	   alert(cacheService.getProterties("id"));
 			                       window.location.href="main.html?userName="+data.userInfo.userName
 			                   }
 				            }

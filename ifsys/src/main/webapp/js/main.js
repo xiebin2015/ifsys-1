@@ -61,7 +61,6 @@ function loadInterFacePage(params) {
 }
 
 $(function() {
-
 	$(".loggxnxi").html("登录用户：<span class='colorBlue'>" + $.getUrlParam("userName") + " </span>");
 	// 查询接口（首页）,用户信息
 	$(".QueryInterface").on("click", function() {
