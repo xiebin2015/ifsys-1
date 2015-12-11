@@ -152,7 +152,7 @@
 
 	<update id="updateInterFace" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo">
 		update T_IF_INTERFACE
-		set
+		<set>
 		<if test="ifName!=null and ifName!=''">
 			IF_NAME=#{ifName},
 		</if>
@@ -178,8 +178,9 @@
 			IF_DUBBO_VERSION=#{methodVersion},
 		</if>
 		<if test="method!=null and method!=''">
-			IF_METHOD=#{method}
+			IF_METHOD=#{method},
 		</if>
+		</set>
 		where ID=#{id}
 	</update>
 
