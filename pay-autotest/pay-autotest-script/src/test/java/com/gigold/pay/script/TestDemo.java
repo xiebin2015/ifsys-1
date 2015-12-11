@@ -80,14 +80,13 @@ public class TestDemo {
 
 		// 抄送人地址
 		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
-		for( int i=0;i<copyList.length;i++){
-			addressTo.add(copyList[i]);
-		}
-		//addressTo.add("xiebin@gigold.com");
-		//addressTo.add("chenhl@gigold.com");
+//		for( int i=0;i<copyList.length;i++){
+//			addressTo.add(copyList[i]);
+//		}
 		addressTo.add("chenkuan@gigold.com");
 		// 设置收件人地址
 		mailSenderService.setTo(addressTo);
+		mailSenderService.setCc(copyList);
 		// 设置标题
 		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
 		// 设置模版名
