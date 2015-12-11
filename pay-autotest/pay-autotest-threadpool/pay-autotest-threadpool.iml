@@ -21,7 +21,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />
     <orderEntry type="module" module-name="pay-autotest-domain" />
     <orderEntry type="module" module-name="pay-email" />
-    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.0.1" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: net.sf.json-lib:json-lib:jdk15:2.4" level="project" />
@@ -38,6 +38,7 @@
     <orderEntry type="library" name="Maven: com.gigold.pay:pay-framework-jms:0.1.2-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.gigold.pay:pay-framework-core:0.1.2-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.gigold.pay:pay-framework-web:0.1.2-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.gigold.pay:pay-framework-repeat:0.1.2-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.1.6.RELEASE" level="project" />
