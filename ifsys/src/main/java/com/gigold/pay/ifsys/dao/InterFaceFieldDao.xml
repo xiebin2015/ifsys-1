@@ -113,7 +113,7 @@
 	</delete>
 	<update id="updateInterFaceField" parameterType="com.gigold.pay.ifsys.bo.InterFaceField">
 		update T_IF_FIELD
-		set
+		<set>
 		<if test="fieldName!=null and fieldName!=''">
 			FIELD_NAME=#{fieldName},
 		</if>
@@ -126,6 +126,7 @@
 		<if test="fieldReferValue!=null and fieldReferValue!=''">
 			FIELD_REFER_VALUE=#{fieldReferValue}
 		</if>
+		</set>
 		where ID=#{id} and ISVALID='Y'
 	</update>
 
