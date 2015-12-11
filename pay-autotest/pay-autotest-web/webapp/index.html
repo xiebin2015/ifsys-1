@@ -21,14 +21,10 @@
 				<strong class="am-text-lg">自动测试</strong>
 			</div>
 		</div>
-		<form data-am-validator id="srearchFrom">
+		<form id="srearchFrom">
 			<div class="serchBox rightBtn">
-				<select data-am-selected id="ifSysId">
-				<option value="0" selected="selected">请选择系统</option>
-				</select>
-				<select data-am-selected disabled id="ifProId">
-				<option value="0" selected="selected">请选择产品</option>
-				</select>
+				<select data-am-selected id="ifSysId"></select>
+				<select data-am-selected disabled id="ifProId"></select>
 				<input id="ifName" name="ifName" placeholder="输入需要查找的内容" />
 				<i class="am-icon-search" id="search"></i>
 			</div>
@@ -73,7 +69,7 @@
 		</div>
 	</div>
 
-<div  style="display: none"><div class="rspBox">
+<div><div class="rspBox" style="display: none">
 					<input type="hidden" class="hideInp"  />
 					<p>
 						<span class="rspCd">00000:</span>
