@@ -35,4 +35,22 @@ gigold.pay.interFace.ajaxHandler = function(options) {
 }
 
 
+/**
+ * 利用 window.localStorage 实现本地缓存管理 可以用来页面之间传参
+ */
+var cacheService= (function(){
+	return {
+		getProterties:function(key){
+			return window.localStorage[key];
+			
+		},
+		setProterties:function(key,value){
+			window.localStorage.key=value;
+		}
+	}
+})()
+	
+	
+	
+
 
