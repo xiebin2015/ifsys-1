@@ -7,6 +7,7 @@
  */
 package com.gigold.pay.autotest.bo;
 
+import org.omg.CORBA.portable.Streamable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -39,8 +40,71 @@ public class IfSysMock {
 	private String ifPROTOCOL;
 	private String ifDESC;
 	private String addressUrl;
-    
-	
+
+	//接口关注者信息
+	private int followedId;
+	private int followId;
+	private int Uid;
+	private String status;
+	private String remark;
+	private String email;
+	private String username;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public int getFollowedId() {
+		return followedId;
+	}
+
+	public void setFollowedId(int followdid) {
+		this.followedId = followdid;
+	}
+
+	public int getFollowId() {
+		return followId;
+	}
+
+	public void setFollowId(int followId) {
+		this.followId = followId;
+	}
+
+	public int getUid() {
+		return Uid;
+	}
+
+	public void setUid(int uid) {
+		Uid = uid;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 	
 	
 	/**

@@ -16,11 +16,11 @@
     </style>
 </head>
 <body style='width:100%'>
-大家好:<br>
+你好 $resulteMocks.get(0).getUsername():<br>
   
-欢迎加入独孤九剑 接口自动化测试!   
+欢迎加入 独孤九剑 接口自动化测试!
 <br>
-当你收到这封邮件的时候，表示你关注的接口出现了问题
+当你收到这封邮件的时候，表示你关注的接口出现了点问题...
 <br>
 <table>
     <tr class='title'>
@@ -32,6 +32,7 @@
         <td>输出参数</td>
         <td>接口地址</td>
         <td>访问模式</td>
+        <td>关注者</td>
     </tr>
 
     #foreach( $mock in ${resulteMocks})
@@ -68,6 +69,7 @@
             <td class='flexJson'>预期:$mock.getResponseJson()</td>
             <td rowspan='2'><a href='$mock.getIfURL()'>$mock.getIfURL()</a></td>
             <td rowspan='2'>$mock.getIfPROTOCOL()</td>
+            <td rowspan='2'>$mock.getUsername()</td>
         </tr>
         <tr>
             <td class='$!rspCodeStyle'>实际:$mock.getRealRspCode()</td>
@@ -75,8 +77,6 @@
         </tr>
     #end
 </table>
-
-    祝工作愉快
-
-    </body>
-    </html>
+<br>祝工作愉快!
+</body>
+</html>
