@@ -326,7 +326,7 @@ public class IfSysMockService {
 		// 筛选数据
 		List<IfSysMock> list = null;
 		try {
-			list = ifSysMockDao.filterMocksByFailed();
+			list = ifSysMockDao.filterAllTestedMocks();
 		} catch (Exception e) {
 			list = null;
 		}

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.dubbo.common.json.JSON;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,29 +67,28 @@ public class TestDemo {
 	 *
 	 */
 	public void testSendMail() {
-		 // List<IfSysMock> resulteMocks =
-		 // ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
-		 List<IfSysMock> resulteMocks =
-		 ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
-		 for (int i = 0; i < resulteMocks.size(); i++) {
-		 System.out.println(resulteMocks.get(i).getRspCode());
-		 }
+		// List<IfSysMock> resulteMocks =
+		// ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
+		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
+		for (int i = 0; i < resulteMocks.size(); i++) {
+		System.out.println(resulteMocks.get(i).getTestResult());
+		}
 
-		 List<String> addressTo = new ArrayList<String>();
-		 // addressTo.add("xiebin163126@163.com");
-		 addressTo.add("chenkuan@gigold.com");
-		 // 设置收件人地址
-		 mailSenderService.setTo(addressTo);
-		 // 设置标题
-		 mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
-		 // 设置模版名
-		 mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
+		List<String> addressTo = new ArrayList<String>();
 
-		 Map model = new HashMap();
-		 model.put("resulteMocks", resulteMocks);
-		 model.put("username", "陈宽");
+		// 抄送人地址
 
-		 mailSenderService.sendWithTemplateForHTML(model);
+		addressTo.add("chenkuan@gigold.com");
+		// 设置收件人地址
+		mailSenderService.setTo(addressTo);
+		// 设置标题
+		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+		// 设置模版名
+		mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
+
+		Map model = new HashMap();
+		model.put("resulteMocks", resulteMocks);
+		mailSenderService.sendWithTemplateForHTML(model);
 		System.out.println("邮件发送成功！");
 	}
 }
