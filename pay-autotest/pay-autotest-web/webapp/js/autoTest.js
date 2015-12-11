@@ -18,7 +18,6 @@ $(function() {
 		}
 	});
 	
-	
 	$('#ifSysId').change(function() {
 		var sysId = $(this).children('option:selected').val();
 		var sendData = {
@@ -49,6 +48,16 @@ $(function() {
 			"ifSysId": sysId
 		});
 
+	});
+	$('#ifProId').change(function() {
+		var proId = $(this).children('option:selected').val();
+		getAjaxData({
+			"pageNum": 1,
+			"ifName": $("#ifName").val(),
+			"ifSysId": $("#ifSysId").val(),
+			"ifProId": proId
+
+		});
 	});
 
 	//禁止表单提交
@@ -138,17 +147,7 @@ $(function() {
 		"pageNum": 1
 	});
 
-	$('#ifProId').change(function() {
-		var proId = $(this).children('option:selected').val();
-		getAjaxData({
-			"pageNum": 1,
-			"ifName": $("#ifName").val(),
-			"ifSysId": $("#ifSysId").val(),
-			"ifProId": proId
-
-		});
-	});
-
+	
 	$(document).on("click", ".pageUl li", function() {
 		var textNum = $(this).text();
 		if ("第一页" == textNum) {
@@ -193,7 +192,6 @@ $(function() {
 							htmlStr+='<input type="hidden" class="hideInp" data-id="'+mock.id+'" data-ifId="'+mock.ifId+'" />';
 							htmlStr+='<p><span class="rspCd">'+mock.rspCode+':</span>';
 							htmlStr+='<code class="rspCdDesc">'+mock.rspCodeDesc+'</code></p><hr />';
-							
 							htmlStr+='<p><span >入参:</span><pre class="reqJson">'+mock.requestJson+'</pre></p>';
 							htmlStr+='<p><span >出参:</span><pre class="rspJson">'+mock.responseJson+'</pre></p>';
 							htmlStr+='<div class="bianjiBtn">';
