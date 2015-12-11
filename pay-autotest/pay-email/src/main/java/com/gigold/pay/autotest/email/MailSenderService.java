@@ -15,6 +15,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.Domain;
 
 /**
@@ -39,6 +40,7 @@ public class MailSenderService extends Domain{
 	
 	private String from;
 	private List<String> to;
+	private String [] cc;
 	private String subject;
 	private String content;
 	private String templateName;
@@ -46,6 +48,20 @@ public class MailSenderService extends Domain{
 	private boolean validate = false;
 
 	
+
+	/**
+	 * @return the cc
+	 */
+	public String[] getCc() {
+		return cc;
+	}
+
+	/**
+	 * @param cc the cc to set
+	 */
+	public void setCc(String[] cc) {
+		this.cc = cc;
+	}
 
 	/**
 	 * 
@@ -60,6 +76,7 @@ public class MailSenderService extends Domain{
 		debug("调用模版 发送邮件");
 		mailSender = this.getMailSender();
 		simpleMailMessage.setTo(getAddressTo()); // 接收人
+		simpleMailMessage.setCc(getCc()); // 设置抄送人
 		simpleMailMessage.setFrom(simpleMailMessage.getFrom()); // 发送人,从配置文件中取得
 		simpleMailMessage.setSubject(this.getSubject());
 		String result = null;
@@ -84,6 +101,7 @@ public class MailSenderService extends Domain{
 	public void sendText() {
 		mailSender = this.getMailSender();
 		simpleMailMessage.setTo(getAddressTo()); // 接收人
+		simpleMailMessage.setCc(getCc()); //设置抄送人
 		simpleMailMessage.setFrom(simpleMailMessage.getFrom()); // 发送人,从配置文件中取得
 		simpleMailMessage.setSubject(this.getSubject());
 		simpleMailMessage.setText(this.getContent());
@@ -104,6 +122,7 @@ public class MailSenderService extends Domain{
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
 		try {
 			messageHelper.setTo(getAddressTo());
+			messageHelper.setCc(getCc());
 			messageHelper.setFrom(simpleMailMessage.getFrom());
 			messageHelper.setSubject(this.getSubject());
 			messageHelper.setText(this.getContent(), true);
@@ -128,6 +147,7 @@ public class MailSenderService extends Domain{
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
 		try {
 			messageHelper.setTo(getAddressTo());
+			messageHelper.setCc(getCc());
 			messageHelper.setFrom(simpleMailMessage.getFrom());
 			messageHelper.setSubject(this.getSubject());
 			String result = null;
@@ -135,6 +155,7 @@ public class MailSenderService extends Domain{
 				result = VelocityEngineUtils.mergeTemplateIntoString(this.getVelocityEngine(), this.getTemplateName(),
 						"UTF-8", model);
 			} catch (Exception e) {
+				e.printStackTrace();
 				debug("调用模版失败");
 			}
 			messageHelper.setText(result, true);
@@ -163,6 +184,7 @@ public class MailSenderService extends Domain{
 		try {
 			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
 			messageHelper.setTo(getAddressTo());
+			messageHelper.setCc(getCc());
 			messageHelper.setFrom(simpleMailMessage.getFrom());
 			messageHelper.setSubject(this.getSubject());
 			messageHelper.setText(this.getContent(), true);
@@ -188,6 +210,7 @@ public class MailSenderService extends Domain{
 		try {
 			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
 			messageHelper.setTo(getAddressTo());
+			messageHelper.setCc(getCc());
 			messageHelper.setFrom(simpleMailMessage.getFrom());
 			messageHelper.setSubject(this.getSubject());
 			messageHelper.setText(this.getContent(), true);

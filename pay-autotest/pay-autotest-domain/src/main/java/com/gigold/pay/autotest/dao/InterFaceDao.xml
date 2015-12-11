@@ -46,12 +46,10 @@
 		inteFace.ID,
 		IF_NAME,
 		IF_SYS_NAME SYS_NAME,
-		IF_PRO_NAME PRO_NAME,
-		USERNAME
+		IF_PRO_NAME PRO_NAME
 		from T_IF_INTERFACE inteFace
 		left join T_IF_SYSTEM sys on inteFace.IF_SYS_ID=sys.ID
 		left join T_IF_PRO PRO on inteFace.IF_PRO_ID=PRO.ID
-		left join T_IF_USER user on inteFace.IF_CREATEBY=user.ID
 		where (inteFace.IF_NAME like '%${ifName}%'
 		or inteFace.IF_DESC like '%${ifName}%'
 		or IF_SYS_NAME like '%${ifName}%'
