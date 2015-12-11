@@ -86,20 +86,24 @@
 		USERNAME
 		from T_IF_INTERFACE inteFace
 		left join T_IF_SYSTEM sys on inteFace.IF_SYS_ID=sys.ID
-		left join T_IF_PRO PRO on inteFace.IF_PRO_ID=PRO.ID
-		left join T_IF_USER user on inteFace.IF_CREATEBY=user.ID
+		left join
+		T_IF_PRO PRO on inteFace.IF_PRO_ID=PRO.ID
+		left join T_IF_USER user on
+		inteFace.IF_CREATEBY=user.ID
 		where (inteFace.IF_NAME like '%${ifName}%'
 		or inteFace.IF_DESC like '%${ifName}%'
-		or IF_SYS_NAME like '%${ifName}%'
+		or IF_SYS_NAME like
+		'%${ifName}%'
 		or IF_PRO_NAME like '%${ifName}%'
-		or USERNAME like '%${ifName}%' )
+		or USERNAME like
+		'%${ifName}%' )
 		and inteFace.ISVALID='Y'
 		<if test="ifSysId != null and ifSysId!=0">
 			and inteFace.IF_SYS_ID = #{ifSysId}
 		</if>
 		<if test="ifProId != null and ifProId!=0">
-            and inteFace.IF_PRO_ID = #{ifProId}
-        </if>
+			and inteFace.IF_PRO_ID = #{ifProId}
+		</if>
 	</select>
 
 	<insert id="addInterFace" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo"
@@ -147,20 +151,37 @@
 
 
 	<update id="updateInterFace" parameterType="com.gigold.pay.ifsys.bo.InterFaceInfo">
-        <![CDATA[  
-        update T_IF_INTERFACE
-        set
-        IF_NAME=#{ifName},
-        IF_DESC=#{ifDesc},
-        IF_PRO_ID=#{ifProId},
-        IF_SYS_ID=#{ifSysId},
-        IF_TYPE=#{ifType},
-        IF_PROTOCOL=#{ifProtocol},
-        IF_URL=#{ifUrl},
-        IF_DUBBO_VERSION=#{methodVersion},
-        IF_METHOD=#{method}
-        where ID=#{id}
-        ]]>
+		update T_IF_INTERFACE
+		<set>
+		<if test="ifName!=null and ifName!=''">
+			IF_NAME=#{ifName},
+		</if>
+		<if test="ifDesc!=null and ifDesc!=''">
+			IF_DESC=#{ifDesc},
+		</if>
+		<if test="ifProId!=null and ifProId!=''">
+			IF_PRO_ID=#{ifProId},
+		</if>
+		<if test="ifSysId!=null and ifSysId!=''">
+			IF_SYS_ID=#{ifSysId},
+		</if>
+		<if test="ifType!=null and ifType!=''">
+			IF_TYPE=#{ifType},
+		</if>
+		<if test="ifProtocol!=null and ifProtocol!=''">
+			IF_PROTOCOL=#{ifProtocol},
+		</if>
+		<if test="ifUrl!=null and ifUrl!=''">
+			IF_URL=#{ifUrl},
+		</if>
+		<if test="methodVersion!=null and methodVersion!=''">
+			IF_DUBBO_VERSION=#{methodVersion},
+		</if>
+		<if test="method!=null and method!=''">
+			IF_METHOD=#{method},
+		</if>
+		</set>
+		where ID=#{id}
 	</update>
 
 
