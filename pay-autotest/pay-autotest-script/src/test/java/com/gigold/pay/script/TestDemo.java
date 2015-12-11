@@ -7,12 +7,14 @@
  */
 package com.gigold.pay.script;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.alibaba.dubbo.common.json.JSON;
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,7 +79,12 @@ public class TestDemo {
 		List<String> addressTo = new ArrayList<String>();
 
 		// 抄送人地址
-
+		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
+		for( int i=0;i<copyList.length;i++){
+			addressTo.add(copyList[i]);
+		}
+		//addressTo.add("xiebin@gigold.com");
+		//addressTo.add("chenhl@gigold.com");
 		addressTo.add("chenkuan@gigold.com");
 		// 设置收件人地址
 		mailSenderService.setTo(addressTo);
