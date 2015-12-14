@@ -15,6 +15,44 @@ $(function(){
 	//var userId = 7;
 	perHandel(userId);
 	
+	
+	
+	$("#focusBtn").click(function(){
+		
+		$("#doc-modal").modal({
+			relatedTarget: this,
+			closeViaDimmer:false
+		});
+		
+	});
+	
+	
+	
+	
+	
+	
+	
+$(".addInvokerBtn").click(function(){
+	var sendData = {};
+	sendData.ifFollowedId = $("#ifSysId").val();
+	sendData.remark=$("#remark").val();
+	gigold.pay.interFace.ajaxHandler({
+			"url":"addinvoker.do",
+			"data":JSON.stringify(sendData),
+			"onSuccess":function(data){
+				if (data.rspCd == "00000") {
+					alert("保存成功");
+					$("#doc-modal").modal("close");
+					loadInvokerList();
+              }
+			}
+		});
+		
+	});
+	
+	
+	
+	
 })
 
 
@@ -52,6 +90,7 @@ function perRequest(userId){
 				console.log(result);
 				var perData = perRander(result);
 				perData.rander();
+				loadInvokerList();
 			},
 			error:function(e){
 				console.log(e);
@@ -61,6 +100,35 @@ function perRequest(userId){
 	}
 	return data;
 }
+//加载关注列表信息
+function loadInvokerList(){
+	var postData={
+			"ifFollowedId":$("#ifSysId").val()
+	};
+	gigold.pay.interFace.ajaxHandler({
+		"url":"getinvokerlist.do",
+		"data":JSON.stringify(postData),
+		"onSuccess":function(data){
+			console.log("ssss");
+			console.log(data);
+			if (data.rspCd == "00000") {
+				var invokerHtml="";
+				$.each(data.list,function(index,row){
+					invokerHtml+='<tr>';
+					invokerHtml+='<td>'+(index+1)+'</td>';
+					invokerHtml+='<td>'+row.userName+'</td>';
+					invokerHtml+='<td>'+row.remark+'</td>';
+					invokerHtml+='<td>'+row.tmFollow+'</td>';
+					
+				});
+				
+				$("#invokerList").html(invokerHtml);
+          }
+		}
+	});
+}
+
+
 //渲染接口基本信息
 function perRander(result){
 	
@@ -68,6 +136,7 @@ function perRander(result){
 	backData = result;
 	
 	backData.rander = function(){
+		$(".ifSysId").val(this.interFaceInfo.id);
 		$(".propName").html(this.interFaceInfo.ifName);
 		$(".propDesc").html(this.interFaceInfo.ifDesc);
 		$(".propUrl").html(this.interFaceInfo.ifUrl);

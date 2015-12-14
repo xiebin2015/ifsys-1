@@ -12,6 +12,8 @@
 		<result property="remark" column="REMARK" />
 		<result property="status" column="STATUS" />
 		<result property="tmSmp" column="TM_SMP" />
+		<!-- 虚拟字段 -->
+		<result property="userName" column="USERNAME" />
 	</resultMap>
 
 	<insert id="addInterFaceInvoker" parameterType="com.gigold.pay.ifsys.bo.InterFaceInvoker"
@@ -37,17 +39,33 @@
     ]]>
 	</insert>
 	<select id="getInvokerList" parameterType="com.gigold.pay.ifsys.bo.InterFaceInvoker"
-		resultType="java.util.Map">
-		<![CDATA[  
-select 
-u.USERNAME USERNAME,
-DATE_FORMAT(invo.TM_FOLLOW,'%Y-%m-%d %H:%i:%s')  TM_FOLLOW,
-invo.REMARK REMARK
- from T_IF_INVOKER invo ,T_IF_USER u
-where 
- invo.U_ID=u.ID
-AND invo.STATUS='Y'
-AND invo.IF_FOLLOWED_ID=#{ifFollowedId}
+		resultMap="invokerResultMap">
+<![CDATA[  
+		select
+		u.USERNAME USERNAME,
+		DATE_FORMAT(invo.TM_FOLLOW,'%Y-%m-%d %H:%i:%s') TM_FOLLOW,
+		invo.REMARK REMARK
+		from T_IF_INVOKER invo ,T_IF_USER u
+		where
+		invo.U_ID=u.ID
+		AND invo.STATUS='Y'
+		AND invo.IF_FOLLOWED_ID=#{ifFollowedId}
+		]]>
+	</select>
+	
+<select id="getInvokerById" parameterType="com.gigold.pay.ifsys.bo.InterFaceInvoker"
+	resultMap="invokerResultMap">
+<![CDATA[  
+		select
+		ID,
+		IF_FOLLOW_ID,
+		IF_FOLLOWED_ID,
+		U_ID,
+		TM_FOLLOW,
+		REMARK
+		from T_IF_INVOKER
+		where STATUS='Y'
+		and ID=#{id}
 		]]>
 	</select>
 
