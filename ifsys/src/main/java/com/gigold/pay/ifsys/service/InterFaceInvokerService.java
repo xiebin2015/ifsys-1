@@ -76,8 +76,8 @@ public class InterFaceInvokerService extends Domain {
 	 * @param invoker
 	 * @return
 	 */
-	public List<Map<String,Object>> getInvokerList(InterFaceInvoker invoker){
-		List<Map<String,Object>> list=null;
+	public List<InterFaceInvoker> getInvokerList(InterFaceInvoker invoker){
+		List<InterFaceInvoker> list=null;
 		try{
 			list=interFaceInvokerDao.getInvokerList(invoker);
 		}catch(Exception e){

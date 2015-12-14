@@ -12,6 +12,8 @@
 		<result property="remark" column="REMARK" />
 		<result property="status" column="STATUS" />
 		<result property="tmSmp" column="TM_SMP" />
+		<!-- 虚拟字段 -->
+		<result property="userName" column="USERNAME" />
 	</resultMap>
 
 	<insert id="addInterFaceInvoker" parameterType="com.gigold.pay.ifsys.bo.InterFaceInvoker"
@@ -37,7 +39,7 @@
     ]]>
 	</insert>
 	<select id="getInvokerList" parameterType="com.gigold.pay.ifsys.bo.InterFaceInvoker"
-		resultType="java.util.Map">
+		resultMap="invokerResultMap">
 <![CDATA[  
 		select
 		u.USERNAME USERNAME,

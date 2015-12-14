@@ -23,7 +23,6 @@ import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.core.exception.PendingException;
 import com.gigold.pay.framework.web.BaseController;
-import com.gigold.pay.framework.web.ResponseDto;
 import com.gigold.pay.ifsys.bo.InterFaceInvoker;
 import com.gigold.pay.ifsys.bo.UserInfo;
 import com.gigold.pay.ifsys.service.InterFaceInvokerService;
@@ -99,7 +98,7 @@ public class InterFaceInvokerController extends BaseController {
 		InterFaceInvokerResDto rdto=new InterFaceInvokerResDto();
 		InterFaceInvoker invoker = (InterFaceInvoker) SpringContextHolder.getBean(InterFaceInvoker.class);
 		invoker.setIfFollowedId(dto.getIfFollowedId());
-		List<Map<String,Object>> list=interFaceInvokerService.getInvokerList(invoker);
+		List<InterFaceInvoker> list=interFaceInvokerService.getInvokerList(invoker);
 		if(list!=null){
 			rdto.setList(list);
 			rdto.setRspCd(SysCode.SUCCESS);

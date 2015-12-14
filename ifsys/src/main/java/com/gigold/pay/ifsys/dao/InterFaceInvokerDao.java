@@ -42,7 +42,7 @@ public interface InterFaceInvokerDao {
 	 * @param invoker
 	 * @return
 	 */
-	public List<Map<String,Object>> getInvokerList(InterFaceInvoker invoker);
+	public List<InterFaceInvoker> getInvokerList(InterFaceInvoker invoker);
 	
 	/**
 	 * 
