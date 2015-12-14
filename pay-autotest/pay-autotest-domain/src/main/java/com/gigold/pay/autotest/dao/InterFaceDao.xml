@@ -80,7 +80,7 @@
 		ADDRESS_URL
 		from T_IF_INTERFACE ii
 		where ii.ISVALID='Y'
-		and ii.ID=150
+	   and ID=150
 	</select>
 	
 	
