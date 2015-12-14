@@ -22,10 +22,10 @@
 		<result property="methodVersion" column="IF_DUBBO_VERSION" />
 	</resultMap>
 
-   <!-- 根据ID查询接口信息 -->
+	<!-- 根据ID查询接口信息 -->
 	<select id="getInterFaceById" parameterType="com.gigold.pay.autotest.bo.InterFaceInfo"
 		resultMap="ifResultMap">
-        <![CDATA[  
+        <![CDATA[
        select ii.ID,
 		ii.IF_NAME,
 		ii.IF_DESC,
@@ -51,7 +51,8 @@
 		from T_IF_INTERFACE inteFace
 		left join T_IF_SYSTEM sys on inteFace.IF_SYS_ID=sys.ID
 		left join T_IF_PRO PRO on inteFace.IF_PRO_ID=PRO.ID
-		left join T_IF_USER user on inteFace.IF_CREATEBY=user.ID
+		left join T_IF_USER user on
+		inteFace.IF_CREATEBY=user.ID
 		where (inteFace.IF_NAME like '%${ifName}%'
 		or inteFace.IF_DESC like '%${ifName}%'
 		or IF_SYS_NAME like '%${ifName}%'

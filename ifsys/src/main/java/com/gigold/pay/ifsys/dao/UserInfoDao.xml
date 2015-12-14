@@ -48,7 +48,6 @@
 		select
 		ID,
 		LOGIN_NAME,
-		LOGIN_PASSWORD,
 		EMAIL,
 		USERNAME
 		from

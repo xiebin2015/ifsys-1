@@ -7,11 +7,18 @@
  */
 package com.gigold.pay.script;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Iterator;
 
+
+import com.alibaba.dubbo.common.json.JSON;
+import com.gigold.pay.autotest.bo.InterFaceInfo;
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
+import net.sf.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,8 +58,7 @@ public class TestDemo {
 
 	@Test
 	public void testAutoTest() {
-		 ResulteData resulteData = ifsysCheckThreadPool.execute();
-		// ifsysCheckThreadPool.execute();
+		ifsysCheckThreadPool.execute();
 	}
 
 	@After
@@ -66,31 +72,67 @@ public class TestDemo {
 	 *
 	 */
 	public void testSendMail() {
-//		 // List<IfSysMock> resulteMocks =
-//		 // ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
-//		 List<IfSysMock> resulteMocks =
-//		 ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
-//		 for (int i = 0; i < resulteMocks.size(); i++) {
-//		 System.out.println(resulteMocks.get(i).getRealRspCode());
-//		 }
-//		
-//		 List<String> addressTo = new ArrayList<String>();
-//		 // addressTo.add("xiebin163126@163.com");
-//		 addressTo.add("chenkuan@gigold.com");
-//		 // 设置收件人地址
-//		 mailSenderService.setTo(addressTo);
-//		 // 设置标题
-//		 mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
-//		 // 设置模版名
-//		 mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
-//		
-//		 Map model = new HashMap();
-//		 model.put("resulteMocks", resulteMocks);
-//		 model.put("username", "陈宽");
-//		 // model.put("sys", "独孤九剑");
-//		 // model.put("pro", "产品1");
-//		 // model.put("interFace", "登录接口");
-//		 mailSenderService.sendWithTemplateForHTML(model);
+
+		// 返回所有测试过的结果
+		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks();
+
+		// 1.格式化信封
+		Map< String,List<IfSysMock> > mailBuffers = new HashMap();
+		for(int i=0;i<resulteMocks.size();i++){
+			// 遍历每个接口的关系
+			int interfaceId = resulteMocks.get(i).getIfId();
+			List<IfSysMock> relationShip = ifSysMockService.getInterfaceFollowShipById(interfaceId);
+			for(int j=0;j<relationShip.size();j++){
+				String email = relationShip.get(j).getEmail();
+				String userName = relationShip.get(j).getUsername();
+				//为每条mock加工关注者数据
+				IfSysMock eachMock = resulteMocks.get(i);
+				eachMock.setUsername(userName);
+				// 为每个接收者包装信件
+				if(mailBuffers.containsKey(email)&&mailBuffers.get(email).size()!=0){
+					mailBuffers.get(email).add(eachMock);
+				}else{
+					List<IfSysMock> mock = new ArrayList<IfSysMock>();
+					mock.add(eachMock);
+					mailBuffers.put(email,mock);
+				}
+			}
+		}
+
+		// 2.设置抄送人地址
+		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
+		mailSenderService.setCc(copyList);
+
+		// 3.分发收件人
+		Iterator entries = mailBuffers.entrySet().iterator();
+		while (entries.hasNext()) {
+
+			Map.Entry entry = (Map.Entry) entries.next();
+
+			String email = (String)entry.getKey();
+			List<IfSysMock> mocks = (List<IfSysMock>)entry.getValue();
+
+
+			// 设置收件人地址
+			List<String> addressTo = new ArrayList<String>();
+			addressTo.add(email);
+			mailSenderService.setTo(addressTo);
+
+			// 设置标题
+			mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+			// 设置模版名
+			mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
+
+			// 发送结果
+			Map model = new HashMap();
+			model.put("resulteMocks", mocks);
+			mailSenderService.sendWithTemplateForHTML(model);
+
+		}
+
+
+
+
 		System.out.println("邮件发送成功！");
 	}
 }
