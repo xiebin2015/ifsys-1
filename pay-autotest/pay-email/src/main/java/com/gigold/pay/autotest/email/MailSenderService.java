@@ -40,7 +40,7 @@ public class MailSenderService extends Domain{
 	
 	private String from;
 	private List<String> to;
-	private String [] cc;
+	//private String [] cc;
 	private String subject;
 	private String content;
 	private String templateName;
@@ -52,16 +52,16 @@ public class MailSenderService extends Domain{
 	/**
 	 * @return the cc
 	 */
-	public String[] getCc() {
-		return cc;
-	}
+//	public String[] getCc() {
+//		return cc;
+//	}
 
 	/**
 	 * @param cc the cc to set
 	 */
-	public void setCc(String[] cc) {
-		this.cc = cc;
-	}
+//	public void setCc(String[] cc) {
+//		this.cc = cc;
+//	}
 
 	/**
 	 * 
