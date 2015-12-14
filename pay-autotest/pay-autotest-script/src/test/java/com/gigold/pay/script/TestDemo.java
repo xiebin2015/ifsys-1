@@ -24,7 +24,6 @@ import com.gigold.pay.autotest.email.MailSenderService;
 import com.gigold.pay.autotest.service.IfSysMockService;
 import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
-import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 
 /**
  * Title: Test<br/>
