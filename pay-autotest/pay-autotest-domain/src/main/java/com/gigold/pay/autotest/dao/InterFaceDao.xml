@@ -22,10 +22,10 @@
 		<result property="methodVersion" column="IF_DUBBO_VERSION" />
 	</resultMap>
 
-   <!-- 根据ID查询接口信息 -->
+	<!-- 根据ID查询接口信息 -->
 	<select id="getInterFaceById" parameterType="com.gigold.pay.autotest.bo.InterFaceInfo"
 		resultMap="ifResultMap">
-        <![CDATA[  
+        <![CDATA[
        select ii.ID,
 		ii.IF_NAME,
 		ii.IF_DESC,
