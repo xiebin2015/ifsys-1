@@ -115,6 +115,7 @@ function loadInvokerList(){
 				var invokerHtml="";
 				$.each(data.list,function(index,row){
 					invokerHtml+='<tr>';
+					invokerHtml+='<td>'+(index+1)+'</td>';
 					invokerHtml+='<td>'+row.userName+'</td>';
 					invokerHtml+='<td>'+row.remark+'</td>';
 					invokerHtml+='<td>'+row.tmFollow+'</td>';
