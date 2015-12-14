@@ -31,7 +31,7 @@ public interface InterFaceInvokerDao {
 	 * @param invoker
 	 * @return
 	 */
-	public boolean addInterFaceInvoker(InterFaceInvoker invoker);
+	public int addInterFaceInvoker(InterFaceInvoker invoker);
 	/**
 	 * 
 	 * Title: getInvokerList<br/>
@@ -43,5 +43,17 @@ public interface InterFaceInvokerDao {
 	 * @return
 	 */
 	public List<Map<String,Object>> getInvokerList(InterFaceInvoker invoker);
+	
+	/**
+	 * 
+	 * Title: getInvokerById<br/>
+	 * Description:根据Id查询关注信息 <br/>
+	 * @author xiebin
+	 * @date 2015年12月11日下午5:36:29
+	 *
+	 * @param id
+	 * @return
+	 */
+	public InterFaceInvoker getInvokerById(InterFaceInvoker interFaceInvoker);
 
 }

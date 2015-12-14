@@ -43,9 +43,9 @@ public class InterFaceInvokerController extends BaseController {
 	InterFaceInvokerService interFaceInvokerService;
 
 	@RequestMapping("/addinvoker.do")
-	public @ResponseBody ResponseDto addInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
+	public @ResponseBody InterFaceInvokerAddResDto addInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
 		debug("调用 addInterFaceInvoker");
-		ResponseDto rdto = new ResponseDto();
+		InterFaceInvokerAddResDto rdto = new InterFaceInvokerAddResDto();
 		String recode = dto.vaildate();
 		if (!SysCode.SUCCESS.equals(recode)) {
 			rdto.setRspCd(recode);
@@ -58,7 +58,6 @@ public class InterFaceInvokerController extends BaseController {
 			rdto.setRspInf("用户未登录");
 			return rdto;
 		}
-		userInfo= (UserInfo)SpringContextHolder.getBean(UserInfo.class);
 		InterFaceInvoker invoker=null;
 		try {
 			invoker = createBO(dto, InterFaceInvoker.class);
@@ -69,8 +68,9 @@ public class InterFaceInvokerController extends BaseController {
 		
 		invoker.setuId(userInfo.getId());
 		// 添加关注信息
-		boolean flag = interFaceInvokerService.addInterFaceInvoker(invoker);
-		if (flag) {
+		invoker = interFaceInvokerService.addInterFaceInvoker(invoker);
+		if (invoker!=null) {
+			rdto.setInvoker(invoker);
 			rdto.setRspCd(SysCode.SUCCESS);
 			rdto.setRspInf("关注成功");
 		} else {

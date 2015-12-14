@@ -15,6 +15,39 @@ $(function(){
 	//var userId = 7;
 	perHandel(userId);
 	
+	
+	
+	$("#focusBtn").click(function(){
+		
+		$("#doc-modal").modal({
+			relatedTarget: this,
+			closeViaDimmer:false
+		});
+		
+	});
+	
+	
+$(".addInvokerBtn").click(function(){
+	var sendData = {};
+	sendData.ifFollowedId = $("#ifSysId").val();
+	sendData.remark=$("#remark").val();
+	gigold.pay.interFace.ajaxHandler({
+			"url":"addinvoker.do",
+			"data":JSON.stringify(sendData),
+			"onSuccess":function(data){
+				if (data.rspCd == "00000") {
+					alert("保存成功");
+					$("#doc-modal").modal("close");
+					
+              }
+			}
+		});
+		
+	});
+	
+	
+	
+	
 })
 
 
@@ -68,6 +101,7 @@ function perRander(result){
 	backData = result;
 	
 	backData.rander = function(){
+		$(".ifSysId").val(this.interFaceInfo.id);
 		$(".propName").html(this.interFaceInfo.ifName);
 		$(".propDesc").html(this.interFaceInfo.ifDesc);
 		$(".propUrl").html(this.interFaceInfo.ifUrl);
