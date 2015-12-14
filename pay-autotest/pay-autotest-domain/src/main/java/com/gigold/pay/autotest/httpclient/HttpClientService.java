@@ -86,7 +86,7 @@ public class HttpClientService extends Domain{
 	 * @param postData
 	 * @return
 	 */
-	public String httpPost(String url, String postData) {
+	public String httpPost(String url, String postData) throws Exception{
 		String responseData = "";
 		DefaultHttpClient httpclient = getHttpClient();
 		//设置cookies

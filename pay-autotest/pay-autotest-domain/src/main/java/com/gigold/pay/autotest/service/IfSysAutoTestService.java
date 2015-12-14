@@ -51,7 +51,7 @@ public class IfSysAutoTestService extends Domain {
 		try {
 			jsonObject = JSONObject.fromObject(responseJson);
 		} catch (Exception e) {
-
+			jsonObject=new JSONObject();
 		}
 		String relRspCode = String.valueOf(jsonObject.get("rspCd"));
 		ifsysmock.setRealRspCode(relRspCode);
@@ -95,7 +95,11 @@ public class IfSysAutoTestService extends Domain {
 			// 期望请求报文
 			String postData = mock.getRequestJson();
 			// 实际请求后，返回的报文（返回码和返回实体）
-			httpClientService.httpPost(mock.getAddressUrl(), postData);
+			try{
+				httpClientService.httpPost(mock.getAddressUrl(), postData);
+			}catch(Exception e){
+				debug("调用失败");
+			}
 
 		}
 
@@ -107,7 +111,13 @@ public class IfSysAutoTestService extends Domain {
 			// 期望请求报文
 			String postData = mock.getRequestJson();
 			// 实际请求后，返回的报文（返回码和返回实体）
-			String responseJson = httpClientService.httpPost(url, postData);
+			String responseJson="";
+			try{
+				 responseJson=httpClientService.httpPost(mock.getAddressUrl(), postData);
+			}catch(Exception e){
+				responseJson="";
+				debug("调用失败");
+			}
 			// 实际结果回写
 			writeBackContent(mock, responseJson);
 
