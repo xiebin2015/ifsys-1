@@ -113,7 +113,7 @@ public class IfSysAutoTestService extends Domain {
 			// 实际请求后，返回的报文（返回码和返回实体）
 			String responseJson="";
 			try{
-				 responseJson=httpClientService.httpPost(mock.getAddressUrl(), postData);
+				 responseJson=httpClientService.httpPost(url, postData);
 			}catch(Exception e){
 				responseJson="";
 				debug("调用失败");
