@@ -41,15 +41,28 @@ public class InterFaceInvokerService extends Domain {
 	 * @param invoker
 	 * @return
 	 */
-	public boolean addInterFaceInvoker(InterFaceInvoker invoker){
-		boolean flag=false;
-		try{
-			flag=interFaceInvokerDao.addInterFaceInvoker(invoker);
-		}catch(Exception e){
+	public InterFaceInvoker addInterFaceInvoker(InterFaceInvoker invoker){
+		InterFaceInvoker interFaceInvoker=null;
+		int count = -1;
+		try {
+			//检测是否已经存在
+			interFaceInvoker=interFaceInvokerDao.getInvokerById(invoker);
+			if(interFaceInvoker==null){
+				count = interFaceInvokerDao.addInterFaceInvoker(invoker);
+			}else{
+				interFaceInvoker= invoker;
+			}
+		} catch (Exception e) {
 			debug("数据库异常   添加接口关注者失败");
-			return false;
+			interFaceInvoker =null;
 		}
-		return flag;
+		if (count > 0) {
+			//新增成功
+			return invoker;
+		}
+		//
+		return interFaceInvoker;
+		
 		
 	}
 	
@@ -63,8 +76,8 @@ public class InterFaceInvokerService extends Domain {
 	 * @param invoker
 	 * @return
 	 */
-	public List<Map<String,Object>> getInvokerList(InterFaceInvoker invoker){
-		List<Map<String,Object>> list=null;
+	public List<InterFaceInvoker> getInvokerList(InterFaceInvoker invoker){
+		List<InterFaceInvoker> list=null;
 		try{
 			list=interFaceInvokerDao.getInvokerList(invoker);
 		}catch(Exception e){
