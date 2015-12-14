@@ -7,19 +7,21 @@
  */
 package com.gigold.pay.script;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
 
+<<<<<<< HEAD
 
 import com.alibaba.dubbo.common.json.JSON;
 import com.gigold.pay.autotest.bo.IfSysStuff;
 import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import net.sf.json.JSONObject;
+=======
+>>>>>>> gigold/master
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +30,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.email.MailSenderService;
-import com.gigold.pay.autotest.resulte.ResulteData;
 import com.gigold.pay.autotest.service.IfSysMockService;
 import com.gigold.pay.autotest.service.IfSysStuffService;
 import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
@@ -102,8 +103,17 @@ public class TestDemo {
 				}
 			}
 		}
+<<<<<<< HEAD
 
 		// 2.分发收件人
+=======
+//
+//		// 2.设置抄送人地址
+//		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
+//		mailSenderService.setCc(copyList);
+
+		// 3.分发收件人
+>>>>>>> gigold/master
 		Iterator entries = mailBuffers.entrySet().iterator();
 		while (entries.hasNext()) {
 
