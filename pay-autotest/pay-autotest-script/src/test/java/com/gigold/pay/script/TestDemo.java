@@ -13,15 +13,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-<<<<<<< HEAD
-
 import com.alibaba.dubbo.common.json.JSON;
 import com.gigold.pay.autotest.bo.IfSysStuff;
 import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import net.sf.json.JSONObject;
-=======
->>>>>>> gigold/master
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -103,17 +100,7 @@ public class TestDemo {
 				}
 			}
 		}
-<<<<<<< HEAD
-
 		// 2.分发收件人
-=======
-//
-//		// 2.设置抄送人地址
-//		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
-//		mailSenderService.setCc(copyList);
-
-		// 3.分发收件人
->>>>>>> gigold/master
 		Iterator entries = mailBuffers.entrySet().iterator();
 		while (entries.hasNext()) {
 
@@ -121,8 +108,6 @@ public class TestDemo {
 
 			String email = (String)entry.getKey();
 			List<IfSysMock> mocks = (List<IfSysMock>)entry.getValue();
-
-
 			// 设置收件人地址
 			List<String> addressTo = new ArrayList<String>();
 			addressTo.add(email);
@@ -138,9 +123,8 @@ public class TestDemo {
 
 		}
 
-		// 3.抄送结果
-		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
 		// 3.抄送收件人
+		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
 		for(int i=0;i<copyList.length;i++){
 			String email = copyList[i];
 			System.out.println(email);
