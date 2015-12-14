@@ -45,6 +45,12 @@ public class InterFaceInvokerController extends BaseController {
 	public @ResponseBody InterFaceInvokerAddResDto addInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
 		debug("调用 addInterFaceInvoker");
 		InterFaceInvokerAddResDto rdto = new InterFaceInvokerAddResDto();
+		String rspCode=dto.vaildate();
+		if(!"00000".equals(rspCode)){
+			rdto.setRspCd(rspCode);
+			return rdto;
+		}
+		
 		String recode = dto.vaildate();
 		if (!SysCode.SUCCESS.equals(recode)) {
 			rdto.setRspCd(recode);
