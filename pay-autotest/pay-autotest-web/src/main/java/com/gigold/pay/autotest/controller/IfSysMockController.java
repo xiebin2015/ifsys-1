@@ -56,6 +56,20 @@ public class IfSysMockController extends BaseController {
 	private RetrunCodeService retrunCodeService;
 
 	/**
+	 * @return the retrunCodeService
+	 */
+	public RetrunCodeService getRetrunCodeService() {
+		return retrunCodeService;
+	}
+
+	/**
+	 * @param retrunCodeService the retrunCodeService to set
+	 */
+	public void setRetrunCodeService(RetrunCodeService retrunCodeService) {
+		this.retrunCodeService = retrunCodeService;
+	}
+
+	/**
 	 * @return the ifSysMockService
 	 */
 	public IfSysMockService getIfSysMockService() {

@@ -7,9 +7,11 @@
  */
 package com.gigold.pay.autotest.service;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
@@ -73,17 +75,32 @@ public class InterFaceServiceTest {
 	public void testGetAllIfSys() {
 		PowerMockito.mockStatic(RandomStringUtils.class);
 		PowerMockito.mockStatic(SystemPropertyConfigure.class);
-		
+		InterFaceInfo interFaceInfo=new InterFaceInfo();
 		when(SystemPropertyConfigure.getProperty("sys.pageSize")).thenReturn("20");
-		//when(interFaceDao.getAllIfSys()).thenReturn(null).thenReturn(new ArrayList());
+		when(interFaceDao.getAllIfSys(any(InterFaceInfo.class))).thenReturn(null).thenReturn(new ArrayList());
 		// 获取所有的接口信息失败
-		//PageInfo pageInfo = interFaceService.getAllIfSys(1);
-		//Assert.assertNull(pageInfo);
+		 List<InterFaceInfo>list = interFaceService.getAllIfSys(interFaceInfo);
+		Assert.assertNull(list);
 		// 新增成功
-		//pageInfo = interFaceService.getAllIfSys(1);
-		//Assert.assertNotNull(pageInfo);
+		list = interFaceService.getAllIfSys(interFaceInfo);
+		Assert.assertNotNull(list);
 
 	}
+	@Test
+	@PrepareForTest({ PageHelper.class ,SystemPropertyConfigure.class})
+	public void testGetAllIfSys1() {
+		PowerMockito.mockStatic(RandomStringUtils.class);
+		PowerMockito.mockStatic(SystemPropertyConfigure.class);
+		
+		when(SystemPropertyConfigure.getProperty("sys.pageSize")).thenReturn("20");
+		when(interFaceDao.getAllIfSysForTest()).thenReturn(null).thenReturn(new ArrayList());
+		// 获取所有的接口信息失败
+		 PageInfo<InterFaceInfo>pageInfo = interFaceService.getAllIfSys(1);
+		Assert.assertNull(pageInfo);
+		// 新增成功
+		pageInfo = interFaceService.getAllIfSys(1);
+		Assert.assertNotNull(pageInfo);
 
+	}
 
 }
