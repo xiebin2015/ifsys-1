@@ -35,4 +35,5 @@ public interface InterFaceDao {
 	 * @return
 	 */
 	public List<InterFaceInfo> getAllIfSysForTest();
+
 }
