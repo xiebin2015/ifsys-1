@@ -61,19 +61,19 @@
         #end
 
         <tr>
-            <td rowspan='2'>$mock.getIfId()</td>
-            <td rowspan='2' title='$mock.getIfDESC()'>$mock.getIfName()</td>
-            <td rowspan='2' class='$!{resultStyle}'>${result}</td>
-            <td rowspan='2'>$mock.getRequestJson()</td>
-            <td>预期:$mock.getRspCode()</td>
-            <td class='flexJson'>预期:$mock.getResponseJson()</td>
-            <td rowspan='2'><a href='$mock.getIfURL()'>$mock.getIfURL()</a></td>
-            <td rowspan='2'>$mock.getIfPROTOCOL()</td>
-            <td rowspan='2'>$mock.getUsername()</td>
+            <td rowspan='2'>$!mock.getIfId()</td>
+            <td rowspan='2' title='$mock.getIfDESC()'>$!mock.getIfName()</td>
+            <td rowspan='2' class='$!{resultStyle}'>$!{result}</td>
+            <td rowspan='2'>$!mock.getRequestJson()</td>
+            <td>预期:$!mock.getRspCode()</td>
+            <td class='flexJson'>预期:$!mock.getResponseJson()</td>
+            <td rowspan='2'><a href='$mock.getIfURL()'>$!mock.getIfURL()</a></td>
+            <td rowspan='2'>$!mock.getIfPROTOCOL()</td>
+            <td rowspan='2'>$!mock.getUsername()</td>
         </tr>
         <tr>
-            <td class='$!rspCodeStyle'>实际:$mock.getRealRspCode()</td>
-            <td class='flexJson $!ResponseJsonStyle'>实际:$mock.getRealResponseJson()</td>
+            <td class='$!rspCodeStyle'>实际:$!mock.getRealRspCode()</td>
+            <td class='flexJson $!ResponseJsonStyle'>实际:$!mock.getRealResponseJson()</td>
         </tr>
     #end
 </table>
