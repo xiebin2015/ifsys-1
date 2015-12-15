@@ -112,7 +112,14 @@ public class TestDemo {
 			List<String> addressTo = new ArrayList<String>();
 			addressTo.add(email);
 			mailSenderService.setTo(addressTo);
-			String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
+			
+			String userName= "";
+			try{
+				ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
+			}catch(Exception e){
+				userName="";
+			}
+			
 			mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
 			mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
 			// 发送结果
