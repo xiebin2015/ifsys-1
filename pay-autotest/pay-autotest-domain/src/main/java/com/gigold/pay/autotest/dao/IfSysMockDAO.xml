@@ -13,6 +13,7 @@
 		<result property="realRspCode" column="REAL_RSP_CODE" />
 		<result property="realResponseJson" column="REAL_RESPONSE_JSON" />
 		<result property="testResult" column="TEST_RESULT" />
+
 		<!-- 额外的接口信息数据 @chenkuan 2015.12.08 -->
 		<result property="ifName" column="IF_NAME" />
 		<result property="ifURL" column="IF_URL" />
@@ -20,7 +21,32 @@
 		<result property="ifDESC" column="IF_DESC" />
 		<result property="addressUrl" column="ADDRESS_URL" />
 
+		<!-- 接口关联关系 @chenkuan 2015.12.11-->
+		<result property="followedId" column="IF_FOLLOWED_ID" />
+		<result property="followId" column="IF_FOLLOW_ID" />
+		<result property="Uid" column="U_ID" />
+		<result property="email" column="EMAIL" />
+		<result property="status" column="STATUS" />
+		<result property="remark" column="REMARK" />
+		<result property="username" column="USERNAME" />
+
 	</resultMap>
+
+	<!-- 根据ID查询接口关注关系信息 -->
+	<select id="getInterfaceFollowShipById" parameterType="int" resultMap="ifSysMockResultMap">
+		<![CDATA[
+			SELECT
+				a.IF_FOLLOWED_ID,
+				a.IF_FOLLOW_ID,
+				a.U_ID,
+				(select b.EMAIL from T_IF_USER b where b.id=a.U_ID and b.STATUS='Y') EMAIL,
+				(select b.USERNAME from T_IF_USER b where b.id=a.U_ID and b.STATUS='Y') USERNAME,
+				a.STATUS,
+				a.REMARK
+			from T_IF_INVOKER a where
+				a.IF_FOLLOWED_ID = #{id} and a.STATUS = 'Y'
+         ]]>
+	</select>
 
 	<insert id="addIfSysMock" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
 		useGeneratedKeys="true" keyProperty="id">
@@ -168,7 +194,7 @@ and ii.IF_SYS_ID=sys.ID
 			a.ID,
 			b.IF_NAME,b.IF_DESC,b.IF_URL,b.IF_PROTOCOL,
 			a.IF_ID,
-			a.RSP_CODE,
+			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
 			a.REQUEST_JSON,
 			a.RESPONSE_JSON,
 			a.REAL_RSP_CODE,
@@ -188,9 +214,12 @@ and ii.IF_SYS_ID=sys.ID
 		<![CDATA[
 		SELECT
 			a.ID,
-			b.IF_NAME,b.IF_DESC,b.IF_URL,b.IF_PROTOCOL,
+			b.IF_NAME,
+			b.IF_DESC,
+			b.IF_URL,
+			b.IF_PROTOCOL,
 			a.IF_ID,
-			a.RSP_CODE,
+			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
 			a.REQUEST_JSON,
 			a.RESPONSE_JSON,
 			a.REAL_RSP_CODE,
@@ -211,7 +240,7 @@ and ii.IF_SYS_ID=sys.ID
 			a.ID,
 			b.IF_NAME,b.IF_DESC,b.IF_URL,b.IF_PROTOCOL,
 			a.IF_ID,
-			a.RSP_CODE,
+			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
 			a.REQUEST_JSON,
 			a.RESPONSE_JSON,
 			a.REAL_RSP_CODE,

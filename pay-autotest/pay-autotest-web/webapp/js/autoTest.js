@@ -9,7 +9,7 @@ $(function() {
 		"url": "getAllSysInfo.do",
 		"onSuccess": function(data) {
 			if (data.rspCd == "00000") {
-				var optionStr = '<option value="0" selected>请选择系统</option>';
+				var optionStr = '<option value="0" selected="selected">请选择系统</option>';
 				$.each(data.sysList, function(index, sysData) {
 					optionStr += '<option value="' + sysData.id + '"">' + sysData.sysName + '</option>';
 				});
@@ -17,7 +17,6 @@ $(function() {
 			}
 		}
 	});
-	
 	
 	$('#ifSysId').change(function() {
 		var sysId = $(this).children('option:selected').val();
@@ -33,7 +32,7 @@ $(function() {
 			"onSuccess": function(data) {
 				if (data.rspCd == "00000") {
 					$("#ifProId").removeAttr("disabled");
-					var optionStr = '<option value="0" selected>请选择产品</option>';
+					var optionStr = '<option value="0" selected="selected">请选择产品</option>';
 					$.each(data.proList, function(index, proData) {
 						optionStr += '<option value="' + proData.id + '">' + proData.proName + '</option>';
 
@@ -49,6 +48,16 @@ $(function() {
 			"ifSysId": sysId
 		});
 
+	});
+	$('#ifProId').change(function() {
+		var proId = $(this).children('option:selected').val();
+		getAjaxData({
+			"pageNum": 1,
+			"ifName": $("#ifName").val(),
+			"ifSysId": $("#ifSysId").val(),
+			"ifProId": proId
+
+		});
 	});
 
 	//禁止表单提交
@@ -117,7 +126,6 @@ $(function() {
 			
 	});
 	
-	
 	//删除返回码模块
 	$(document).on("click",".delBtn",function(){
 		var $ele = $(this).parent().parent();
@@ -139,17 +147,7 @@ $(function() {
 		"pageNum": 1
 	});
 
-	$('#ifProId').change(function() {
-		var proId = $(this).children('option:selected').val();
-		getAjaxData({
-			"pageNum": 1,
-			"ifName": $("#ifName").val(),
-			"ifSysId": $("#ifSysId").val(),
-			"ifProId": proId
-
-		});
-	});
-
+	
 	$(document).on("click", ".pageUl li", function() {
 		var textNum = $(this).text();
 		if ("第一页" == textNum) {
@@ -187,18 +185,20 @@ $(function() {
 				"data":JSON.stringify(sendData),
 				"onSuccess":function(data){
 					if (data.rspCd == "00000") {
-						var divObj=$(".rspBox");
 						var htmlStr="";
 						var size=data.interFaceInfo.mockList.length;
 						$.each(data.interFaceInfo.mockList,function(index,mock){
-							console.log(mock.id)
-							$(divObj).find(".hideInp").attr("data-id",mock.id);
-							$(divObj).find(".hideInp").attr("data-ifId",mock.ifId);
-							$(divObj).find(".rspCd").html(mock.rspCode);
-							$(divObj).find(".rspCdDesc").html(mock.rspCodeDesc);
-							$(divObj).find(".reqJson").html(mock.requestJson);
-							$(divObj).find(".rspJson").html(mock.responseJson);
-							htmlStr+=$(divObj).parent().html();
+							htmlStr+='<div class="rspBox">';
+							htmlStr+='<input type="hidden" class="hideInp" data-id="'+mock.id+'" data-ifId="'+mock.ifId+'" />';
+							htmlStr+='<p><span class="rspCd">'+mock.rspCode+':</span>';
+							htmlStr+='<code class="rspCdDesc">'+mock.rspCodeDesc+'</code></p><hr />';
+							htmlStr+='<p><span >入参:</span><pre class="reqJson">'+mock.requestJson+'</pre></p>';
+							htmlStr+='<p><span >出参:</span><pre class="rspJson">'+mock.responseJson+'</pre></p>';
+							htmlStr+='<div class="bianjiBtn">';
+							htmlStr+='<button type="button" class="am-btn am-btn-default upDaBtn">修改</button>';
+							htmlStr+='<button type="button" class="am-btn am-btn-default addRspBtn am-disabled">保存</button>';
+							htmlStr+='<button type="button" class="am-btn am-btn-danger delBtn">删除</button>';
+							htmlStr+='</div></div>';
 						});
 						$(".am-modal-bd").html(htmlStr);
 	              }

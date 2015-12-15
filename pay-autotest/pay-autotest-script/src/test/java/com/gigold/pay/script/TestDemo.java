@@ -9,8 +9,15 @@ package com.gigold.pay.script;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.alibaba.dubbo.common.json.JSON;
+import com.gigold.pay.autotest.bo.IfSysStuff;
+import com.gigold.pay.autotest.bo.InterFaceInfo;
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
+import net.sf.json.JSONObject;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,8 +27,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.email.MailSenderService;
-import com.gigold.pay.autotest.resulte.ResulteData;
 import com.gigold.pay.autotest.service.IfSysMockService;
+import com.gigold.pay.autotest.service.IfSysStuffService;
 import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
 
@@ -39,6 +46,7 @@ public class TestDemo {
 	private IfsysCheckThreadPool ifsysCheckThreadPool;
 	private MailSenderService mailSenderService;
 	private IfSysMockService ifSysMockService;
+	private IfSysStuffService ifSysStuffService;
 
 	@Before
 	public void setup() {
@@ -46,13 +54,13 @@ public class TestDemo {
 		ifsysCheckThreadPool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
 		mailSenderService = (MailSenderService) SpringContextHolder.getBean(MailSenderService.class);
 		ifSysMockService = (IfSysMockService) SpringContextHolder.getBean(IfSysMockService.class);
+		ifSysStuffService = (IfSysStuffService) SpringContextHolder.getBean(IfSysStuffService.class);
 	}
 
 
 	@Test
 	public void testAutoTest() {
-		 ResulteData resulteData = ifsysCheckThreadPool.execute();
-		// ifsysCheckThreadPool.execute();
+		ifsysCheckThreadPool.execute();
 	}
 
 	@After
@@ -66,31 +74,77 @@ public class TestDemo {
 	 *
 	 */
 	public void testSendMail() {
-//		 // List<IfSysMock> resulteMocks =
-//		 // ifSysMockService.filterMocksByFailed(); // 返回没通过测试的结果
-//		 List<IfSysMock> resulteMocks =
-//		 ifSysMockService.filterAllTestedMocks(); // 返回所有测试过的结果
-//		 for (int i = 0; i < resulteMocks.size(); i++) {
-//		 System.out.println(resulteMocks.get(i).getRealRspCode());
-//		 }
-//		
-//		 List<String> addressTo = new ArrayList<String>();
-//		 // addressTo.add("xiebin163126@163.com");
-//		 addressTo.add("chenkuan@gigold.com");
-//		 // 设置收件人地址
-//		 mailSenderService.setTo(addressTo);
-//		 // 设置标题
-//		 mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
-//		 // 设置模版名
-//		 mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
-//		
-//		 Map model = new HashMap();
-//		 model.put("resulteMocks", resulteMocks);
-//		 model.put("username", "陈宽");
-//		 // model.put("sys", "独孤九剑");
-//		 // model.put("pro", "产品1");
-//		 // model.put("interFace", "登录接口");
-//		 mailSenderService.sendWithTemplateForHTML(model);
+
+		// 返回所有测试过的结果
+		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks();
+
+		// 1.格式化信封
+		Map< String,List<IfSysMock> > mailBuffers = new HashMap();
+		for(int i=0;i<resulteMocks.size();i++){
+			// 遍历每个接口的关系
+			int interfaceId = resulteMocks.get(i).getIfId();
+			List<IfSysMock> relationShip = ifSysMockService.getInterfaceFollowShipById(interfaceId);
+			for(int j=0;j<relationShip.size();j++){
+				String email = relationShip.get(j).getEmail();
+				String userName = relationShip.get(j).getUsername();
+				//为每条mock加工关注者数据
+				IfSysMock eachMock = resulteMocks.get(i);
+				eachMock.setUsername(userName);
+				// 为每个接收者包装信件
+				if(mailBuffers.containsKey(email)&&mailBuffers.get(email).size()!=0){
+					mailBuffers.get(email).add(eachMock);
+				}else{
+					List<IfSysMock> mock = new ArrayList<IfSysMock>();
+					mock.add(eachMock);
+					mailBuffers.put(email,mock);
+				}
+			}
+		}
+		// 2.分发收件人
+		Iterator entries = mailBuffers.entrySet().iterator();
+		while (entries.hasNext()) {
+
+			Map.Entry entry = (Map.Entry) entries.next();
+
+			String email = (String)entry.getKey();
+			List<IfSysMock> mocks = (List<IfSysMock>)entry.getValue();
+			// 设置收件人地址
+			List<String> addressTo = new ArrayList<String>();
+			addressTo.add(email);
+			mailSenderService.setTo(addressTo);
+			String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
+			mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+			mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
+			// 发送结果
+			Map model = new HashMap();
+			model.put("resulteMocks", mocks);
+			model.put("userName", userName);
+			mailSenderService.sendWithTemplateForHTML(model);
+
+		}
+
+		// 3.抄送收件人
+		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
+		for(int i=0;i<copyList.length;i++){
+			String email = copyList[i];
+			System.out.println(email);
+			List<String> copyTo = new ArrayList<String>();
+			copyTo.add(email);
+			mailSenderService.setTo(copyTo);
+			String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
+			mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+			mailSenderService.setTemplateName("copyMail.vm");// 设置的邮件模板
+			// 发送结果
+			Map model = new HashMap();
+			model.put("resulteMocks", resulteMocks);
+			model.put("userName", userName);
+			mailSenderService.sendWithTemplateForHTML(model);
+		}
+
+
+
+
+
 		System.out.println("邮件发送成功！");
 	}
 }

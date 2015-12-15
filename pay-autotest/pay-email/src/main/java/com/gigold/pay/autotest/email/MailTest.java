@@ -41,7 +41,7 @@ public class MailTest {
         List<String> addressTo=new ArrayList<String>();
         //addressTo.add("xiebin163126@163.com");
         addressTo.add("xiebin@gigold.com");
-		mailSender.setTo(addressTo);  
+		mailSender.setTo(addressTo);
 		mailSender.setSubject("来自独孤九剑接口自动化测试的邮件");  
 		mailSender.setTemplateName("mail.vm");//设置的邮件模板  
 		Map model=new HashMap();  

@@ -10,14 +10,16 @@ package com.gigold.pay.autotest.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gigold.pay.autotest.bo.InterFaceInfo;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
+import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.bo.ReturnCode;
 import com.gigold.pay.autotest.dao.IfSysMockDAO;
-
+import com.gigold.pay.autotest.dao.InterFaceDao;
 /**
  * Title: IfSysMockService<br/>
  * Description: <br/>
@@ -112,7 +114,7 @@ public class IfSysMockService {
 		boolean flag = false;
 		try {
 			int count = 0;
-			IfSysMock ifMock=getMockInfoById(ifSysMock);
+			IfSysMock ifMock=ifSysMockDao.getMockInfoById(ifSysMock);
 			if (ifMock==null) {
 				count = ifSysMockDao.addIfSysMock(ifSysMock);
 			} else {
@@ -216,7 +218,7 @@ public class IfSysMockService {
 	 * @author xiebin
 	 * @date 2015年12月9日上午11:12:43
 	 *
-	 * @param id
+	 * @param
 	 * @return
 	 */
 	public IfSysMock getMockInfoById(IfSysMock ifSysMock) {
@@ -256,7 +258,7 @@ public class IfSysMockService {
 	 * @author xiebin
 	 * @date 2015年12月9日上午11:12:43
 	 *
-	 * @param id
+	 * @param
 	 * @return
 	 */
 	public IfSysMock getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock) {
@@ -326,7 +328,28 @@ public class IfSysMockService {
 		// 筛选数据
 		List<IfSysMock> list = null;
 		try {
-			list = ifSysMockDao.filterMocksByFailed();
+			list = ifSysMockDao.filterAllTestedMocks();
+		} catch (Exception e) {
+			list = null;
+		}
+		return list;
+	}
+
+	/**
+	 *
+	 * Title: filterMocksByStatus<br/>
+	 * Description: 根据id查询接口的关注列表<br/>
+	 *
+	 * @author chenkuan
+	 * @date 2015年12月11日上午11:56:31
+	 *
+	 * @return list
+	 */
+	public List<IfSysMock> getInterfaceFollowShipById(int id) {
+		// 筛选数据
+		List<IfSysMock> list = null;
+		try {
+			list = ifSysMockDao.getInterfaceFollowShipById(id);
 		} catch (Exception e) {
 			list = null;
 		}

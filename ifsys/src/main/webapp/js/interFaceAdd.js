@@ -50,14 +50,16 @@ $(function() {
 		var sendData = {};
 		sendData = $(recordForm).serializeJson();
 		sendData.ifId = $("#ifId").val();
+		sendData.id = $("#id").val();
 		console.log(sendData);
 		gigold.pay.interFace.ajaxHandler({
 			"url" : "addrspcd.do",
 			"data" : JSON.stringify(sendData),
 			"onSuccess" : function(data) {
 				console.log(data.id);
+				console.log(data);
 				if (data.rspCd == "00000") {
-					$(recordForm).find("input[name=id]").val(data.id)
+					$(recordForm).find("input[name=id]").val(data.id);
 					$(recordForm).find("button[name=delRspBtn]").show();
 					alert("保存成功");
 				} else {

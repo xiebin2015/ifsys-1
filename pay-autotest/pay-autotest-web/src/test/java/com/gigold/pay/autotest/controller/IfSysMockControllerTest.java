@@ -10,6 +10,9 @@ package com.gigold.pay.autotest.controller;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +27,12 @@ import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.service.IfSysMockService;
 import com.gigold.pay.autotest.service.InterFaceFieldService;
 import com.gigold.pay.autotest.service.InterFaceService;
+import com.gigold.pay.autotest.service.RetrunCodeService;
 import com.gigold.pay.framework.base.SpringContextHolder;
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.web.ResponseDto;
-import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageHelper;
 
 import junit.framework.Assert;
 
@@ -50,6 +55,8 @@ public class IfSysMockControllerTest {
 	@Mock
 	InterFaceService interFaceService;
 	@Mock
+	RetrunCodeService retrunCodeService;
+	@Mock
 	IfSysMockAddReqDto dto;
 	@Mock
 	IfSysMockDelReqDto deldto;
@@ -68,6 +75,7 @@ public class IfSysMockControllerTest {
 		ifSysMockController.setIfSysMockService(ifSysMockService);
 		ifSysMockController.setInterFaceFieldService(interFaceFieldService);
 		ifSysMockController.setInterFaceService(interFaceService);
+		ifSysMockController.setRetrunCodeService(retrunCodeService);
 	}
 
 	@Test
@@ -135,16 +143,21 @@ public class IfSysMockControllerTest {
 	}
 
 	@Test
+
+	@PrepareForTest({ PageHelper.class ,SystemPropertyConfigure.class})
 	public void testGetAllIfSys() {
-//		PageInfo<InterFaceInfo> pageInfo = new PageInfo<InterFaceInfo>();
-//		IfSysMockPageDto dto = new IfSysMockPageDto();
-//	//	when(interFaceService.getAllIfSys(any(int.class))).thenReturn(null).thenReturn(pageInfo);
-//		// /查询失败
-//		ResponseDto rdto = ifSysMockController.getAllIfSys(dto);
-//		Assert.assertEquals(CodeItem.FAILURE, rdto.getRspCd());
-//		// 查询成功
-//		rdto = ifSysMockController.getAllIfSys(dto);
-//		Assert.assertEquals(SysCode.SUCCESS, rdto.getRspCd());
+		PowerMockito.mockStatic(RandomStringUtils.class);
+		PowerMockito.mockStatic(SystemPropertyConfigure.class);
+		
+		IfSysMockPageDto dto = new IfSysMockPageDto();
+		when(SystemPropertyConfigure.getProperty("sys.pageSize")).thenReturn("20");
+		when(interFaceService.getAllIfSys(any(InterFaceInfo.class))).thenReturn(null).thenReturn(new ArrayList());
+		// /查询失败
+		ResponseDto rdto = ifSysMockController.getAllIfSys(dto);
+		Assert.assertEquals(CodeItem.FAILURE, rdto.getRspCd());
+		// 查询成功
+		rdto = ifSysMockController.getAllIfSys(dto);
+		Assert.assertEquals(SysCode.SUCCESS, rdto.getRspCd());
 	}
 
 	@Test
@@ -156,12 +169,13 @@ public class IfSysMockControllerTest {
 		
 		IfSysMockAddReqDto dto = new IfSysMockAddReqDto();
 		when(interFaceService.getInterFaceById(any(int.class))).thenReturn(null).thenReturn(new InterFaceInfo());
+		when(retrunCodeService.getReturnCodeByIfId(1)).thenReturn(null);
 		// /查询失败
 		ResponseDto rdto = ifSysMockController.getIfSysMockByIfId(dto);
 		Assert.assertEquals(CodeItem.FAILURE, rdto.getRspCd());
 		// 查询成功
 		rdto = ifSysMockController.getIfSysMockByIfId(dto);
-		//Assert.assertEquals(SysCode.SUCCESS, rdto.getRspCd());
+		Assert.assertEquals(SysCode.SUCCESS, rdto.getRspCd());
 
 	}
 

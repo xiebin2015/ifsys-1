@@ -94,12 +94,22 @@ public class IfSysMockServiceTest {
 		Assert.assertTrue(flag1);
 		// 修改失败
 		ifSysMock.setId(1);
+		when(fSysMockDAO.getMockInfoById(any(IfSysMock.class))).thenReturn(ifSysMock);
 		when(fSysMockDAO.updateIfSysMock(any(IfSysMock.class))).thenReturn(0).thenReturn(1);
 		boolean flag2 = fSysMockService.updateIfSysMock(ifSysMock);
-		//Assert.assertFalse(flag2);
+		Assert.assertFalse(flag2);
 		// 修改成功
 		boolean flag3 = fSysMockService.updateIfSysMock(ifSysMock);
-		//Assert.assertTrue(flag3);
+		Assert.assertTrue(flag3);
+		
+		when(fSysMockDAO.getMockInfoById(any(IfSysMock.class))).thenReturn(null);
+		when(fSysMockDAO.addIfSysMock(any(IfSysMock.class))).thenReturn(0).thenReturn(1);
+		boolean flag4 = fSysMockService.updateIfSysMock(ifSysMock);
+		Assert.assertFalse(flag4);
+		// 修改成功
+		boolean flag5 = fSysMockService.updateIfSysMock(ifSysMock);
+		Assert.assertTrue(flag5);
+		
 	}
 
 	@Test

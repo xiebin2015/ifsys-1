@@ -23,7 +23,6 @@ import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.core.exception.PendingException;
 import com.gigold.pay.framework.web.BaseController;
-import com.gigold.pay.framework.web.ResponseDto;
 import com.gigold.pay.ifsys.bo.InterFaceInvoker;
 import com.gigold.pay.ifsys.bo.UserInfo;
 import com.gigold.pay.ifsys.service.InterFaceInvokerService;
@@ -43,9 +42,15 @@ public class InterFaceInvokerController extends BaseController {
 	InterFaceInvokerService interFaceInvokerService;
 
 	@RequestMapping("/addinvoker.do")
-	public @ResponseBody ResponseDto addInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
+	public @ResponseBody InterFaceInvokerAddResDto addInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
 		debug("调用 addInterFaceInvoker");
-		ResponseDto rdto = new ResponseDto();
+		InterFaceInvokerAddResDto rdto = new InterFaceInvokerAddResDto();
+		String rspCode=dto.vaildate();
+		if(!"00000".equals(rspCode)){
+			rdto.setRspCd(rspCode);
+			return rdto;
+		}
+		
 		String recode = dto.vaildate();
 		if (!SysCode.SUCCESS.equals(recode)) {
 			rdto.setRspCd(recode);
@@ -58,7 +63,6 @@ public class InterFaceInvokerController extends BaseController {
 			rdto.setRspInf("用户未登录");
 			return rdto;
 		}
-		userInfo= (UserInfo)SpringContextHolder.getBean(UserInfo.class);
 		InterFaceInvoker invoker=null;
 		try {
 			invoker = createBO(dto, InterFaceInvoker.class);
@@ -69,8 +73,9 @@ public class InterFaceInvokerController extends BaseController {
 		
 		invoker.setuId(userInfo.getId());
 		// 添加关注信息
-		boolean flag = interFaceInvokerService.addInterFaceInvoker(invoker);
-		if (flag) {
+		invoker = interFaceInvokerService.addInterFaceInvoker(invoker);
+		if (invoker!=null) {
+			rdto.setInvoker(invoker);
 			rdto.setRspCd(SysCode.SUCCESS);
 			rdto.setRspInf("关注成功");
 		} else {
@@ -99,7 +104,7 @@ public class InterFaceInvokerController extends BaseController {
 		InterFaceInvokerResDto rdto=new InterFaceInvokerResDto();
 		InterFaceInvoker invoker = (InterFaceInvoker) SpringContextHolder.getBean(InterFaceInvoker.class);
 		invoker.setIfFollowedId(dto.getIfFollowedId());
-		List<Map<String,Object>> list=interFaceInvokerService.getInvokerList(invoker);
+		List<InterFaceInvoker> list=interFaceInvokerService.getInvokerList(invoker);
 		if(list!=null){
 			rdto.setList(list);
 			rdto.setRspCd(SysCode.SUCCESS);

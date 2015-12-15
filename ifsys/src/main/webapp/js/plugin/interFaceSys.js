@@ -35,4 +35,30 @@ gigold.pay.interFace.ajaxHandler = function(options) {
 }
 
 
+/**
+ * 利用 sessionStorage 实现本地缓存管理 可以用来页面之间传参
+ */
+var cacheService= (function(){
+	return {
+		getProterties:function(key){
+			var r;
+			if(window.sessionStorage){
+				r=JSON.parse(window.sessionStorage.getItem(key));
+			}
+			return r;
+			
+		},
+		setProterties:function(key,value){
+			value =JSON.stringify(value);
+			if(window.sessionStorage){
+			   window.sessionStorage.setItem(key,value);
+			   console.log(window.sessionStorage.getItem(key))
+			}
+		}
+	}
+})()
+	
+	
+	
+
 

@@ -36,7 +36,7 @@ public class InterFaceInfo {
 	
 	private int ifSysId;
 	private int ifProId;
-	
+
 	/**
 	 * @return the ifDesc
 	 */

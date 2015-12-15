@@ -22,12 +22,23 @@ import com.gigold.pay.autotest.bo.IfSysMock;
  *
  */
 public interface IfSysMockDAO {
+	/**
+	 *
+	 * Title: getAllIfSys<br/>
+	 * Description:获取接口的关注者 <br/>
+	 *
+	 * @author chenkuan
+	 * @date 2015年12月11日
+	 *
+	 * @return
+	 */
+	public List<IfSysMock> getInterfaceFollowShipById(int id);
 
 	/**
-	 * 
+	 *
 	 * Title: addIfSysMock<br/>
 	 * Description: 新增接口测试数据<br/>
-	 * 
+	 *
 	 * @author xiebin
 	 * @date 2015年11月30日上午11:15:29
 	 *
