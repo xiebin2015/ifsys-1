@@ -203,3 +203,11 @@ input{
 .focusTab th{
 	font-size:15px;
 }
+.focusBox textarea{
+	width:90%;
+	padding:5px;
+}
+.focusBox .addInvokerBtn{
+	margin-right:5%;
+	margin-top:10px;
+}
