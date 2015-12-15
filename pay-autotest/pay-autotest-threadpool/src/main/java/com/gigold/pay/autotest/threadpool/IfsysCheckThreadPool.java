@@ -36,9 +36,10 @@ public class IfsysCheckThreadPool {
 	InterFaceService interFaceService;
 	// 获取核心数
 	private static final int CPUCORECOUNT = Runtime.getRuntime().availableProcessors();
-	private static final ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT*2 + 1);
-
+	
 	public TestResulteData execute() {
+	 ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT*2 + 1);
+
 		// 测试数据
 		TestResulteData testResulteData = new TestResulteData();
 		// 当前页
