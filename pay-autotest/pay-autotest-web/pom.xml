@@ -67,7 +67,11 @@
 			<artifactId>pay-autotest-threadpool</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.gigold.pay</groupId>
+			<artifactId>pay-autotest-script</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<!-- war包名称 -->
@@ -90,7 +94,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
-					<warSourceDirectory>src/main/webapp</warSourceDirectory>
+					<warSourceDirectory>webapp</warSourceDirectory>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
