@@ -7,19 +7,14 @@
  */
 package com.gigold.pay.autotest.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.gigold.pay.autotest.bo.InterFaceInfo;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gigold.pay.autotest.annotation.IfSysMockHistoryAnnotation;
 import com.gigold.pay.autotest.bo.IfSysMock;
-import com.gigold.pay.autotest.bo.InterFaceInfo;
-import com.gigold.pay.autotest.bo.ReturnCode;
 import com.gigold.pay.autotest.dao.IfSysMockDAO;
-import com.gigold.pay.autotest.dao.InterFaceDao;
 /**
  * Title: IfSysMockService<br/>
  * Description: <br/>
@@ -114,7 +109,7 @@ public class IfSysMockService {
 		boolean flag = false;
 		try {
 			int count = 0;
-			IfSysMock ifMock=getMockInfoById(ifSysMock);
+			IfSysMock ifMock=ifSysMockDao.getMockInfoById(ifSysMock);
 			if (ifMock==null) {
 				count = ifSysMockDao.addIfSysMock(ifSysMock);
 			} else {
@@ -367,6 +362,7 @@ public class IfSysMockService {
 	 * @param ifsysmock
 	 * @return
 	 */
+	@IfSysMockHistoryAnnotation("记录测试历史")
 	public boolean writeBackRealRsp(IfSysMock ifsysmock) {
 		boolean flag = false;
 		try {

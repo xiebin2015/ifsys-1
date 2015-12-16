@@ -147,7 +147,6 @@ public class MailSenderService extends Domain{
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
 		try {
 			messageHelper.setTo(getAddressTo());
-			//messageHelper.setCc(getCc());
 			messageHelper.setFrom(simpleMailMessage.getFrom());
 			messageHelper.setSubject(this.getSubject());
 			String result = null;

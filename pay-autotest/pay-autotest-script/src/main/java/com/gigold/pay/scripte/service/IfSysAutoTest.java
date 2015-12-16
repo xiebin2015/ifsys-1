@@ -1,11 +1,11 @@
 /**
- * Title: Test.java<br/>
+ * Title: IfSysAutoTest.java<br/>
  * Description: <br/>
  * Copyright: Copyright (c) 2015<br/>
  * Company: gigold<br/>
  *
  */
-package com.gigold.pay.script;
+package com.gigold.pay.scripte.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,67 +13,51 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.dubbo.common.json.JSON;
-import com.gigold.pay.autotest.bo.IfSysStuff;
-import com.gigold.pay.autotest.bo.InterFaceInfo;
-import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
-import net.sf.json.JSONObject;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.email.MailSenderService;
 import com.gigold.pay.autotest.service.IfSysMockService;
 import com.gigold.pay.autotest.service.IfSysStuffService;
 import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
+import com.gigold.pay.framework.core.Domain;
 
 /**
- * Title: Test<br/>
+ * Title: IfSysAutoTest<br/>
  * Description: <br/>
  * Company: gigold<br/>
  * 
  * @author xiebin
- * @date 2015年12月5日下午3:37:06
+ * @date 2015年12月15日上午9:40:02
  *
  */
-public class TestDemo {
-
+public class IfSysAutoTest extends Domain {
+	
+	/** serialVersionUID */
+	private static final long serialVersionUID = 1L;
 	private IfsysCheckThreadPool ifsysCheckThreadPool;
 	private MailSenderService mailSenderService;
 	private IfSysMockService ifSysMockService;
 	private IfSysStuffService ifSysStuffService;
 
-	//@Before
-	public void setup() {
-		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
+	public IfSysAutoTest(){
 		ifsysCheckThreadPool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
 		mailSenderService = (MailSenderService) SpringContextHolder.getBean(MailSenderService.class);
 		ifSysMockService = (IfSysMockService) SpringContextHolder.getBean(IfSysMockService.class);
 		ifSysStuffService = (IfSysStuffService) SpringContextHolder.getBean(IfSysStuffService.class);
 	}
-
-
-	//@Test
-	public void testAutoTest() {
-		//ifsysCheckThreadPool.execute();
+	public void work() {
+		debug("Quartz的任务调度！！！");
+		autoTest();
+		sendMail();
+		debug("一次的任务调度！！！");
 	}
-
-	//@After
-	/**
-	 * 
-	 * Title: testSendMail<br/>
-	 * Description: 测试完成之后再发邮件的情况<br/>
-	 * 
-	 * @author xiebin
-	 * @date 2015年12月7日下午4:27:30
-	 *
-	 */
-	public void testSendMail() {
+	
+	public void autoTest() {
+		ifsysCheckThreadPool.execute();
+	}
+	
+	public void sendMail() {
 
 		// 返回所有测试过的结果
 		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks();
@@ -154,4 +138,6 @@ public class TestDemo {
 
 		System.out.println("邮件发送成功！");
 	}
+	
+	
 }
