@@ -14,11 +14,14 @@ import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gigold.pay.autotest.annotation.IfSysMockHistoryAnnotation;
 import com.gigold.pay.autotest.bo.InterFaceInfo;
+import com.gigold.pay.autotest.jrn.JrnGeneratorService;
+import com.gigold.pay.autotest.resulte.TestResulteData;
 import com.gigold.pay.autotest.service.IfSysMockService;
 import com.gigold.pay.autotest.service.InterFaceService;
+import com.gigold.pay.framework.core.Domain;
 import com.github.pagehelper.PageInfo;
-import com.gigold.pay.autotest.resulte.*;
 /**
  * Title: SimpleThreadPool<br/>
  * Description: <br/>
@@ -29,17 +32,16 @@ import com.gigold.pay.autotest.resulte.*;
  *
  */
 @Service
-public class IfsysCheckThreadPool {
+public class IfsysCheckThreadPool extends Domain {
 	@Autowired
 	IfSysMockService ifSysMockService;
 	@Autowired
 	InterFaceService interFaceService;
 	// 获取核心数
 	private static final int CPUCORECOUNT = Runtime.getRuntime().availableProcessors();
-	
+	@IfSysMockHistoryAnnotation("记录测试历史")
 	public TestResulteData execute() {
 	 ExecutorService executor = Executors.newFixedThreadPool(CPUCORECOUNT*2 + 1);
-
 		// 测试数据
 		TestResulteData testResulteData = new TestResulteData();
 		// 当前页
