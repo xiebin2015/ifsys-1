@@ -1,8 +1,8 @@
 $(function() {
-	console.log($.getUrlParam("userName"))
-	$(".loggxnxi").html(
-			"登录用户：<span class='colorBlue'>" + $.getUrlParam("userName")
-					+ " </span>");
+	
+	
+	
+	$(".loggxnxi").html( "登录用户：<span class='colorBlue'>" + $.getUrlParam("userName") + " </span>");
 	// 查询接口（首页）,用户信息
 	$(".QueryInterface").on(
 			"click",
@@ -11,27 +11,29 @@ $(function() {
 						+ $.getUrlParam("userName");
 			});
 	// 添加接口，用户信息
-	$(".AddInterface").on(
-			"click",
-			function() {
-				window.location.href = "interFaceBaseInfo.html?userName="
-						+ $.getUrlParam("userName");
-			});
+	$(".AddInterface").on( "click", function() {
+		window.location.href = "interFaceBaseInfo.html?userName=" + $.getUrlParam("userName");
+	});
 
 	var userId = $.getUrlParam("id");
 	// var userId = 7;
 	perHandel(userId);
 
+	//点击关注功能
 	$("#focusBtn").click(function() {
-
 		$("#doc-modal").modal({
 			relatedTarget : this,
 			closeViaDimmer : false
 		});
 
 	});
-
+	
+	//保存关注信息功能
 	$(".addInvokerBtn").click(function() {
+		if($("#remark").val()==""||$("#remark").val()==null){
+			alert("关注信息为必填信息。");
+			return;
+		}
 		var sendData = {};
 		sendData.ifFollowedId = $("#ifSysId").val();
 		sendData.remark = $("#remark").val();
@@ -74,7 +76,6 @@ function perRequest(userId) {
 		}
 
 	};
-	console.log(addParam(data));
 	data.request = function(perData) {
 		$.ajax({
 			type : "post",
@@ -106,8 +107,6 @@ function loadInvokerList() {
 		"url" : "getinvokerlist.do",
 		"data" : JSON.stringify(postData),
 		"onSuccess" : function(data) {
-			console.log("ssss");
-			console.log(data);
 			if (data.rspCd == "00000") {
 				var invokerHtml = "";
 				$.each(data.list, function(index, row) {
