@@ -114,7 +114,7 @@ public class IfSysMockService {
 		boolean flag = false;
 		try {
 			int count = 0;
-			IfSysMock ifMock=getMockInfoById(ifSysMock);
+			IfSysMock ifMock=ifSysMockDao.getMockInfoById(ifSysMock);
 			if (ifMock==null) {
 				count = ifSysMockDao.addIfSysMock(ifSysMock);
 			} else {

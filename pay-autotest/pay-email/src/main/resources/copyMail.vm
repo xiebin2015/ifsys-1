@@ -58,13 +58,13 @@
         #end
 
         <tr>
-            <td rowspan='2'>$mock.getIfId()</td>
-            <td rowspan='2' title='$mock.getIfDESC()'>$mock.getIfName()</td>
-            <td rowspan='2' class='$!{resultStyle}'>${result}</td>
+            <td>$mock.getIfId()</td>
+            <td title='$mock.getIfDESC()'>$!mock.getIfName()</td>
+            <td class='$!{resultStyle}'>$!{result}</td>
 
-            <td rowspan='2'><a href='$mock.getIfURL()'>$mock.getIfURL()</a></td>
-            <td rowspan='2'>$mock.getIfPROTOCOL()</td>
-            <td rowspan='2'>$mock.getUsername()</td>
+            <td><a href='$mock.getIfURL()'>$!mock.getIfURL()</a></td>
+            <td>$!mock.getIfPROTOCOL()</td>
+            <td>$!mock.getUsername()</td>
         </tr>
     #end
 </table>
