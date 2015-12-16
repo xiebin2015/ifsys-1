@@ -14,7 +14,7 @@
         <dependent-module archiveName="pay-autotest-threadpool-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pay-autotest-threadpool/pay-autotest-threadpool">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="pay-autotest-script-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pay-autotest-script/pay-autotest-script">
+        <dependent-module archiveName="pay-autotest-script.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pay-autotest-script/pay-autotest-script">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="pay-autotest-web"/>

@@ -49,6 +49,7 @@ public class IfSysMockHistoryService extends Domain {
 				flag = true;
 			}
 		} catch (Exception e) {
+			debug("调用 addIfSysMockHistory 数据库异常");
 			flag = false;
 		}
 		return flag;
