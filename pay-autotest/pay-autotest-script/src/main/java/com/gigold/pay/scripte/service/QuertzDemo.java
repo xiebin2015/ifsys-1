@@ -31,7 +31,11 @@ public class QuertzDemo {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String config[] = new String[] { "classpath*:spring/*Beans.xml", "classpath*:spring/spring-quartz-config.xml" };
+		String config[] = new String[] {
+				
+				"classpath*:spring/spring-quartz-config.xml"
+				
+				};
 		ApplicationContext context = new ClassPathXmlApplicationContext(config);
 
 	}
