@@ -33,7 +33,9 @@ public class IfSysMockHistoryAspect extends BaseAspect {
 
 	@Autowired
 	IfSysMockHistoryService ifSysMockHistoryService;
-	
+	@Autowired
+	JrnGeneratorService jrnGrneratorService;
+	private String jrn;
 
 	// Service层切点
 	@Pointcut("@annotation(com.gigold.pay.autotest.annotation.IfSysMockHistoryAnnotation)")
@@ -48,32 +50,42 @@ public class IfSysMockHistoryAspect extends BaseAspect {
 	@Before("serviceAspect()")
 	public void doBefore(JoinPoint joinPoint) {
 		debug("dobefore log");
-		Date d = new Date();
-		IfSysMockHistory ifSysMockHistory = (IfSysMockHistory) SpringContextHolder.getBean(IfSysMockHistory.class);
-		// 设置请求日期
-		Object argsObj = joinPoint.getArgs()[0];
-		IfSysMock ifSysMock = null;
-		if (argsObj instanceof IfSysMock) {
-			ifSysMock = (IfSysMock) argsObj;
-		}
-		if (ifSysMock == null) {
-			debug("ifSysMockHistoryServiceAspect doBefore ifSysMock为null");
-			return;
-		}
-		
-		ifSysMockHistory.setIfId(ifSysMock.getIfId());
-		ifSysMockHistory.setMockId(ifSysMock.getId());
-		// 设置测试结果
-		ifSysMockHistory.setTestResult(ifSysMock.getTestResult());
-		// 设置流水号
-		ifSysMockHistory.setJrn(ifSysMock.getJrn());
-		// 设置测试日期
-		ifSysMockHistory.setTestDt(ymd.format(d));
-		// 设置测试时间
-		ifSysMockHistory.setTestTm(hms.format(d));
-		boolean flag = ifSysMockHistoryService.addIfSysMockHistory(ifSysMockHistory);
-		if (!flag) {
-			debug("ifSysMockHistoryService.addIfSysMockHistory 方法出现异常");
+		String targetName = joinPoint.getTarget().getClass().getName();
+		if ("com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool".equalsIgnoreCase(targetName)) {
+			try {
+				jrn = jrnGrneratorService.generateJrn();
+			} catch (Exception e) {
+				debug("ifSysMockHistoryServiceAspect doBefore 生成批次号有异常");
+				e.printStackTrace();
+			}
+		} else {
+			Date d = new Date();
+			IfSysMockHistory ifSysMockHistory = (IfSysMockHistory) SpringContextHolder.getBean(IfSysMockHistory.class);
+			// 设置请求日期
+			Object argsObj = joinPoint.getArgs()[0];
+			IfSysMock ifSysMock = null;
+			if (argsObj instanceof IfSysMock) {
+				ifSysMock = (IfSysMock) argsObj;
+			}
+			if (ifSysMock == null) {
+				debug("ifSysMockHistoryServiceAspect doBefore ifSysMock为null");
+				return;
+			}
+
+			ifSysMockHistory.setIfId(ifSysMock.getIfId());
+			ifSysMockHistory.setMockId(ifSysMock.getId());
+			// 设置测试结果
+			ifSysMockHistory.setTestResult(ifSysMock.getTestResult());
+			// 设置流水号
+			ifSysMockHistory.setJrn(jrn);
+			// 设置测试日期
+			ifSysMockHistory.setTestDt(ymd.format(d));
+			// 设置测试时间
+			ifSysMockHistory.setTestTm(hms.format(d));
+			boolean flag = ifSysMockHistoryService.addIfSysMockHistory(ifSysMockHistory);
+			if (!flag) {
+				debug("ifSysMockHistoryService.addIfSysMockHistory 方法出现异常");
+			}
 		}
 	}
 

@@ -43,15 +43,12 @@ public class IfSysAutoTestService extends Domain {
 	IfSysMockService ifSysMockService;
 	@Autowired
 	IfSysReferService ifSysReferService;
-	@Autowired
-	JrnGeneratorService jrnGrneratorService;
 
-	public void writeBackContent(IfSysMock mock, String responseJson,String jrn) {
+	public void writeBackContent(IfSysMock mock, String responseJson) {
 		JSONObject jsonObject = null;
 		IfSysMock ifsysmock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
 		ifsysmock.setId(mock.getId());
 		ifsysmock.setIfId(mock.getIfId());
-		ifsysmock.setJrn(jrn);
 		ifsysmock.setRealResponseJson(responseJson);
 		try {
 			jsonObject = JSONObject.fromObject(responseJson);
@@ -107,14 +104,6 @@ public class IfSysAutoTestService extends Domain {
 			}
 
 		}
-		String jrn = null;
-		try {
-			jrn = jrnGrneratorService.generateJrn();
-		} catch (Exception e) {
-			debug("ifSysMockHistoryServiceAspect doBefore 生成批次号有异常");
-			e.printStackTrace();
-		}
-
 		// 3、最后调用目标接口
 		for (IfSysMock mock : interFaceInfo.getMockList()) {
 			/**
@@ -131,7 +120,7 @@ public class IfSysAutoTestService extends Domain {
 				debug("调用失败");
 			}
 			// 实际结果回写
-			writeBackContent(mock, responseJson,jrn);
+			writeBackContent(mock, responseJson);
 
 		}
 	}
