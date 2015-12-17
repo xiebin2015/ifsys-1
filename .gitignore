@@ -9,4 +9,4 @@ ifsys/src/main/webapp/webapp.iml
 
 .idea/.name
 
-*.xml
+.idea/*.xml

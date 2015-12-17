@@ -7,12 +7,14 @@
  */
 package com.gigold.pay.autotest.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gigold.pay.autotest.bo.IfSysMockHistory;
 import com.gigold.pay.autotest.dao.IfSysMockHistoryDAO;
 import com.gigold.pay.framework.core.Domain;
+import com.sun.tools.javac.util.List;
 
 /**
  * Title: IfSysMockHistoryService<br/>
@@ -53,6 +55,16 @@ public class IfSysMockHistoryService extends Domain {
 			flag = false;
 		}
 		return flag;
+	}
+
+	public  List<IfSysMockHistory> getNewestReslutOf(int limit){
+		List<IfSysMockHistory> list = null;
+		try {
+			list = ifSysMockHistoryDAO.getNewestReslutOf(limit);
+		} catch (Exception e) {
+			list = null;
+		}
+		return list;
 	}
 
 }
