@@ -1,21 +1,38 @@
 package com.gigold.pay.ifsys.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gigold.pay.framework.core.Domain;
 import com.gigold.pay.ifsys.bo.InterFaceInfo;
 import com.gigold.pay.ifsys.dao.InterFaceDao;
 
 @Service
-public class InterFaceService {
+public class InterFaceService extends Domain {
 
-    @Autowired
+    /** serialVersionUID */
+	private static final long serialVersionUID = 1L;
+	@Autowired
     InterFaceDao interFaceDao;
+    
 
     /**
+	 * @return the interFaceDao
+	 */
+	public InterFaceDao getInterFaceDao() {
+		return interFaceDao;
+	}
+
+	/**
+	 * @param interFaceDao the interFaceDao to set
+	 */
+	public void setInterFaceDao(InterFaceDao interFaceDao) {
+		this.interFaceDao = interFaceDao;
+	}
+
+	/**
      * 
      * Title: getInterFaceById<br/>
      * Description:根据ID查询接口信息<br/>
@@ -27,21 +44,13 @@ public class InterFaceService {
      * @return
      */
     public InterFaceInfo getInterFaceById(InterFaceInfo interFaceInfo) {
-        return interFaceDao.getInterFaceById(interFaceInfo);
-    }
-
-    /**
-     * 
-     * Title: getInterFaceByProId<br/>
-     * 根据产品Id查询接口: <br/>
-     * @author xb
-     * @date 2015年10月15日下午12:45:41
-     *
-     * @param id
-     * @return
-     */
-    public List<InterFaceInfo> getInterFaceByProId(int id) {
-        return null;
+    	InterFaceInfo interFace=null;
+    	try{
+    		interFace=interFaceDao.getInterFaceById(interFaceInfo);
+    	}catch(Exception e){
+    		debug("调用 interFaceDao.getInterFaceById 发生异常");
+    	}
+        return interFace;
     }
 
     /**
@@ -53,15 +62,14 @@ public class InterFaceService {
      *
      * @return
      */
-    public List<InterFaceInfo> getAllInterFaceByPage() {
-
-        return interFaceDao.getAllInterFaceByPage();
-    }
-    
-    
     public List<InterFaceInfo> queryInterFaceByPage(InterFaceInfo interFaceInfo) {
-
-        return interFaceDao.queryInterFaceByPage(interFaceInfo);
+    	List<InterFaceInfo> list=null;
+    	try{
+    		list=interFaceDao.queryInterFaceByPage(interFaceInfo);
+    	}catch(Exception e){
+    		debug("调用 interFaceDao.queryInterFaceByPage 发生异常");
+    	}
+        return list;
     }
     
     
@@ -77,7 +85,16 @@ public class InterFaceService {
      * @return
      */
     public boolean addInterFace(InterFaceInfo interFaceInfo) {
-        return interFaceDao.addInterFace(interFaceInfo);
+    	boolean flag=false;
+    	try{
+    		int count=interFaceDao.addInterFace(interFaceInfo);
+    		if(count>0){
+    			flag=true;
+    		}
+    	}catch(Exception e){
+    		debug("调用 interFaceDao.addInterFace 发生异常");
+    	}
+        return flag;
     }
    /**
     * 
@@ -90,7 +107,16 @@ public class InterFaceService {
     * @return
     */
     public boolean deleteInterFaceById(InterFaceInfo interFaceInfo) {
-        return interFaceDao.deleteInterFaceById(interFaceInfo);
+    	boolean flag=false;
+    	try{
+    		int count=interFaceDao.deleteInterFaceById(interFaceInfo);
+    		if(count>0){
+    			flag=true;
+    		}
+    	}catch(Exception e){
+    		debug("调用 interFaceDao.deleteInterFaceById 发生异常");
+    	}
+        return flag;
     }
     /**
      * 
@@ -103,7 +129,15 @@ public class InterFaceService {
      * @return
      */
     public boolean updateInterFace(InterFaceInfo interFaceInfo) {
-        boolean flag = interFaceDao.updateInterFace(interFaceInfo);
+    	boolean flag=false;
+    	try{
+    		int count=interFaceDao.updateInterFace(interFaceInfo);
+    		if(count>0){
+    			flag=true;
+    		}
+    	}catch(Exception e){
+    		debug("调用 interFaceDao.updateInterFace 发生异常");
+    	}
         return flag;
     }
 
