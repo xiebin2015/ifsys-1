@@ -70,8 +70,5 @@ public class InterFaceProService extends Domain {
         return list;
     }
     
-      public List<InterFacePro> getAllProInfo() {
-        return interFaceProDao.getAllProInfo();
-    }
 
 }
