@@ -61,7 +61,31 @@ $(function(){
 	});
 	
 	
-	
+	$('#ifSysId').change(function(){ 
+		var sysId=	$(this).children('option:selected').val();
+		var sendData={
+				"interFacePro":{
+					"sysId":sysId
+				}
+			};
+		//加载产品信息
+		  gigold.pay.interFace.ajaxHandler({
+				"url":"getProInfoBySysId.do",
+				"data":JSON.stringify(sendData),
+				"onSuccess":function(data){
+					if (data.rspCd == "00000") {
+						$("#ifProId").removeAttr("disabled");  
+						 var optionStr='';
+						$.each(data.proList, function(index, proData) {
+	                        optionStr += '<option value="'+proData.id+'">'
+	                                + proData.proName + '</option>';
+	                       
+	                    });
+						 $("#ifProId").html(optionStr);
+	              }
+				}
+			});
+		});
 	
 	
 	
@@ -257,12 +281,33 @@ function propAddHandel(userId){
 	var getSysProp = propAddRequest("getAllSysInfo.do",getSys,userId);
 	getSysProp.request();
 	
-	var getProProp = propAddRequest("getAllProInfo.do",getProduct,userId);
-	getProProp.request();
+	
 	
 	var getCurProp = propAddRequest("queryInterFaceById.do",GetCurProp,userId);
 	getCurProp.request();
+	
 
+}
+
+
+function getProductBySysId(sysId){
+	var sendData={
+			"interFacePro":{
+		       "sysId":sysId
+	         }
+	}
+	console.log("hhhhhh");
+	console.log(sendData);
+	gigold.pay.interFace.ajaxHandler({
+		"url" : "getProInfoBySysId.do",
+		"data" : JSON.stringify(sendData),
+		"onSuccess" : function(data) {
+			console.log(data);
+			if (data.rspCd == "00000") {
+				getProduct(data)
+			}
+		}
+	});
 }
 
 //ajax获取接口信息
@@ -376,6 +421,7 @@ function getCurProp(result){
 		for(var i=0;i<optionsSys.length;i++){
 			if(ifSysName==(optionsSys[i].label)){
 				$(optionsSys[i]).attr("selected","selected");
+				getProductBySysId(this.system.id);
 			}
 		}
 		//获取当前接口所属产品
