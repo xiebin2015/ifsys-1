@@ -8,9 +8,7 @@
 package com.gigold.pay.autotest.dao;
 
 import com.gigold.pay.autotest.bo.IfSysMockHistory;
-
-import java.util.List;
-
+import com.sun.tools.javac.util.List;
 /**
  * Title: IfSysMockHistoryDAO<br/>
  * Description: <br/>

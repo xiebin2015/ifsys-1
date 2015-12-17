@@ -38,6 +38,13 @@
         #{testResult})
     ]]>
 	</insert>
+
+	<insert id="getNewestReslutOf" parameterType="String"
+		useGeneratedKeys="true" keyProperty="limit">
+        <![CDATA[
+
+    ]]>
+	</insert>
 	 
 
 </mapper>
