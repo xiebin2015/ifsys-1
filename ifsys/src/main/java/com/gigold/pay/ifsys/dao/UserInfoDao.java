@@ -10,7 +10,7 @@ public interface UserInfoDao {
 
 	public List<UserInfo> getList();
 
-	public boolean addUser(UserInfo user);
+	public int addUser(UserInfo user);
 	
 	public UserInfo login(UserInfo user);
 
