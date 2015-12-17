@@ -21,8 +21,6 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.gigold.pay.ifsys.bo.InterFaceField;
-import com.gigold.pay.ifsys.bo.InterFaceInfo;
-import com.gigold.pay.ifsys.dao.InterFaceDao;
 import com.gigold.pay.ifsys.dao.InterFaceFieldDao;
 
 /**
@@ -66,4 +64,65 @@ public class InterFaceFieldServiceTest {
 		// 成功
 		Assert.assertNotNull(list);
 	}
+
+	@Test
+	public void getFieldByparentId() {
+		InterFaceField interFaceField = new InterFaceField();
+		when(interFaceFieldDao.getFieldByparentId(any(InterFaceField.class))).thenReturn(null)
+				.thenReturn(new ArrayList());
+		List<InterFaceField> list = interFaceFieldService.getFieldByparentId(interFaceField);
+		// 获取失败 包括抛异常的情况
+		Assert.assertNull(list);
+		list = interFaceFieldService.getFieldByparentId(interFaceField);
+		// 成功
+		Assert.assertNotNull(list);
+	}
+
+	@Test
+	public void getFieldByIfId() {
+		InterFaceField interFaceField = new InterFaceField();
+		when(interFaceFieldDao.getFieldByIfId(any(InterFaceField.class))).thenReturn(null).thenReturn(new ArrayList());
+		List<InterFaceField> list = interFaceFieldService.getFieldByIfId(interFaceField);
+		// 获取失败 包括抛异常的情况
+		Assert.assertNull(list);
+		list = interFaceFieldService.getFieldByIfId(interFaceField);
+		// 成功
+		Assert.assertNotNull(list);
+	}
+
+	@Test
+	public void addInterFaceField() {
+		InterFaceField interFaceField = new InterFaceField();
+		when(interFaceFieldDao.addInterFaceField(any(InterFaceField.class))).thenReturn(-1).thenReturn(1);
+		// 添加失败
+		boolean flag = interFaceFieldService.addInterFaceField(interFaceField);
+		Assert.assertFalse(flag);
+		// 添加成功
+		flag = interFaceFieldService.addInterFaceField(interFaceField);
+		Assert.assertTrue(flag);
+	}
+	
+	@Test
+	public void deleteFieldByLevel() {
+		InterFaceField interFaceField = new InterFaceField();
+		when(interFaceFieldDao.deleteFieldByLevel(any(InterFaceField.class))).thenReturn(-1).thenReturn(1);
+		// 添加失败
+		boolean flag = interFaceFieldService.deleteFieldByLevel(interFaceField);
+		Assert.assertFalse(flag);
+		// 添加成功
+		flag = interFaceFieldService.deleteFieldByLevel(interFaceField);
+		Assert.assertTrue(flag);
+	}
+	@Test
+	public void updateInterFaceField() {
+		InterFaceField interFaceField = new InterFaceField();
+		when(interFaceFieldDao.updateInterFaceField(any(InterFaceField.class))).thenReturn(-1).thenReturn(1);
+		// 添加失败
+		boolean flag = interFaceFieldService.updateInterFaceField(interFaceField);
+		Assert.assertFalse(flag);
+		// 添加成功
+		flag = interFaceFieldService.updateInterFaceField(interFaceField);
+		Assert.assertTrue(flag);
+	}
+
 }
