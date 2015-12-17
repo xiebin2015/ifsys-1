@@ -60,7 +60,7 @@ public class TestDemo {
 
 	//@Test
 	public void testAutoTest() {
-		//ifsysCheckThreadPool.execute();
+		ifsysCheckThreadPool.execute();
 	}
 
 	//@After
@@ -127,30 +127,7 @@ public class TestDemo {
 			model.put("resulteMocks", mocks);
 			model.put("userName", userName);
 			mailSenderService.sendWithTemplateForHTML(model);
-
 		}
-
-		// 3.抄送收件人
-		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
-		for(int i=0;i<copyList.length;i++){
-			String email = copyList[i];
-			System.out.println(email);
-			List<String> copyTo = new ArrayList<String>();
-			copyTo.add(email);
-			mailSenderService.setTo(copyTo);
-			String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
-			mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
-			mailSenderService.setTemplateName("copyMail.vm");// 设置的邮件模板
-			// 发送结果
-			Map model = new HashMap();
-			model.put("resulteMocks", resulteMocks);
-			model.put("userName", userName);
-			mailSenderService.sendWithTemplateForHTML(model);
-		}
-
-
-
-
 
 		System.out.println("邮件发送成功！");
 	}
