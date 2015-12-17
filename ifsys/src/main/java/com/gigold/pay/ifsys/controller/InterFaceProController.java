@@ -50,23 +50,5 @@ public class InterFaceProController extends BaseController{
         return dto;
 
     }
-    
-    
-    
-
-    @RequestMapping(value = "/getAllProInfo.do")
-    public @ResponseBody InterFaceProResponseDto getAllProInfo( ) {
-        InterFaceProResponseDto dto = new InterFaceProResponseDto();
-        List<InterFacePro> rlist= interFaceProService.getAllProInfo();
-        if (rlist != null) {
-            dto.setProList(rlist);
-            dto.setRspCd(SysCode.SUCCESS);
-        } else {
-            dto.setRspCd(CodeItem.IF_FAILURE);
-        }
-
-        return dto;
-
-    }
 
 }
