@@ -50,6 +50,7 @@ public class IfSysAutoTest extends Domain {
 		debug("Quartz的任务调度！！！");
 		autoTest();
 		sendMail();
+		System.out.println("work");
 		debug("一次的任务调度！！！");
 	}
 	

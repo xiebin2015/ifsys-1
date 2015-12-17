@@ -10,7 +10,7 @@
        <bean id="springContextHolder" class="com.gigold.pay.framework.base.SpringContextHolder" />
         <!-- 要调用的工作类 -->
         <bean id="quartzJob" class="com.gigold.pay.scripte.service.IfSysAutoTest"></bean>
-        <!-- 定义调用对象和调用对象的方法 -->
+        <!-- 测试＋发邮件   频率高些 -->
         <bean id="jobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
             <!-- 调用的类 -->
             <property name="targetObject">
@@ -21,7 +21,22 @@
                 <value>work</value>
             </property>
         </bean>
-        <!-- 定义触发时间 -->
+        
+        <!--只发邮件 -->
+        <bean id="jobtask1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+            <!-- 调用的类 -->
+            <property name="targetObject">
+                <ref bean="quartzJob"/>
+            </property>
+            <!-- 调用类中的方法 -->
+            <property name="targetMethod">
+                <value>sendMail</value>
+            </property>
+        </bean>
+        
+        
+        
+        <!-- jobtask  定义触发时间 -->
         <bean id="doTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
             <property name="jobDetail">
                 <ref bean="jobtask"/>
@@ -31,11 +46,25 @@
                 <value>0 * * * * ?</value>
             </property>
         </bean>
+        
+         <!-- jobtask1  定义触发时间 -->
+        <bean id="doTime1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+            <property name="jobDetail">
+                <ref bean="jobtask1"/>
+            </property>
+            <!-- cron表达式 -->
+            <property name="cronExpression">
+                <value>0 0/2 * * * ?</value>
+            </property>
+        </bean>
+        
+        
         <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
         <bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
             <property name="triggers">
                 <list>
                     <ref bean="doTime"/>
+                    <ref bean="doTime1"/>
                 </list>
             </property>
         </bean>
