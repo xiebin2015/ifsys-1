@@ -34,7 +34,6 @@ public class QuertzDemo {
 		String config[] = new String[] {
 
 				"classpath*:spring/spring-quartz-config.xml"
-
 				};
 		ApplicationContext context = new ClassPathXmlApplicationContext(config);
 

@@ -18,14 +18,40 @@ import com.gigold.pay.ifsys.service.InterFaceFieldService;
 import com.gigold.pay.ifsys.service.RetrunCodeService;
 import com.gigold.pay.ifsys.util.ForMatJSONStr;
 
-import net.sf.json.JSONObject;
-
 @Controller
 public class InterFaceFieldController extends BaseController {
 	@Autowired
 	InterFaceFieldService interFaceFeildService;
 	@Autowired
 	RetrunCodeService retrunCodeService;
+
+	/**
+	 * @return the interFaceFeildService
+	 */
+	public InterFaceFieldService getInterFaceFeildService() {
+		return interFaceFeildService;
+	}
+
+	/**
+	 * @param interFaceFeildService the interFaceFeildService to set
+	 */
+	public void setInterFaceFeildService(InterFaceFieldService interFaceFeildService) {
+		this.interFaceFeildService = interFaceFeildService;
+	}
+
+	/**
+	 * @return the retrunCodeService
+	 */
+	public RetrunCodeService getRetrunCodeService() {
+		return retrunCodeService;
+	}
+
+	/**
+	 * @param retrunCodeService the retrunCodeService to set
+	 */
+	public void setRetrunCodeService(RetrunCodeService retrunCodeService) {
+		this.retrunCodeService = retrunCodeService;
+	}
 
 	/**
 	 * 
@@ -72,11 +98,14 @@ public class InterFaceFieldController extends BaseController {
 		InterFaceField interFaceField = qdto.getInterFaceField();
 		StringBuilder ss = new StringBuilder();
 		ss.append("{");
+		//设置响应字段 返回码
 		if ("2".equals(interFaceField.getFieldFlag())) {
 			ss.append("\"rspCd\"").append(":\"").append(getRspCode(interFaceField.getIfId())).append("\" /*返回码*/,");
 		}
 		List<InterFaceField> rlist = interFaceFeildService.getFirstReqFieldByIfId(interFaceField);
-		proJSON(ss, rlist, interFaceField.getFieldCheck());
+		if(rlist!=null){
+		    proJSON(ss, rlist, interFaceField.getFieldCheck());
+		}
 		String jsonStr = ss.toString().replaceAll(",\\}", "}").replaceAll(",\\]", "]");
 		jsonStr = jsonStr.substring(0, jsonStr.length() - 1);
 		InterFaceFieldResJsonDto dto = new InterFaceFieldResJsonDto();
@@ -106,7 +135,7 @@ public class InterFaceFieldController extends BaseController {
 		InterFaceFieldResListDto dto = new InterFaceFieldResListDto();
 		InterFaceField interFaceField = qdto.getInterFaceField();
 		List<InterFaceField> list = interFaceFeildService.getFieldByIfId(interFaceField);
-		if (list != null && list.size() > 0) {
+		if (list != null) {
 			dto.setList(list);
 			dto.setRspCd(SysCode.SUCCESS);
 		} else {
