@@ -79,7 +79,7 @@ public interface InterFaceFieldDao {
      * @param interFaceField
      * @return
      */
-    public boolean addInterFaceField(InterFaceField interFaceField);
+    public int addInterFaceField(InterFaceField interFaceField);
     
     /**
      * 
@@ -91,7 +91,7 @@ public interface InterFaceFieldDao {
      * @param interFaceField
      * @return
      */
-    public boolean deleteFieldByLevel(InterFaceField interFaceField);
+    public int deleteFieldByLevel(InterFaceField interFaceField);
    /**
     * 
     * Title: updateInterFaceField<br/>
@@ -102,7 +102,7 @@ public interface InterFaceFieldDao {
     * @param interFaceField
     * @return
     */
-    public boolean updateInterFaceField(InterFaceField interFaceField);
+    public int updateInterFaceField(InterFaceField interFaceField);
    
 
 }

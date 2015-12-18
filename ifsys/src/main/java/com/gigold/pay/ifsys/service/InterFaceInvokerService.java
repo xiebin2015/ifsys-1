@@ -8,7 +8,6 @@
 package com.gigold.pay.ifsys.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +30,21 @@ public class InterFaceInvokerService extends Domain {
 	private static final long serialVersionUID = 1L;
 	@Autowired
     InterFaceInvokerDao interFaceInvokerDao;
+	
+	/**
+	 * @return the interFaceInvokerDao
+	 */
+	public InterFaceInvokerDao getInterFaceInvokerDao() {
+		return interFaceInvokerDao;
+	}
+
+	/**
+	 * @param interFaceInvokerDao the interFaceInvokerDao to set
+	 */
+	public void setInterFaceInvokerDao(InterFaceInvokerDao interFaceInvokerDao) {
+		this.interFaceInvokerDao = interFaceInvokerDao;
+	}
+
 	/**
 	 * 
 	 * Title: addInterFaceInvoker<br/>
@@ -45,22 +59,13 @@ public class InterFaceInvokerService extends Domain {
 		InterFaceInvoker interFaceInvoker=null;
 		int count = -1;
 		try {
-			//检测是否已经存在
-			interFaceInvoker=interFaceInvokerDao.getInvokerById(invoker);
-			if(interFaceInvoker==null){
 				count = interFaceInvokerDao.addInterFaceInvoker(invoker);
-			}else{
-				interFaceInvoker= invoker;
-			}
+				if(count>0){
+					interFaceInvoker=invoker;
+				}
 		} catch (Exception e) {
 			debug("数据库异常   添加接口关注者失败");
-			interFaceInvoker =null;
 		}
-		if (count > 0) {
-			//新增成功
-			return invoker;
-		}
-		//
 		return interFaceInvoker;
 		
 		
