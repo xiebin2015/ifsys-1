@@ -5,6 +5,7 @@
 	<projects>
 		<project>pay-autotest-domain</project>
 		<project>pay-email</project>
+		<project>pay-autotest-script</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

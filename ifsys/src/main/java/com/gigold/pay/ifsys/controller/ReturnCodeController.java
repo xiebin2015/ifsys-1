@@ -36,6 +36,20 @@ public class ReturnCodeController extends BaseController {
 	@Autowired
 	private RetrunCodeService retrunCodeService;
 
+	/**
+	 * @return the retrunCodeService
+	 */
+	public RetrunCodeService getRetrunCodeService() {
+		return retrunCodeService;
+	}
+
+	/**
+	 * @param retrunCodeService the retrunCodeService to set
+	 */
+	public void setRetrunCodeService(RetrunCodeService retrunCodeService) {
+		this.retrunCodeService = retrunCodeService;
+	}
+
 	@RequestMapping("/addrspcd.do")
 	public @ResponseBody RetrunCodeAddRspDto addRetrunCode(@RequestBody ReturnCodeReqDto dto) {
 		debug("调用addRetrunCode");
@@ -128,7 +142,7 @@ public class ReturnCodeController extends BaseController {
 	}
 
 	@RequestMapping("/getrspcdbyifid.do")
-	public @ResponseBody ResponseDto getReturnCodeByIfId(@RequestBody ReturnCodeReqDto dto) {
+	public @ResponseBody RetrunCodeRspDto getReturnCodeByIfId(@RequestBody ReturnCodeReqDto dto) {
 		debug("调用getReturnCodeByIfId");
 		RetrunCodeRspDto rdto = new RetrunCodeRspDto();
 		int ifId = dto.getIfId();

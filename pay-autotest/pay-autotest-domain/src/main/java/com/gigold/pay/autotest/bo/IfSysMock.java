@@ -33,6 +33,8 @@ public class IfSysMock {
 	private String testResult;
 	private String realRspCode;
 	private String realResponseJson;
+	
+	private String jrn;
 
 	//所属接口信息
 	private String ifName;
@@ -49,6 +51,23 @@ public class IfSysMock {
 	private String remark;
 	private String email;
 	private String username;
+
+	
+	
+	
+	/**
+	 * @return the jrn
+	 */
+	public String getJrn() {
+		return jrn;
+	}
+
+	/**
+	 * @param jrn the jrn to set
+	 */
+	public void setJrn(String jrn) {
+		this.jrn = jrn;
+	}
 
 	public String getUsername() {
 		return username;

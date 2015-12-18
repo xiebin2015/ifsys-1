@@ -8,7 +8,6 @@
 package com.gigold.pay.ifsys.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import com.gigold.pay.ifsys.bo.InterFaceInvoker;
 

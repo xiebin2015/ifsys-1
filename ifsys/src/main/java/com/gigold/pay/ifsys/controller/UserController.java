@@ -20,8 +20,22 @@ public class UserController extends BaseController {
 	@Autowired
 	UserInfoService userInfoService;
 
+	/**
+	 * @return the userInfoService
+	 */
+	public UserInfoService getUserInfoService() {
+		return userInfoService;
+	}
+
+	/**
+	 * @param userInfoService the userInfoService to set
+	 */
+	public void setUserInfoService(UserInfoService userInfoService) {
+		this.userInfoService = userInfoService;
+	}
+
 	@RequestMapping(value = "/login.do")
-	public @ResponseBody UserResDto login2(@RequestBody UserIReqDto rdto, HttpSession sessin) {
+	public @ResponseBody UserResDto login(@RequestBody UserIReqDto rdto, HttpSession sessin) {
 		UserResDto dto = new UserResDto();
 		// 验证请求参数合法性
 		String code = rdto.validation();

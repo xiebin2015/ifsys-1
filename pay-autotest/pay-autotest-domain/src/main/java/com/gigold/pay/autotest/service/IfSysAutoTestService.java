@@ -17,6 +17,7 @@ import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.bo.IfSysRefer;
 import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.httpclient.HttpClientService;
+import com.gigold.pay.autotest.jrn.JrnGeneratorService;
 import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.core.Domain;
 import com.gigold.pay.framework.util.common.StringUtil;
@@ -47,6 +48,7 @@ public class IfSysAutoTestService extends Domain {
 		JSONObject jsonObject = null;
 		IfSysMock ifsysmock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
 		ifsysmock.setId(mock.getId());
+		ifsysmock.setIfId(mock.getIfId());
 		ifsysmock.setRealResponseJson(responseJson);
 		try {
 			jsonObject = JSONObject.fromObject(responseJson);
@@ -102,7 +104,6 @@ public class IfSysAutoTestService extends Domain {
 			}
 
 		}
-
 		// 3、最后调用目标接口
 		for (IfSysMock mock : interFaceInfo.getMockList()) {
 			/**

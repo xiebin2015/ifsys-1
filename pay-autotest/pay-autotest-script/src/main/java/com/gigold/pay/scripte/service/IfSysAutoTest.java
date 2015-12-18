@@ -13,9 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.email.MailSenderService;
 import com.gigold.pay.autotest.service.IfSysMockService;
@@ -23,6 +20,7 @@ import com.gigold.pay.autotest.service.IfSysStuffService;
 import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
+import com.gigold.pay.framework.core.Domain;
 
 /**
  * Title: IfSysAutoTest<br/>
@@ -33,35 +31,33 @@ import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
  * @date 2015年12月15日上午9:40:02
  *
  */
-public class IfSysAutoTest {
+public class IfSysAutoTest extends Domain {
 	
+	/** serialVersionUID */
+	private static final long serialVersionUID = 1L;
 	private IfsysCheckThreadPool ifsysCheckThreadPool;
 	private MailSenderService mailSenderService;
 	private IfSysMockService ifSysMockService;
 	private IfSysStuffService ifSysStuffService;
 
 	public IfSysAutoTest(){
-		//ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
 		ifsysCheckThreadPool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
 		mailSenderService = (MailSenderService) SpringContextHolder.getBean(MailSenderService.class);
 		ifSysMockService = (IfSysMockService) SpringContextHolder.getBean(IfSysMockService.class);
 		ifSysStuffService = (IfSysStuffService) SpringContextHolder.getBean(IfSysStuffService.class);
 	}
 	public void work() {
-		System.out.println("Quartz的任务调度！！！");
+		debug("Quartz的任务调度！！！");
 		autoTest();
 		sendMail();
-		System.out.println("一次的任务调度！！！");
+		System.out.println("work");
+		debug("一次的任务调度！！！");
 	}
 	
 	public void autoTest() {
 		ifsysCheckThreadPool.execute();
 	}
 	
-	
-	public void fun(){
-		System.out.println("");
-	}
 	public void sendMail() {
 
 		// 返回所有测试过的结果
