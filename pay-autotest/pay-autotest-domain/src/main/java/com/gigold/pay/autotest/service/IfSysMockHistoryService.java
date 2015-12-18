@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.gigold.pay.autotest.bo.IfSysMockHistory;
 import com.gigold.pay.autotest.dao.IfSysMockHistoryDAO;
 import com.gigold.pay.framework.core.Domain;
-import com.sun.tools.javac.util.List;
+import java.util.List;
 
 /**
  * Title: IfSysMockHistoryService<br/>

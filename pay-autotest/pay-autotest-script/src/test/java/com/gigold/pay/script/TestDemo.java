@@ -48,7 +48,7 @@ public class TestDemo {
 	private IfSysMockService ifSysMockService;
 	private IfSysStuffService ifSysStuffService;
 
-	//@Before
+	@Before
 	public void setup() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
 		ifsysCheckThreadPool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
@@ -58,12 +58,12 @@ public class TestDemo {
 	}
 
 
-	//@Test
+	@Test
 	public void testAutoTest() {
 		ifsysCheckThreadPool.execute();
 	}
 
-	//@After
+	@After
 	/**
 	 * 
 	 * Title: testSendMail<br/>
@@ -76,7 +76,7 @@ public class TestDemo {
 	public void testSendMail() {
 
 		// 返回所有测试过的结果
-		List<IfSysMock> resulteMocks = ifSysMockService.filterAllTestedMocks();
+		List<IfSysMock> resulteMocks = ifSysMockService.filterMocksByFailed();
 
 		// 1.格式化信封
 		Map< String,List<IfSysMock> > mailBuffers = new HashMap();
@@ -115,7 +115,7 @@ public class TestDemo {
 			
 			String userName= "";
 			try{
-				ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
+				userName = ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
 			}catch(Exception e){
 				userName="";
 			}
@@ -128,7 +128,6 @@ public class TestDemo {
 			model.put("userName", userName);
 			mailSenderService.sendWithTemplateForHTML(model);
 		}
-
 		System.out.println("邮件发送成功！");
 	}
 }
