@@ -32,7 +32,7 @@ public class QuertzDemo {
 	 */
 	public static void main(String[] args) {
 		String config[] = new String[] {
-
+				
 				"classpath*:spring/spring-quartz-config.xml"
 				};
 		ApplicationContext context = new ClassPathXmlApplicationContext(config);
