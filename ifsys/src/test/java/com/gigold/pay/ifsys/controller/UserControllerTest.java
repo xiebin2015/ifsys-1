@@ -42,7 +42,7 @@ public class UserControllerTest {
 	UserInfoService userInfoService;
 	@Mock
 	UserIReqDto rdto;
-	private HttpSession session = new MockHttpSession();;
+	private HttpSession session = new MockHttpSession();
 	/** ====================== 测试对象定义 ========================== **/
 	private UserController userController = new UserController();
 

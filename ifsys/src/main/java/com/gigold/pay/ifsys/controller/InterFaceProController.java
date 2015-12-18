@@ -1,6 +1,5 @@
 package com.gigold.pay.ifsys.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +17,38 @@ import com.gigold.pay.ifsys.service.InterFaceProService;
 public class InterFaceProController extends BaseController{
     @Autowired
     InterFaceProService interFaceProService;
-    @RequestMapping(value = "/getProInfoByIfId.do")
-    public @ResponseBody InterFaceProResponseDto getProInfoByIfId( @RequestBody InterFaceProRequestDto qdto) {
-        InterFacePro interFacePro = qdto.getInterFacePro();
-        InterFaceProResponseDto dto = new InterFaceProResponseDto();
-        List<InterFacePro> rlist = new ArrayList<InterFacePro>();
-        interFacePro = interFaceProService.getProInfoById(interFacePro);
-        if (interFacePro != null) {
-            rlist.add(interFacePro);
-            dto.setProList(rlist);
-            dto.setRspCd(SysCode.SUCCESS);
-        } else {
-            dto.setRspCd(CodeItem.IF_FAILURE);
-        }
+    
+    /**
+	 * @return the interFaceProService
+	 */
+	public InterFaceProService getInterFaceProService() {
+		return interFaceProService;
+	}
 
-        return dto;
+	/**
+	 * @param interFaceProService the interFaceProService to set
+	 */
+	public void setInterFaceProService(InterFaceProService interFaceProService) {
+		this.interFaceProService = interFaceProService;
+	}
 
-    }
+//	@RequestMapping(value = "/getProInfoByIfId.do")
+//    public @ResponseBody InterFaceProResponseDto getProInfoByIfId( @RequestBody InterFaceProRequestDto qdto) {
+//        InterFacePro interFacePro = qdto.getInterFacePro();
+//        InterFaceProResponseDto dto = new InterFaceProResponseDto();
+//        List<InterFacePro> rlist = new ArrayList<InterFacePro>();
+//        interFacePro = interFaceProService.getProInfoById(interFacePro);
+//        if (interFacePro != null) {
+//            rlist.add(interFacePro);
+//            dto.setProList(rlist);
+//            dto.setRspCd(SysCode.SUCCESS);
+//        } else {
+//            dto.setRspCd(CodeItem.IF_FAILURE);
+//        }
+//
+//        return dto;
+//
+//    }
     
     @RequestMapping(value = "/getProInfoBySysId.do")
     public @ResponseBody InterFaceProResponseDto getProInfoBySysId( @RequestBody InterFaceProRequestDto qdto) {

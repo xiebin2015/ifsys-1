@@ -8,7 +8,6 @@
 package com.gigold.pay.ifsys.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -41,19 +40,28 @@ public class InterFaceInvokerController extends BaseController {
 	@Autowired
 	InterFaceInvokerService interFaceInvokerService;
 
+	
+	/**
+	 * @return the interFaceInvokerService
+	 */
+	public InterFaceInvokerService getInterFaceInvokerService() {
+		return interFaceInvokerService;
+	}
+
+	/**
+	 * @param interFaceInvokerService the interFaceInvokerService to set
+	 */
+	public void setInterFaceInvokerService(InterFaceInvokerService interFaceInvokerService) {
+		this.interFaceInvokerService = interFaceInvokerService;
+	}
+
 	@RequestMapping("/addinvoker.do")
 	public @ResponseBody InterFaceInvokerAddResDto addInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
 		debug("调用 addInterFaceInvoker");
 		InterFaceInvokerAddResDto rdto = new InterFaceInvokerAddResDto();
 		String rspCode=dto.vaildate();
-		if(!"00000".equals(rspCode)){
+		if(!SysCode.SUCCESS.equals(rspCode)){
 			rdto.setRspCd(rspCode);
-			return rdto;
-		}
-		
-		String recode = dto.vaildate();
-		if (!SysCode.SUCCESS.equals(recode)) {
-			rdto.setRspCd(recode);
 			return rdto;
 		}
 		// 在session中取uid
@@ -99,7 +107,7 @@ public class InterFaceInvokerController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/getinvokerlist.do")
-	public @ResponseBody InterFaceInvokerResDto getInvokerListByFollowId(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
+	public @ResponseBody InterFaceInvokerResDto getInvokerListByFollowId(@RequestBody InterFaceInvokerReqDto dto) {
 		debug("调用 getInvokerListByFollowId");
 		InterFaceInvokerResDto rdto=new InterFaceInvokerResDto();
 		InterFaceInvoker invoker = (InterFaceInvoker) SpringContextHolder.getBean(InterFaceInvoker.class);

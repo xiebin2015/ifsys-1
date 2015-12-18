@@ -20,7 +20,21 @@ public class InterFaceSysController extends BaseController{
     InterFaceSysService interFaceSysService;
 
     
-    @RequestMapping(value = "/getSysInfoById.do")
+    /**
+	 * @return the interFaceSysService
+	 */
+	public InterFaceSysService getInterFaceSysService() {
+		return interFaceSysService;
+	}
+
+	/**
+	 * @param interFaceSysService the interFaceSysService to set
+	 */
+	public void setInterFaceSysService(InterFaceSysService interFaceSysService) {
+		this.interFaceSysService = interFaceSysService;
+	}
+
+	@RequestMapping(value = "/getSysInfoById.do")
     public @ResponseBody InterFaceSysResponseDto getSysInfoById( @RequestBody InterFaceSysRequestDto qdto) {
         InterFaceSysTem interFaceSystem = qdto.getInterFaceSysTem();
         InterFaceSysResponseDto dto = new InterFaceSysResponseDto();
