@@ -80,7 +80,7 @@
 		ADDRESS_URL
 		from T_IF_INTERFACE ii
 		where ii.ISVALID='Y'
-	   and ID=61
+	    and ii.IF_PROTOCOL='HTTP'
 	</select>
 	
 	

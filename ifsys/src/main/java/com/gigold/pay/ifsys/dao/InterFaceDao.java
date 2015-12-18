@@ -48,7 +48,7 @@ public interface InterFaceDao {
 	 * @param interFaceInfo
 	 * @return
 	 */
-	public boolean updateInterFace(InterFaceInfo interFaceInfo);
+	public int updateInterFace(InterFaceInfo interFaceInfo);
 
 	/**
 	 * 新增接口信息
@@ -56,7 +56,7 @@ public interface InterFaceDao {
 	 * @param interFaceInfo
 	 * @return
 	 */
-	public boolean addInterFace(InterFaceInfo interFaceInfo);
+	public int addInterFace(InterFaceInfo interFaceInfo);
 
 	/**
 	 * 根据Id删除接口信息
@@ -64,5 +64,5 @@ public interface InterFaceDao {
 	 * @param id
 	 * @return
 	 */
-	public boolean deleteInterFaceById(InterFaceInfo interFaceInfo);
+	public int deleteInterFaceById(InterFaceInfo interFaceInfo);
 }

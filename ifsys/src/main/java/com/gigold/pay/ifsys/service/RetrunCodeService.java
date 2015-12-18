@@ -34,6 +34,20 @@ public class RetrunCodeService extends Domain {
 	private ReturnCodeDao returnCodeDao;
 
 	/**
+	 * @return the returnCodeDao
+	 */
+	public ReturnCodeDao getReturnCodeDao() {
+		return returnCodeDao;
+	}
+
+	/**
+	 * @param returnCodeDao the returnCodeDao to set
+	 */
+	public void setReturnCodeDao(ReturnCodeDao returnCodeDao) {
+		this.returnCodeDao = returnCodeDao;
+	}
+
+	/**
 	 * 
 	 * Title: addRetrunCode<br/>
 	 * Description: 新增返回码<br/>
@@ -60,8 +74,9 @@ public class RetrunCodeService extends Domain {
 		}
 		if (count > 0) {
 			return returnCode;
+		}else{
+			return null;
 		}
-		return rspCode;
 	}
 
 	/**
