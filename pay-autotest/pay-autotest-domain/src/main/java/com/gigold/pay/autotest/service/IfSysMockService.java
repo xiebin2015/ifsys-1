@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.gigold.pay.autotest.annotation.IfSysMockHistoryAnnotation;
 import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.autotest.dao.IfSysMockDAO;
+import com.gigold.pay.autotest.util.ForMatJSONStr;
 /**
  * Title: IfSysMockService<br/>
  * Description: <br/>
@@ -364,6 +365,8 @@ public class IfSysMockService {
 	 */
 	@IfSysMockHistoryAnnotation("记录测试历史")
 	public boolean writeBackRealRsp(IfSysMock ifsysmock) {
+		String realResponseJson=ForMatJSONStr.format(ifsysmock.getRealResponseJson());
+		ifsysmock.setRealResponseJson(realResponseJson);
 		boolean flag = false;
 		try {
 			int count = ifSysMockDao.writeBack(ifsysmock);
