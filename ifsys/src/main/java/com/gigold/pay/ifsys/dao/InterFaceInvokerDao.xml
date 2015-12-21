@@ -68,7 +68,11 @@
 		and ID=#{id}
 		]]>
 	</select>
-
+<update id="deleteInvoker" parameterType="long">
+		update T_IF_INVOKER
+		set STATUS='N'
+		where ID=#{id}
+	</update>
 
 </mapper>
  
