@@ -102,7 +102,7 @@ public class SendResulteAnalysis {
                 if(!eachIfSet.containsKey(ifId)){
                     eachIfSet.put(ifId,new HashMap<String,Object>());
                     eachIfSet.get(ifId).put("ifPassRate",new Float(0)); //后面计算
-                    String ifName = interFaceService.getInterFaceById(eachHisMock.getIfId()).getIfName();
+                    String ifName = eachHisMock.getIfName();
                     eachIfSet.get(ifId).put("ifName",(ifName!=null)?ifName:"0"); //取接口名,取不到则为0
                     eachIfSet.get(ifId).put("ifTestData",new ArrayList<IfSysMockHistory>());
                 }
@@ -131,14 +131,21 @@ public class SendResulteAnalysis {
         // 格式化结束
 
 
-        // HeadIFID 去重/排序
+        // 去重 - HeadIFID 去重/排序
         Map<String,String> IfIDNameMap = new TreeMap<String,String>();
         for (Iterator iter = HeadIFID.iterator(); iter.hasNext();) {
-            String element = String.valueOf(iter.next());
-            int intId = Integer.parseInt(element);
-            String StrId = element;
-            IfIDNameMap.put(StrId,interFaceService.getInterFaceById(intId).getIfName());
+            String _ifId = String.valueOf(iter.next());
+            int intId = Integer.parseInt(_ifId);
+            IfIDNameMap.put(_ifId,_ifId);
         }
+        // 去重 - 替换接口名
+        Iterator<String> iter = IfIDNameMap.keySet().iterator();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            IfIDNameMap.put(key,interFaceService.getInterFaceById(Integer.parseInt(key)).getIfName());
+            System.out.println(key);
+        }
+        // 去重 - 结束
 
         // JNR集合
         Set<String> OrderedHeadJNRSet = initedDataSet.keySet();
