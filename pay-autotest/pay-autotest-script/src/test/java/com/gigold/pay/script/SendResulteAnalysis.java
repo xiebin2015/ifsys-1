@@ -143,7 +143,6 @@ public class SendResulteAnalysis {
         while (iter.hasNext()) {
             String key = iter.next();
             IfIDNameMap.put(key,interFaceService.getInterFaceById(Integer.parseInt(key)).getIfName());
-            System.out.println(key);
         }
         // 去重 - 结束
 
