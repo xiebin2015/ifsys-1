@@ -38,6 +38,15 @@
         #{testResult})
     ]]>
 	</insert>
+
+	<select id="getNewestReslutOf" parameterType="int" resultMap="ifSysMockHistoryResultMap" >
+        <![CDATA[
+			select * from T_IF_MOCK_HISTORY b where b.JRN in
+				(select c.JRN from (select distinct a.JRN from T_IF_MOCK_HISTORY a
+						order by a.JRN desc
+						limit #{limit}) c);
+    	]]>
+	</select>
 	 
 
 </mapper>
