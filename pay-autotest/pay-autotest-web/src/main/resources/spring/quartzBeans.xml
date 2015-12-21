@@ -30,7 +30,7 @@
             </property>
             <!-- 调用类中的方法 -->
             <property name="targetMethod">
-                <value>sendMail</value>
+                <value>sendAnalyMail</value>
             </property>
         </bean>
         
@@ -43,7 +43,7 @@
             </property>
             <!-- cron表达式 -->
             <property name="cronExpression">
-                <value>0 * * * * ?</value>
+                <value>0 0/2 * * * ?</value>
             </property>
         </bean>
         
@@ -54,7 +54,7 @@
             </property>
             <!-- cron表达式 -->
             <property name="cronExpression">
-                <value>0 0/2 * * * ?</value>
+                <value>0 0/3 * * * ?</value>
             </property>
         </bean>
         
