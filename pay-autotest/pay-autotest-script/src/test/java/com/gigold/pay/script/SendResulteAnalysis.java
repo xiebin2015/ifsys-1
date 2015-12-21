@@ -197,7 +197,8 @@ public class SendResulteAnalysis {
             model.put("userName", userName);
             // 指标数据
             model.put("ifCount", ifCount);
-            model.put("caseCount", caseCount);
+            // model.put("caseCount", caseCount); //所有的
+            model.put("caseCount", mockCount);
             model.put("jnrCount", jnrCount);
             model.put("mockPassRate", (float)(Math.round(mockPassRate*100))/100);//保留两位
             mailSenderService.sendWithTemplateForHTML(model);
