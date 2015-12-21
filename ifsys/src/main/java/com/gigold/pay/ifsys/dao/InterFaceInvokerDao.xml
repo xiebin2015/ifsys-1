@@ -42,6 +42,7 @@
 		resultMap="invokerResultMap">
 <![CDATA[  
 		select
+		invo.ID,
 		u.USERNAME USERNAME,
 		DATE_FORMAT(invo.TM_FOLLOW,'%Y-%m-%d %H:%i:%s') TM_FOLLOW,
 		invo.REMARK REMARK
@@ -52,9 +53,9 @@
 		AND invo.IF_FOLLOWED_ID=#{ifFollowedId}
 		]]>
 	</select>
-	
-<select id="getInvokerById" parameterType="com.gigold.pay.ifsys.bo.InterFaceInvoker"
-	resultMap="invokerResultMap">
+
+	<select id="getInvokerById" parameterType="com.gigold.pay.ifsys.bo.InterFaceInvoker"
+		resultMap="invokerResultMap">
 <![CDATA[  
 		select
 		ID,
@@ -68,7 +69,12 @@
 		and ID=#{id}
 		]]>
 	</select>
-
+	<update id="deleteInvoker" parameterType="long">
+		update T_IF_INVOKER
+		set
+		STATUS='N'
+		where ID=#{id}
+	</update>
 
 </mapper>
  

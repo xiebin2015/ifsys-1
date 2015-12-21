@@ -22,6 +22,7 @@ import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.core.exception.PendingException;
 import com.gigold.pay.framework.web.BaseController;
+import com.gigold.pay.framework.web.ResponseDto;
 import com.gigold.pay.ifsys.bo.InterFaceInvoker;
 import com.gigold.pay.ifsys.bo.UserInfo;
 import com.gigold.pay.ifsys.service.InterFaceInvokerService;
@@ -123,4 +124,41 @@ public class InterFaceInvokerController extends BaseController {
 		
 		return rdto;
 	}
+	/**
+	 * 
+	 * Title: deleteInterFaceInvoker<br/>
+	 * Description: 取消关注<br/>
+	 * @author xiebin
+	 * @date 2015年12月21日下午2:50:30
+	 *
+	 * @param dto
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/deleteinvoker.do")
+	public @ResponseBody ResponseDto deleteInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
+		debug("调用 deleteInterFaceInvoker");
+		ResponseDto rdto = new ResponseDto();
+		// 在session中取uid
+		UserInfo userInfo = (UserInfo) session.getAttribute(SystemPropertyConfigure.getLoginKey());
+		if (userInfo == null) {
+			rdto.setRspCd(SysCode.SYS_FAIL);
+			rdto.setRspInf("用户未登录");
+			return rdto;
+		}
+		
+		// 取消关注信息
+		boolean flag = interFaceInvokerService.deleteInvoker(dto.getId());
+		if (flag) {
+			rdto.setRspCd(SysCode.SUCCESS);
+			rdto.setRspInf("取消关注成功");
+		} else {
+			rdto.setRspCd(CodeItem.IF_FAILURE);
+			rdto.setRspInf("关注失败");
+		}
+
+		return rdto;
+
+	}
+	
 }
