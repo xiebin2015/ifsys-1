@@ -59,8 +59,9 @@ public class SendResulteAnalysis {
 
     @Test
     public void testAutoTest() {
+        int jnrCount = 15;
         // 发送结果分析
-        List<IfSysMockHistory> recentRst = ifSysMockHistoryService.getNewestReslutOf(40);
+        List<IfSysMockHistory> recentRst = ifSysMockHistoryService.getNewestReslutOf(jnrCount);
 
         Map< String,List<IfSysMockHistory> > mailBuffers = new HashMap();
         for(int i=0;i<recentRst.size();i++){
@@ -100,7 +101,7 @@ public class SendResulteAnalysis {
                 String ifId = String.valueOf(eachHisMock.getIfId());
                 if(!eachIfSet.containsKey(ifId)){
                     eachIfSet.put(ifId,new HashMap<String,Object>());
-                    eachIfSet.get(ifId).put("ifPassRate",0); //后面计算
+                    eachIfSet.get(ifId).put("ifPassRate",new Float(0)); //后面计算
                     String ifName = interFaceService.getInterFaceById(eachHisMock.getIfId()).getIfName();
                     eachIfSet.get(ifId).put("ifName",(ifName!=null)?ifName:"0"); //取接口名,取不到则为0
                     eachIfSet.get(ifId).put("ifTestData",new ArrayList<IfSysMockHistory>());
@@ -114,11 +115,12 @@ public class SendResulteAnalysis {
                 ifTestData.add(eachHisMock);
 
                 // 实时计算当前接口通过率
-                int rstSiz = ifTestData.size();
+                float rstSiz = ifTestData.size();//当前单接口集合大小
                 if(rstSiz!=0){
-                    int preRst = (Integer)eachIfSet.get(ifId).get("ifPassRate");
-                    int nowRst = eachHisMock.getTestResult().equals("1")?1:0;
-                    eachIfSet.get(ifId).put("ifPassRate",(rstSiz*preRst+nowRst)/rstSiz); //实时计算
+                    float preRst = (float) (eachIfSet.get(ifId).get("ifPassRate"));
+                    float nowRst = eachHisMock.getTestResult().equals("1")?1:0;
+                    float _rate = ((rstSiz-1)*preRst+nowRst)/rstSiz;
+                    eachIfSet.get(ifId).put("ifPassRate",(float)(Math.round(_rate*100))/100); //实时计算
                     _testCnt++;
                 }else{
                     eachIfSet.get(ifId).put("ifPassRate","没有测试数据,无法计算");
@@ -190,6 +192,7 @@ public class SendResulteAnalysis {
             // 指标数据
             model.put("ifCount", ifCount);
             model.put("caseCount", caseCount);
+            model.put("jnrCount", jnrCount);
             model.put("mockPassRate", (float)(Math.round(mockPassRate*100))/100);//保留两位
             mailSenderService.sendWithTemplateForHTML(model);
         }
