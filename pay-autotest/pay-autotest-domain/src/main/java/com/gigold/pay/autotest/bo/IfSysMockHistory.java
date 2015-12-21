@@ -42,6 +42,17 @@ public class IfSysMockHistory extends Domain {
 	private String testTm;
 	// 数据状态
 	private String status;
+	// 接口名
+	private String ifName;
+
+	public String getIfName() {
+		return ifName;
+	}
+
+	public void setIfName(String ifName) {
+		this.ifName = ifName;
+	}
+
 	/**
 	 * @return the id
 	 */
