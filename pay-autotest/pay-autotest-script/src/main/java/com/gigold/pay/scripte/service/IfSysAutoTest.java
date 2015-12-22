@@ -130,79 +130,80 @@ public class IfSysAutoTest extends Domain {
 	}
 
 	public void sendAnalyMail(){
-		int jnrCount = 15;
-		// 发送结果分析
-		List<IfSysMockHistory> recentRst = ifSysMockHistoryService.getNewestReslutOf(jnrCount);
+		 int jnrCount = 15;
+	        // 发送结果分析
+	        List<IfSysMockHistory> recentRst = ifSysMockHistoryService.getNewestReslutOf(jnrCount);
 
-		Map< String,List<IfSysMockHistory> > mailBuffers = new HashMap();
-		for(int i=0;i<recentRst.size();i++){
-			IfSysMockHistory history = recentRst.get(i);
-			String JNR = history.getJrn();
+	        Map< String,List<IfSysMockHistory> > mailBuffers = new HashMap();
+	        for(int i=0;i<recentRst.size();i++){
+	            IfSysMockHistory history = recentRst.get(i);
+	            String JNR = history.getJrn();
 
-			// 为每个接收者包装信件
-			if(mailBuffers.containsKey(JNR)&&mailBuffers.get(JNR).size()!=0){
-				mailBuffers.get(JNR).add(history);
-			}else{
-				List<IfSysMockHistory> histories = new ArrayList<IfSysMockHistory>();
-				histories.add(history);
-				mailBuffers.put(JNR,histories);
-			}
-		}
+	            // 为每个接收者包装信件
+	            if(mailBuffers.containsKey(JNR)&&mailBuffers.get(JNR).size()!=0){
+	                mailBuffers.get(JNR).add(history);
+	            }else{
+	                List<IfSysMockHistory> histories = new ArrayList<IfSysMockHistory>();
+	                histories.add(history);
+	                mailBuffers.put(JNR,histories);
+	            }
+	        }
 
-		// 重新格式化结果数据
-		Iterator entries = mailBuffers.entrySet().iterator();
-		Map<String,Map> initedDataSet = new TreeMap<>();
-		ArrayList<String> HeadIFID = new ArrayList<>();
-		// 通过率
-		int _testCnt = 0;
+	        // 重新格式化结果数据
+	        Iterator entries = mailBuffers.entrySet().iterator();
+	        Map<String,Map> initedDataSet = new TreeMap<>();
+	        ArrayList<String> HeadIFID = new ArrayList<>();
+	        // 通过率
+	        int _testCnt = 0;
 
-		while (entries.hasNext()) {
-			Map.Entry entry = (Map.Entry) entries.next();
-			// 每一批的批号
-			String JNR = (String)entry.getKey();
-			// 每一批的所有数据
-			List<IfSysMockHistory> histMocks = (List<IfSysMockHistory>)entry.getValue();//[{if1,test1,info1},{if1,test2,info2}]
+	        while (entries.hasNext()) {
+	            Map.Entry entry = (Map.Entry) entries.next();
+	            // 每一批的批号
+	            String JNR = (String)entry.getKey();
+	            // 每一批的所有数据
+	            List<IfSysMockHistory> histMocks = (List<IfSysMockHistory>)entry.getValue();//[{if1,test1,info1},{if1,test2,info2}]
 
-			// 遍历所有数据,并分装到eachIfset
-			Map<String,Map<String,Object>> eachIfSet = new HashMap();// {if1 : {null,null,[] },if2 : { }}
-			for(int i=0;i<histMocks.size();i++){
-				IfSysMockHistory eachHisMock = histMocks.get(i);//{if1,test1,info1}
+	            // 遍历所有数据,并分装到eachIfset
+	            Map<String,Map<String,Object>> eachIfSet = new HashMap();// {if1 : {null,null,[] },if2 : { }}
+	            for(int i=0;i<histMocks.size();i++){
+	                IfSysMockHistory eachHisMock = histMocks.get(i);//{if1,test1,info1}
 
-				//判断eachIfSet是否已经有该接口的数据,若没有,则新建
-				String ifId = String.valueOf(eachHisMock.getIfId());
-				if(!eachIfSet.containsKey(ifId)){
-					eachIfSet.put(ifId,new HashMap<String,Object>());
-					eachIfSet.get(ifId).put("ifPassRate",new Float(0)); //后面计算
-					String ifName = eachHisMock.getIfName();
-					eachIfSet.get(ifId).put("ifName",(ifName!=null)?ifName:"0"); //取接口名,取不到则为0
-					eachIfSet.get(ifId).put("ifTestData",new ArrayList<IfSysMockHistory>());
-				}
+	                //判断eachIfSet是否已经有该接口的数据,若没有,则新建
+	                String ifId = String.valueOf(eachHisMock.getIfId());
+	                if(!eachIfSet.containsKey(ifId)){
+	                    eachIfSet.put(ifId,new HashMap<String,Object>());
+	                    eachIfSet.get(ifId).put("ifPassRate",new Float(0)); //后面计算
+	                    String ifName = eachHisMock.getIfName();
+	                    eachIfSet.get(ifId).put("ifName",(ifName!=null)?ifName:"0"); //取接口名,取不到则为0
+	                    eachIfSet.get(ifId).put("ifTestData",new ArrayList<IfSysMockHistory>());
+	                }
 
-				// 同时初始化表列
-				HeadIFID.add(ifId);
+	                // 同时初始化表列
+	                HeadIFID.add(ifId);
 
-				// 当前接口的所有原始结果数据存放点
-				List<IfSysMockHistory> ifTestData = ((List<IfSysMockHistory>)eachIfSet.get(ifId).get("ifTestData"));
-				ifTestData.add(eachHisMock);
+	                // 当前接口的所有原始结果数据存放点
+	                List<IfSysMockHistory> ifTestData = ((List<IfSysMockHistory>)eachIfSet.get(ifId).get("ifTestData"));
+	                ifTestData.add(eachHisMock);
 
-				// 实时计算当前接口通过率
-				float rstSiz = ifTestData.size();//当前单接口集合大小
-				if(rstSiz!=0){
-					float preRst = (float) (eachIfSet.get(ifId).get("ifPassRate"));
-					float nowRst = eachHisMock.getTestResult().equals("1")?1:0;
-					float _rate = ((rstSiz-1)*preRst+nowRst)/rstSiz;
-					eachIfSet.get(ifId).put("ifPassRate",(float)(Math.round(_rate*100))/100); //实时计算
-					_testCnt++;
-				}else{
-					eachIfSet.get(ifId).put("ifPassRate","没有测试数据,无法计算");
-				}
-			}
-			initedDataSet.put(JNR,eachIfSet); //拼装
-		}
-		// 格式化结束
+	                // 实时计算当前接口通过率
+	                float rstSiz = ifTestData.size();//当前单接口集合大小
+	                if(rstSiz!=0){
+	                    float preRst = (float) (eachIfSet.get(ifId).get("ifPassRate"));
+	                    float nowRst = eachHisMock.getTestResult().equals("1")?1:0;
+	                    float _rate = ((rstSiz-1)*preRst+nowRst)/rstSiz;
+	                    eachIfSet.get(ifId).put("ifPassRate",(float)(Math.round(_rate*100))/100); //实时计算
+	                    _testCnt++;
+	                }else{
+	                    eachIfSet.get(ifId).put("ifPassRate","没有测试数据,无法计算");
+	                }
+	            }
+	            initedDataSet.put(JNR,eachIfSet); //拼装
+	        }
+	        // 格式化结束
 
 
-		// 去重 - HeadIFID 去重/排序
+	        // 去重 - HeadIFID 去重/排序
+	        // 去重 - HeadIFID 去重/排序
 		Map<String,String> IfIDNameMap = new TreeMap<String,String>();// id-名字映射
 		Map<String,String> IfIDDsnrMap = new TreeMap<String,String>(); // id-设计者映射
 		for (Iterator iter = HeadIFID.iterator(); iter.hasNext();) {

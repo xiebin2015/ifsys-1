@@ -54,5 +54,18 @@ public interface InterFaceInvokerDao {
 	 * @return
 	 */
 	public InterFaceInvoker getInvokerById(InterFaceInvoker interFaceInvoker);
+	/**
+	 * 
+	 * Title: deleteInvoker<br/>
+	 * Description: 取消关注<br/>
+	 * @author xiebin
+	 * @date 2015年12月21日下午2:42:37
+	 *
+	 * @param id
+	 * @return
+	 */
+	public int deleteInvoker(long id);
+	
+	
 
 }

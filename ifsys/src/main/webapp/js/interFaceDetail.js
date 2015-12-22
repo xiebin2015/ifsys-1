@@ -28,6 +28,25 @@ $(function() {
 
 	});
 	
+	//删除当前关注信息
+	$(document).on("click",".closeABtn",function(){
+		
+		var obj = {};
+		obj.id = $(this).attr("data-id");
+		console.log(obj);
+		gigold.pay.interFace.ajaxHandler({
+			"url" : "deleteinvoker.do",
+			"data" : JSON.stringify(obj),
+			"onSuccess" : function(data) {
+				if (data.rspCd == "00000") {
+					alert("删除成功");
+					loadInvokerList();
+				}else {
+					alert(data.rspInf);
+				}
+			}
+		});
+	});
 	//保存关注信息功能
 	$(".addInvokerBtn").click(function() {
 		if($("#remark").val()==""||$("#remark").val()==null){
@@ -110,12 +129,14 @@ function loadInvokerList() {
 			if (data.rspCd == "00000") {
 				var invokerHtml = "";
 				$.each(data.list, function(index, row) {
+					console.log(row);
 					invokerHtml += '<tr>';
 					invokerHtml += '<td>' + (index + 1) + '</td>';
 					invokerHtml += '<td>' + row.userName + '</td>';
 					invokerHtml += '<td>' + row.remark + '</td>';
 					invokerHtml += '<td>' + row.tmFollow + '</td>';
-
+					invokerHtml += '<td><a data-id = '+row.id+' href="javascript: void(0)" class="am-close am-close-spin closeABtn" data-am-modal-close>&times;</a></td>';
+					
 				});
 
 				$("#invokerList").html(invokerHtml);

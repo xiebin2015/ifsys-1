@@ -25,10 +25,26 @@ public class InterFaceInvokerReqDto extends RequestDto {
 
 	/** serialVersionUID */
 	private static final long serialVersionUID = 1L;
+	private long id;
 	private long ifFollowId;
 	private int uId;
 	private long ifFollowedId;
 	private String remark;
+
+	
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	/**
 	 * @return the uId
