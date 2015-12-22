@@ -7,15 +7,13 @@
  */
 package com.gigold.pay.script;
 
-import java.util.*;
-
-import com.alibaba.dubbo.common.json.JSON;
-import com.gigold.pay.autotest.bo.IfSysMockHistory;
-import com.gigold.pay.autotest.bo.IfSysStuff;
-import com.gigold.pay.autotest.bo.InterFaceInfo;
-import com.gigold.pay.autotest.service.IfSysMockHistoryService;
-import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
-import net.sf.json.JSONObject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,11 +22,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
+import com.gigold.pay.autotest.bo.IfSysMockHistory;
+import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.email.MailSenderService;
+import com.gigold.pay.autotest.service.IfSysMockHistoryService;
 import com.gigold.pay.autotest.service.IfSysMockService;
 import com.gigold.pay.autotest.service.IfSysStuffService;
 import com.gigold.pay.autotest.service.InterFaceService;
+import com.gigold.pay.autotest.threadpool.IfsysCheckThreadPool;
 import com.gigold.pay.framework.base.SpringContextHolder;
+import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 
 /**
  * Title: Test<br/>
@@ -258,13 +261,15 @@ public class SendResulteAnalysis {
         String lastJNR = lastRst.get(0).getJrn();
         // 发送邮件
         String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
+        List<String> copyTo = new ArrayList<String>();
         for(int i=0;i<copyList.length;i++){
             String email = copyList[i];
             System.out.println(email);
-            List<String> copyTo = new ArrayList<String>();
+           
             copyTo.add(email);
+        }
             mailSenderService.setTo(copyTo);
-            String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
+           // String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
             mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
             mailSenderService.setTemplateName("copyMail.vm");// 设置的邮件模板
             // 发送结果
@@ -273,7 +278,7 @@ public class SendResulteAnalysis {
             model.put("IfIDNameMap", IfIDNameMap);// 表列头
             model.put("IfIDDsnrMap", IfIDDsnrMap);// 设计者映射
             model.put("OrderedHeadJNRSet", OrderedHeadJNRSet);//表行头
-            model.put("userName", userName);
+         //   model.put("userName", userName);
             // 最近一条JNR
             model.put("lastJNR", lastJNR);
             // 指标数据
@@ -283,7 +288,6 @@ public class SendResulteAnalysis {
             model.put("jnrCount", jnrCount);
             model.put("mockPassRate", (float)(Math.round(mockPassRate*100))/100);//保留两位
             mailSenderService.sendWithTemplateForHTML(model);
-        }
         System.out.println("邮件发送成功！");
 
     }
@@ -301,5 +305,4 @@ public class SendResulteAnalysis {
 	public void testSendMail() {
 		// 结束
 	}
->>>>>>> gigold/master
 }
