@@ -33,6 +33,8 @@ import com.github.pagehelper.PageInfo;
  */
 @Service
 public class IfsysCheckThreadPool extends Domain {
+	/** serialVersionUID */
+	private static final long serialVersionUID = 1L;
 	@Autowired
 	IfSysMockService ifSysMockService;
 	@Autowired

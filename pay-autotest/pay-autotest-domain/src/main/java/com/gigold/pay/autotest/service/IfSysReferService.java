@@ -35,18 +35,19 @@ public class IfSysReferService extends Domain {
     /**
      * 
      * Title: getReferList<br/>
-     * Description: 获取接口的依赖列表<br/>
+     * Description: 获取测试用例的依赖列表<br/>
      * @author xiebin
      * @date 2015年12月10日上午10:15:30
      *
      * @param ifId
      * @return
      */
-	public List<IfSysRefer> getReferList(int ifId) {
+	public List<IfSysRefer> getReferList(int mockId) {
 		List<IfSysRefer> list = null;
 		try {
-			list =ifSysReferDAO.getReferList(ifId);
+			list =ifSysReferDAO.getReferList(mockId);
 		} catch (Exception e) {
+			e.printStackTrace();
             debug("调用 getReferList 数据库发送异常");
 		}
 		return list;
