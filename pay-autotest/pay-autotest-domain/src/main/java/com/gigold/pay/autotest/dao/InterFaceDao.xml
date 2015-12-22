@@ -20,6 +20,7 @@
 		<result property="isValid" column="ISVALID" />
 		<result property="method" column="IF_METHOD" />
 		<result property="methodVersion" column="IF_DUBBO_VERSION" />
+		<result property="dsname" column="DSNAME" />
 	</resultMap>
 
 	<!-- 根据ID查询接口信息 -->
@@ -29,6 +30,8 @@
        select ii.ID,
 		ii.IF_NAME,
 		ii.IF_DESC,
+		(select a.USERNAME from T_IF_USER a where a.id = ii.IF_CREATEBY)
+		DSNAME,
 		ii.IF_URL,
 		(select sys.IF_SYS_NAME from T_IF_SYSTEM sys where sys.id=ii.IF_SYS_ID)
 		SYS_NAME,
