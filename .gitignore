@@ -12,3 +12,9 @@ ifsys/src/main/webapp/webapp.iml
 .idea/*.xml
 
 pay-autotest/pay-email/src/main/resources/system.properties
+
+pay-autotest/pay-autotest-script/src/main/resources/log4j.properties
+
+pay-autotest/pay-autotest-script/src/main/resources/server.properties
+
+pay-autotest/pay-autotest-script/src/main/resources/system.properties
