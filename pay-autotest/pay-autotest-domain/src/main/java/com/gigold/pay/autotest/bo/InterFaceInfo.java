@@ -33,9 +33,19 @@ public class InterFaceInfo {
 	private String methodVersion;
 	private String reqJsonStr;
 	private String rspJsonStr;
-	
+	private String dsname;
+
 	private int ifSysId;
 	private int ifProId;
+
+
+	public String getDsname() {
+		return dsname;
+	}
+
+	public void setDsname(String dsname) {
+		this.dsname = dsname;
+	}
 
 	/**
 	 * @return the ifDesc
