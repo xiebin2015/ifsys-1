@@ -122,10 +122,6 @@ public class IfSysAutoTest extends Domain {
 		}
 
 
-
-
-
-
 		System.out.println("邮件发送成功！");
 	}
 

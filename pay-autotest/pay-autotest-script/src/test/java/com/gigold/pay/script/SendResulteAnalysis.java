@@ -77,6 +77,7 @@ public class SendResulteAnalysis {
 		ifsysCheckThreadPool.execute();
 	}
 
+    @Test
 	public void sendMail() {
 
 		// 返回所有测试过的结果
