@@ -51,7 +51,7 @@ public class SendResulteAnalysis {
 	private IfSysMockHistoryService ifSysMockHistoryService;
 	private InterFaceService interFaceService;
 
-	//@Before
+	@Before
 	public void setup() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/*Beans.xml");
 		ifsysCheckThreadPool = (IfsysCheckThreadPool) SpringContextHolder.getBean(IfsysCheckThreadPool.class);
@@ -135,7 +135,7 @@ public class SendResulteAnalysis {
 		System.out.println("邮件发送成功！");
 	}
 
-	 //@Test
+	 @Test
 	public void testAutoTest() {
 		int jnrCount = 15;
 		// 发送结果分析
