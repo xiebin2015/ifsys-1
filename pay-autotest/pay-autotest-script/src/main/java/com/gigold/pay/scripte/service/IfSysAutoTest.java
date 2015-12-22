@@ -70,25 +70,24 @@ public class IfSysAutoTest extends Domain {
 		List<IfSysMock> resulteMocks = ifSysMockService.filterMocksByFailed();
 
 		// 1.格式化信封
-		Map< String,List<IfSysMock> > mailBuffers = new HashMap();
-		for(int i=0;i<resulteMocks.size();i++){
+		Map<String, List<IfSysMock>> mailBuffers = new HashMap();
+		for (int i = 0; i < resulteMocks.size(); i++) {
 			// 遍历每个接口的关系
 			int interfaceId = resulteMocks.get(i).getIfId();
-			List<IfSysMock> relationShip = ifSysMockService.getInterfaceFollowShipById(interfaceId);
-			for(int j=0;j<relationShip.size();j++){
+			List<IfSysMock> relationShip = ifSysMockService.getInterfaceFollowShipById(interfaceId); //获取接口的关注者
+			for (int j = 0; j < relationShip.size(); j++) {
 				String email = relationShip.get(j).getEmail();
 				String userName = relationShip.get(j).getUsername();
-				//为每条mock加工关注者数据
+				// 为每条mock加工关注者数据
 				IfSysMock eachMock = resulteMocks.get(i);
 				eachMock.setUsername(userName);
 				// 为每个接收者包装信件
-				if(mailBuffers.containsKey(email)&&mailBuffers.get(email).size()!=0){
-					mailBuffers.get(email).add(eachMock);
-				}else{
-					List<IfSysMock> mock = new ArrayList<IfSysMock>();
+				if(!mailBuffers.containsKey(email)){
+					List<IfSysMock> mock = new ArrayList<>();
 					mock.add(eachMock);
-					mailBuffers.put(email,mock);
+					mailBuffers.put(email, mock);
 				}
+				mailBuffers.get(email).add(eachMock);
 			}
 		}
 		// 2.分发收件人
@@ -97,20 +96,20 @@ public class IfSysAutoTest extends Domain {
 
 			Map.Entry entry = (Map.Entry) entries.next();
 
-			String email = (String)entry.getKey();
-			List<IfSysMock> mocks = (List<IfSysMock>)entry.getValue();
+			String email = (String) entry.getKey();
+			List<IfSysMock> mocks = (List<IfSysMock>) entry.getValue();
 			// 设置收件人地址
 			List<String> addressTo = new ArrayList<String>();
 			addressTo.add(email);
 			mailSenderService.setTo(addressTo);
-			
-			String userName= "";
-			try{
+
+			String userName;
+			try {
 				userName = ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
-			}catch(Exception e){
-				userName="";
+			} catch (Exception e) {
+				userName = "";
 			}
-			
+
 			mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
 			mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
 			// 发送结果
@@ -120,8 +119,6 @@ public class IfSysAutoTest extends Domain {
 			mailSenderService.sendWithTemplateForHTML(model);
 
 		}
-
-
 		System.out.println("邮件发送成功！");
 	}
 
