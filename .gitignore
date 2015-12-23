@@ -1,8 +1,5 @@
 
 ifsys/src/main/webapp/webapp.iml
-
-*.iml
-
 *.ipr
 
 *.iws
@@ -10,3 +7,4 @@ ifsys/src/main/webapp/webapp.iml
 .idea/.name
 
 .idea/*.xml
+*.iml

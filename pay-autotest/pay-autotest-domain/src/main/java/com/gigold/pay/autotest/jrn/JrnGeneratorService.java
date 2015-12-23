@@ -33,7 +33,7 @@ public class JrnGeneratorService  extends Domain{
 	public String generateJrn()  throws Exception{
 		
 		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		String nowdate = sDateFormat.format(calendar.getTime());
 		String random = (Math.random() * 900000 + 100000) + "";
 		if (random.indexOf(".") > 0) {

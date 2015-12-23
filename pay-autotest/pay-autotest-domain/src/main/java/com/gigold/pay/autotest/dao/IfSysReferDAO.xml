@@ -4,26 +4,77 @@
 
 	<resultMap type="com.gigold.pay.autotest.bo.IfSysRefer" id="ifSysRefResultMap">
 		<id property="id" column="ID" />
-		<result property="ifId" column="IF_ID" />
-		<result property="ifId" column="IF_ID" />
-		<result property="refId" column="REFER_ID" />
+		<result property="mockId" column="MOCK_ID" />
+		<result property="refMockId" column="REFER_MOCK_ID" />
 		<result property="ordNum" column="ORD_NUM" />
 		
 
 	</resultMap>
 
-	<!-- 获取接口的依赖列表 -->
+   <insert id="addMockRefer" parameterType="com.gigold.pay.autotest.bo.IfSysRefer"
+		useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[  
+        insert into
+        T_IF_REFER
+        (
+         MOCK_ID,
+         REFER_MOCK_ID,
+         ORD_NUM
+        )
+        values(
+        #{mockId},
+        #{refMockId},
+        #{ordNum})
+    ]]>
+	</insert>
+<!-- 删除依赖关系  -->
+	<update id="deleteMockRefer" parameterType="int">
+		update T_IF_REFER
+		set STATUS='N'
+		where ID =#{id}
+	</update>
+
+<!-- 修改模拟数据  -->
+	<update id="updateMockRefer" parameterType="com.gigold.pay.autotest.bo.IfSysRefer">
+		update T_IF_REFER
+		<set>
+			<if test="refMockId!=null and refMockId!=''">
+				REFER_MOCK_ID=#{refMockId},
+			</if>
+			<if test="ordNum!=null and ordNum!=''">
+				ORD_NUM=#{ordNum},
+			</if>
+		</set>
+		where ID =#{id}
+	</update>
+
+
+	<!-- 获取测试用例的依赖列表 -->
 	<select id="getReferList" parameterType="int" resultMap="ifSysRefResultMap">
      <![CDATA[ 
         select 
         ID,
-        IF_ID,
-        REFER_ID,
+        MOCK_ID,
+        REFER_MOCK_ID,
         ORD_NUM
         from  T_IF_REFER
-        where IF_ID=#{ifId}
+        where MOCK_ID=#{mockId}
         and STSTUS='Y'
         order by ORD_NUM
+      ]]>
+	</select>
+
+<!-- 更具ID获取测试用例的依赖 -->
+	<select id="getReferById" parameterType="int" resultMap="ifSysRefResultMap">
+     <![CDATA[ 
+        select 
+        ID,
+        MOCK_ID,
+        REFER_MOCK_ID,
+        ORD_NUM
+        from  T_IF_REFER
+        where STSTUS='Y'
+        and ID=#{id}
       ]]>
 	</select>
 

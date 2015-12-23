@@ -27,7 +27,6 @@ import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.core.exception.PendingException;
-import com.gigold.pay.framework.util.common.StringUtil;
 import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.framework.web.ResponseDto;
 import com.github.pagehelper.PageHelper;
@@ -126,8 +125,8 @@ public class IfSysMockController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/addifsysmock.do")
-	public @ResponseBody ResponseDto addIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
-		ResponseDto reDto = new ResponseDto();
+	public @ResponseBody IfSysMockAddRspDto addIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
+		IfSysMockAddRspDto reDto = new IfSysMockAddRspDto();
 		// 验证请求参数合法性
 		String code = dto.validation();
 		// 没有通过则返回对应的返回码
@@ -145,6 +144,7 @@ public class IfSysMockController extends BaseController {
 		boolean flag = ifSysMockService.addIfSysMock(ifSysMock);
 		if (flag) {
 			reDto.setRspCd(SysCode.SUCCESS);
+			reDto.setIfSysMock(ifSysMock);
 		} else {
 			reDto.setRspCd(CodeItem.FAILURE);
 		}
@@ -209,8 +209,8 @@ public class IfSysMockController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/updateifsysmock.do")
-	public @ResponseBody ResponseDto updateIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
-		ResponseDto reDto = new ResponseDto();
+	public @ResponseBody IfSysMockAddRspDto updateIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
+		IfSysMockAddRspDto reDto = new IfSysMockAddRspDto();
 		// 验证请求参数合法性
 		String code = dto.validation();
 		// 没有通过则返回对应的返回码
@@ -227,6 +227,8 @@ public class IfSysMockController extends BaseController {
 		}
 		boolean flag = ifSysMockService.updateIfSysMock(ifSysMock);
 		if (flag) {
+			ifSysMock=ifSysMockService.getMockInfoById(ifSysMock);
+			reDto.setIfSysMock(ifSysMock);
 			reDto.setRspCd(SysCode.SUCCESS);
 		} else {
 			reDto.setRspCd(CodeItem.FAILURE);
@@ -340,11 +342,58 @@ public class IfSysMockController extends BaseController {
 				// 如果还没有测试数据 则默认添加一条
 				ifSysMockService.addIfSysMock(mock);
 			}
- 
-			
-
 		}
 
 	}
+	
+	
+	
+	@RequestMapping("/getmockbypage.do")
+	public @ResponseBody IfSysMockPageRspDto getmockbypage(@RequestBody IfSysMockPageReqDto dto) {
+		IfSysMockPageRspDto reDto = new IfSysMockPageRspDto();
+		PageHelper.startPage(dto.getPageNum(),10);
+		IfSysMock ifSysMock=null;
+		try {
+			ifSysMock=createBO(dto, IfSysMock.class);
+		} catch (PendingException e) {
+			debug("转换bo异常");
+			e.printStackTrace();
+		}
+		List<IfSysMock> list=ifSysMockService.queryMockByPage(ifSysMock);
+		if(list!=null){
+			PageInfo pageInfo=new PageInfo(list);
+			reDto.setPageInfo(pageInfo);
+			reDto.setRspCd(SysCode.SUCCESS);
+		}else{
+			reDto.setRspCd(CodeItem.FAILURE);
+		}
+		return reDto;
+		
+	}
+	
+	
+	
+	@RequestMapping("/getrspcdbyifid.do")
+	public @ResponseBody RetrunCodeRspDto getReturnCodeByIfId(@RequestBody ReturnCodeReqDto dto) {
+		debug("调用getReturnCodeByIfId");
+		RetrunCodeRspDto rdto = new RetrunCodeRspDto();
+		int ifId = dto.getIfId();
+		if (ifId == 0) {
+			rdto.setRspCd(CodeItem.IF_ID_FAILURE);
+			return rdto;
+		}
+		List<ReturnCode> list = retrunCodeService.getReturnCodeByIfId(ifId);
+		if (list != null) {
+			rdto.setList(list);
+			rdto.setRspCd(SysCode.SUCCESS);
+		} else {
+			rdto.setRspCd(CodeItem.FAILURE);
+		}
+		return rdto;
+	}
+	
+	
+	
+	
 
 }

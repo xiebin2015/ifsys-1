@@ -24,8 +24,11 @@ import com.gigold.pay.framework.core.Domain;
 @Scope("prototype")
 public class IfSysRefer extends Domain{
   private int id;
-  private int ifId;
-  private int refId;
+  //测试用例ID
+  private int mockId;
+  //被依赖测试用例ID
+  private int refMockId;
+  //依赖序号
   private int ordNum;
 /**
  * @return the id
@@ -39,29 +42,34 @@ public int getId() {
 public void setId(int id) {
 	this.id = id;
 }
+
+
+
+
+
 /**
- * @return the ifId
+ * @return the mockId
  */
-public int getIfId() {
-	return ifId;
+public int getMockId() {
+	return mockId;
 }
 /**
- * @param ifId the ifId to set
+ * @param mockId the mockId to set
  */
-public void setIfId(int ifId) {
-	this.ifId = ifId;
+public void setMockId(int mockId) {
+	this.mockId = mockId;
 }
 /**
- * @return the refId
+ * @return the refMockId
  */
-public int getRefId() {
-	return refId;
+public int getRefMockId() {
+	return refMockId;
 }
 /**
- * @param refId the refId to set
+ * @param refMockId the refMockId to set
  */
-public void setRefId(int refId) {
-	this.refId = refId;
+public void setRefMockId(int refMockId) {
+	this.refMockId = refMockId;
 }
 /**
  * @return the ordNum
