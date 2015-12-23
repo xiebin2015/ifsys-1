@@ -24,7 +24,7 @@ public interface IfSysReferDAO {
 	/**
 	 * 
 	 * Title: getReferList<br/>
-	 * Description: 获取接口的依赖列表 <br/>
+	 * Description: 获取测试用例的依赖列表 <br/>
 	 * 
 	 * @author xiebin
 	 * @date 2015年12月9日下午5:25:59
@@ -32,6 +32,6 @@ public interface IfSysReferDAO {
 	 * @param ifId
 	 * @return
 	 */
-	public List<IfSysRefer> getReferList(int ifId);
+	public List<IfSysRefer> getReferList(int mockId);
 
 }

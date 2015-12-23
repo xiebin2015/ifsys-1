@@ -76,6 +76,7 @@ public class CheckThread implements Runnable {
 	 */
 	public void handlerIfSys(InterFaceInfo interFaceInfo) {
 		int ifId = interFaceInfo.getId();
+		//根据接口ID获取接口所有的测试数据
 		List<IfSysMock> mockList = ifSysMockService.getMockInfoByIfId(ifId);
 		interFaceInfo.setMockList(mockList);
 		ifSysAutoTestService.autoTest(interFaceInfo);
