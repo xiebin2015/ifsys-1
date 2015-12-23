@@ -38,7 +38,7 @@
 
 <!-- 查询测试用例 -->
 	<select id="queryMockByPage" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
-		resultMap="joinResultMap">
+		resultMap="ifSysMockResultMap">
 		select ID,
 		IF_ID,
 		IF_NAME,
