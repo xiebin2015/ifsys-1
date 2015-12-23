@@ -7,13 +7,7 @@
  */
 package com.gigold.pay.script;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -64,7 +58,7 @@ public class SendResulteAnalysis {
 
 	}
 
-	@Test
+	//@Test
 	public void work() {
 		System.out.println("开始调用接口");
 		autoTest();
@@ -77,7 +71,7 @@ public class SendResulteAnalysis {
 		ifsysCheckThreadPool.execute();
 	}
 
-    @Test
+    //@Test
 	public void sendMail() {
 
 		// 返回所有测试过的结果
@@ -136,12 +130,12 @@ public class SendResulteAnalysis {
 		System.out.println("邮件发送成功！");
 	}
 
-	// @Test
+	@Test
 	public void testAutoTest() {
         int jnrCount = 15;
         // 发送结果分析
         List<IfSysMockHistory> recentRst = ifSysMockHistoryService.getNewestReslutOf(jnrCount);
-
+        if(recentRst==null){System.out.println("查询最近的mocks查询结果为空");return;}
         Map< String,List<IfSysMockHistory> > mailBuffers = new HashMap();
         for(int i=0;i<recentRst.size();i++){
             IfSysMockHistory history = recentRst.get(i);
@@ -159,6 +153,17 @@ public class SendResulteAnalysis {
 
         // 重新格式化结果数据
         Iterator entries = mailBuffers.entrySet().iterator();
+        Comparator comparator = new Comparator<String>(){
+
+            public int compare(String o1, String o2)
+            {
+                int n1 = Integer.parseInt(o1);
+                int n2 = Integer.parseInt(o2);
+                if (n1 == n2)
+                    return 0;
+                else
+                    return n1-n2;
+            }};
         Map<String,Map> initedDataSet = new TreeMap<>();
         ArrayList<String> HeadIFID = new ArrayList<>();
         // 通过率
@@ -211,8 +216,8 @@ public class SendResulteAnalysis {
 
 
         // 去重 - HeadIFID 去重/排序
-        Map<String,String> IfIDNameMap = new TreeMap<String,String>();// id-名字映射
-        Map<String,String> IfIDDsnrMap = new TreeMap<String,String>(); // id-设计者映射
+        Map<String,String> IfIDNameMap = new TreeMap<>(comparator);// id-名字映射
+        Map<String,String> IfIDDsnrMap = new TreeMap<>(comparator); // id-设计者映射
         for (Iterator iter = HeadIFID.iterator(); iter.hasNext();) {
             String _ifId = String.valueOf(iter.next());
             int intId = Integer.parseInt(_ifId);
@@ -223,8 +228,10 @@ public class SendResulteAnalysis {
         while (iter.hasNext()) {
             String key = iter.next();
             InterFaceInfo ifinfo=interFaceService.getInterFaceById(Integer.parseInt(key));
-            IfIDNameMap.put(key,ifinfo.getIfName());
-            IfIDDsnrMap.put(key,ifinfo.getDsname());
+            if(ifinfo!=null){
+                IfIDNameMap.put(key,ifinfo.getIfName());
+                IfIDDsnrMap.put(key,ifinfo.getDsname());
+            }
         }
         // 去重 - 结束
 

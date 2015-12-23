@@ -51,10 +51,41 @@ public class IfSysMock {
 	private String remark;
 	private String email;
 	private String username;
+	
+	
+	private int ifSysId;
+	private int ifProId;
+	
+	
+	
+	/**
+	 * @return the ifSysId
+	 */
+	public int getIfSysId() {
+		return ifSysId;
+	}
 
-	
-	
-	
+	/**
+	 * @param ifSysId the ifSysId to set
+	 */
+	public void setIfSysId(int ifSysId) {
+		this.ifSysId = ifSysId;
+	}
+
+	/**
+	 * @return the ifProId
+	 */
+	public int getIfProId() {
+		return ifProId;
+	}
+
+	/**
+	 * @param ifProId the ifProId to set
+	 */
+	public void setIfProId(int ifProId) {
+		this.ifProId = ifProId;
+	}
+
 	/**
 	 * @return the jrn
 	 */

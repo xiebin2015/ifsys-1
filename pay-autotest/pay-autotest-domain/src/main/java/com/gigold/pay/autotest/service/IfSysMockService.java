@@ -383,7 +383,12 @@ public class IfSysMockService {
 	
 	
 	public List<IfSysMock> queryMockByPage(IfSysMock ifsysmock){
-			return	ifSysMockDao.queryMockByPage(ifsysmock);
-			
+			List<IfSysMock> list=null;
+			try{
+				list=ifSysMockDao.queryMockByPage(ifsysmock);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return list;
 	}
 }
