@@ -379,4 +379,11 @@ public class IfSysMockService {
 		}
 		return flag;
 	}
+	
+	
+	
+	public List<IfSysMock> queryMockByPage(IfSysMock ifsysmock){
+			return	ifSysMockDao.queryMockByPage(ifsysmock);
+			
+	}
 }
