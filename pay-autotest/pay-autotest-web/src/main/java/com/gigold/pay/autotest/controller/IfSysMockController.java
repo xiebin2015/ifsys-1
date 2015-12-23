@@ -144,7 +144,7 @@ public class IfSysMockController extends BaseController {
 		boolean flag = ifSysMockService.addIfSysMock(ifSysMock);
 		if (flag) {
 			reDto.setRspCd(SysCode.SUCCESS);
-			reDto.setId(ifSysMock.getId());
+			reDto.setIfSysMock(ifSysMock);
 		} else {
 			reDto.setRspCd(CodeItem.FAILURE);
 		}
@@ -227,7 +227,8 @@ public class IfSysMockController extends BaseController {
 		}
 		boolean flag = ifSysMockService.updateIfSysMock(ifSysMock);
 		if (flag) {
-			reDto.setId(ifSysMock.getId());
+			ifSysMock=ifSysMockService.getMockInfoById(ifSysMock);
+			reDto.setIfSysMock(ifSysMock);
 			reDto.setRspCd(SysCode.SUCCESS);
 		} else {
 			reDto.setRspCd(CodeItem.FAILURE);
