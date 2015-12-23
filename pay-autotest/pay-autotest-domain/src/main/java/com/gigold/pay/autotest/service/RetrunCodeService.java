@@ -152,6 +152,7 @@ public class RetrunCodeService extends Domain {
 		try {
 			list = returnCodeDao.getReturnCodeByIfId(ifId);
 		} catch (Exception e) {
+			e.printStackTrace();
 			list = null;
 		}
 		return list;

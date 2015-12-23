@@ -143,7 +143,17 @@ $(function() {
 	
 	//添加状态码模块
 	$(".addBtn").on("click",function(){
-		addCodMod();
+		var sendData = {};
+		sendData.ifId = $(this).attr("data-ifid");
+		gigold.pay.interFace.ajaxHandler({
+				"url":"autotest/getrspcdbyifid.do",
+				"data":JSON.stringify(sendData),
+				"onSuccess":function(data){
+					if (data.rspCd == "00000") {
+						addCodMod(data);
+	              	}
+				}
+			});
 	});
 
 	//点击修改按钮进入可编辑状态
@@ -156,54 +166,27 @@ $(function() {
 
 	//保存修改的返回码数据
 	$(document).on("click",".addRspBtn",function(){
-		var hasId = $(this).parent().parent().find(".hideInp").attr("data-ifid");
-		if(hasId!=undefined){
+		
 			var $ele = $(this).parent().parent();
 			var sendData = {};
 			sendData.id = $ele.find(".hideInp").attr("data-id");
-			sendData.ifId = $ele.find(".hideInp").attr("data-ifId");
+			sendData.ifId = $(".addBtn").attr("data-ifId");
 			sendData.requestJson = $ele.find(".reqJson").html();
 			sendData.responseJson = $ele.find(".rspJson").html();
-			
+			console.log(sendData);
 			gigold.pay.interFace.ajaxHandler({
 				"url":"autotest/updateifsysmock.do",
 				"data":JSON.stringify(sendData),
 				"onSuccess":function(data){
+					console.log(data);
 					if (data.rspCd == "00000") {
 						alert("保存成功");
+						$ele.find(".hideInp").attr("data-id",data.id);
 						$ele.find(".addRspBtn").addClass("am-disabled");
 	              }
 				}
 			});
-		}else{
-			var $ele = $(this).parent().parent();
-			var sendData = {};
-			sendData.id = $ele.find(".hideInp").attr("data-id");
-			sendData.ifId = $ele.parent().find(".hideInp").attr("data-ifId");
-			sendData.requestJson = $ele.find(".reqJson").html();
-			sendData.responseJson = $ele.find(".rspJson").html();
-			
-			gigold.pay.interFace.ajaxHandler({
-				"url":"autotest/addifsysmock.do",
-				"data":JSON.stringify(sendData),
-				"onSuccess":function(data){
-					if (data.rspCd == "00000") {
-						alert("保存成功");
-						$ele.find(".addRspBtn").addClass("am-disabled");
-						$ele.find(".rspCdP").find(".rspCd").html($ele.find("select").val());
-						$ele.find(".rspCdP").find("select").remove();
-						var hidInpstr = '<input type="hidden" class="hideInp" data-id="'+data.id+'" data-ifId="'+sendData.ifId+'" />'
-						$ele.find(".rspCdP").before(hidInpstr);
-	             	 }else if(data.rspCd == "A1002"){
-	             	 	alert("期望请求报文不能为空");
-	             	 }else if(data.rspCd == "A0000"){
-	             	 	alert("调用失败");
-	             	 }else if(data.rspCd == "A1000"){
-	             	 	alert("创建BO失败");
-	             	 }
-				}
-			});
-		}
+
 			
 	});
 	
@@ -263,6 +246,7 @@ $(function() {
 	//点击编辑按钮渲染mork数据
 	$(document).on("click", "#propDateShow a", function() {
 		var sendData={"ifId":$(this).attr("id")};
+		$(".addBtn").attr("data-ifid",$(this).attr("id"));
 		  gigold.pay.interFace.ajaxHandler({
 				"url":"autotest/getifsysmockbyifid.do",
 				"data":JSON.stringify(sendData),
@@ -514,14 +498,16 @@ $("#mocksearch").click(function() {
 				
 				
 			//渲染添加的返回码模块	
-function addCodMod(){
+function addCodMod(data){
+	var listss = data.list;
 	var htmlStr = "";
 		htmlStr+='<div class="rspBox">';
+		htmlStr+='<input type="hidden" class="hideInp" data-id="" data-ifId="" />'
 		htmlStr+='<p class="rspCdP"><select data-am-selected>';
- 	 	htmlStr+='<option value="00000" selected>00000</option>';
- 		htmlStr+=' <option value="00001">00001</option>		';
-  		htmlStr+='<option value="U0001">U0001</option>';
-  		htmlStr+='<option value="U0003">U0003</option></select>';
+		for(var i=0;i<listss.length;i++){
+ 	 		htmlStr+='<option value='+listss[i].id+'>'+listss[i].rspCode+'</option>';
+		}
+  		htmlStr+='</select>';
 		htmlStr+='<span class="rspCd"></span>';
 		htmlStr+='<code class="rspCdDesc">qqqqq</code><button class="am-btn am-radius relyBtn am-btn-xs am-btn-secondary">依赖</button></p><hr />';
 		htmlStr+='<p><span >入参:</span><pre class="reqJson" contenteditable="true"></pre></p>';
