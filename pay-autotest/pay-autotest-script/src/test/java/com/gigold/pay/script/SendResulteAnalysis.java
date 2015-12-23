@@ -71,11 +71,7 @@ public class SendResulteAnalysis {
 		ifsysCheckThreadPool.execute();
 	}
 
-<<<<<<< HEAD
     //@Test
-=======
-   // @Test
->>>>>>> gigold/master
 	public void sendMail() {
 
 		// 返回所有测试过的结果
@@ -134,11 +130,7 @@ public class SendResulteAnalysis {
 		System.out.println("邮件发送成功！");
 	}
 
-<<<<<<< HEAD
-	//@Test
-=======
 	@Test
->>>>>>> gigold/master
 	public void testAutoTest() {
         int jnrCount = 15;
         // 发送结果分析
@@ -161,6 +153,17 @@ public class SendResulteAnalysis {
 
         // 重新格式化结果数据
         Iterator entries = mailBuffers.entrySet().iterator();
+        Comparator comparator = new Comparator<String>(){
+
+            public int compare(String o1, String o2)
+            {
+                int n1 = Integer.parseInt(o1);
+                int n2 = Integer.parseInt(o2);
+                if (n1 == n2)
+                    return 0;
+                else
+                    return n1-n2;
+            }};
         Map<String,Map> initedDataSet = new TreeMap<>();
         ArrayList<String> HeadIFID = new ArrayList<>();
         // 通过率
@@ -213,8 +216,8 @@ public class SendResulteAnalysis {
 
 
         // 去重 - HeadIFID 去重/排序
-        Map<String,String> IfIDNameMap = new TreeMap<>();// id-名字映射
-        Map<String,String> IfIDDsnrMap = new TreeMap<>(); // id-设计者映射
+        Map<String,String> IfIDNameMap = new TreeMap<>(comparator);// id-名字映射
+        Map<String,String> IfIDDsnrMap = new TreeMap<>(comparator); // id-设计者映射
         for (Iterator iter = HeadIFID.iterator(); iter.hasNext();) {
             String _ifId = String.valueOf(iter.next());
             int intId = Integer.parseInt(_ifId);
