@@ -33,7 +33,7 @@
 <table class='his'>
     #foreach( $ifId in $IfIDNameMap.keySet())
     <tr>
-        <td class="head" style="white-space: nowrap;text-overflow: ellipsis;text-align:left;font-size:.75em;" title="$ifId,$IfIDNameMap[$ifId]">$IfIDNameMap[$ifId]</td>
+        <td class="head" style="white-space: nowrap;text-overflow: ellipsis;text-align:left;font-size:.75em;" title="$IfIDNameMap[$ifId]">$ifId - $IfIDNameMap[$ifId]</td>
         #foreach( $JNR in $OrderedHeadJNRSet)
 
             #set( $passRate = $initedDataSet[$JNR].get($ifId).get("ifPassRate") )
