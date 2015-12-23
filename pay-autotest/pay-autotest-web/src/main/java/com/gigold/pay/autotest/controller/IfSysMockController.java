@@ -27,7 +27,6 @@ import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.core.exception.PendingException;
-import com.gigold.pay.framework.util.common.StringUtil;
 import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.framework.web.ResponseDto;
 import com.github.pagehelper.PageHelper;
@@ -340,11 +339,38 @@ public class IfSysMockController extends BaseController {
 				// 如果还没有测试数据 则默认添加一条
 				ifSysMockService.addIfSysMock(mock);
 			}
- 
-			
-
 		}
 
 	}
+	
+	
+	
+	@RequestMapping("/getmockbypage.do")
+	public @ResponseBody IfSysMockPageRspDto getmockbypage(@RequestBody IfSysMockPageReqDto dto) {
+		IfSysMockPageRspDto reDto = new IfSysMockPageRspDto();
+		PageHelper.startPage(dto.getPageNum(),Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize=20")));
+		IfSysMock ifSysMock=null;
+		try {
+			ifSysMock=createBO(dto, IfSysMock.class);
+		} catch (PendingException e) {
+			debug("转换bo异常");
+			e.printStackTrace();
+		}
+		List<IfSysMock> list=ifSysMockService.queryMockByPage(ifSysMock);
+		if(list!=null){
+			PageInfo pageInfo=new PageInfo(list);
+			reDto.setPageInfo(pageInfo);
+			reDto.setRspCd(SysCode.SUCCESS);
+		}else{
+			reDto.setRspCd(CodeItem.FAILURE);
+		}
+		return reDto;
+		
+	}
+	
+	
+	
+	
+	
 
 }
