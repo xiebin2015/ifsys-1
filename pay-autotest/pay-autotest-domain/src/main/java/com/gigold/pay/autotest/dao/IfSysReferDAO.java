@@ -33,5 +33,52 @@ public interface IfSysReferDAO {
 	 * @return
 	 */
 	public List<IfSysRefer> getReferList(int mockId);
+	
+	/**
+	 * 
+	 * Title: addMockRefer<br/>
+	 * Description: 新增测试用例依赖<br/>
+	 * @author xiebin
+	 * @date 2015年12月22日下午5:53:26
+	 *
+	 * @param ifSysRefer
+	 * @return
+	 */
+	public int addMockRefer(IfSysRefer ifSysRefer);
+	/**
+	 * 
+	 * Title: deleteMockRefer<br/>
+	 * Description: 删除测试用例依赖<br/>
+	 * @author xiebin
+	 * @date 2015年12月22日下午6:00:08
+	 *
+	 * @param ifSysRefer
+	 * @return
+	 */
+	public int deleteMockRefer(int id);
+	
+	/**
+	 * 
+	 * Title: getReferById<br/>
+	 * Description: 根据ID查询测试用例依赖<br/>
+	 * @author xiebin
+	 * @date 2015年12月22日下午6:04:33
+	 *
+	 * @param id
+	 * @return
+	 */
+	public IfSysRefer getReferById(int id);
+	/**
+	 * 
+	 * Title: updateMockRefer<br/>
+	 * Description: <br/>
+	 * @author xiebin
+	 * @date 2015年12月22日下午6:24:59
+	 *
+	 * @param id
+	 * @return
+	 */
+	public int updateMockRefer(IfSysRefer ifSysRefer);
+	
 
 }
