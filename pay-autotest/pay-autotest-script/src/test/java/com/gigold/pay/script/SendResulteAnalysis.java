@@ -64,7 +64,7 @@ public class SendResulteAnalysis {
 
 	}
 
-	//@Test
+	@Test
 	public void work() {
 		System.out.println("开始调用接口");
 		autoTest();
@@ -77,6 +77,7 @@ public class SendResulteAnalysis {
 		ifsysCheckThreadPool.execute();
 	}
 
+    @Test
 	public void sendMail() {
 
 		// 返回所有测试过的结果
@@ -87,7 +88,7 @@ public class SendResulteAnalysis {
 		for (int i = 0; i < resulteMocks.size(); i++) {
 			// 遍历每个接口的关系
 			int interfaceId = resulteMocks.get(i).getIfId();
-			List<IfSysMock> relationShip = ifSysMockService.getInterfaceFollowShipById(interfaceId);
+			List<IfSysMock> relationShip = ifSysMockService.getInterfaceFollowShipById(interfaceId); //获取接口的关注者
 			for (int j = 0; j < relationShip.size(); j++) {
 				String email = relationShip.get(j).getEmail();
 				String userName = relationShip.get(j).getUsername();
@@ -95,13 +96,12 @@ public class SendResulteAnalysis {
 				IfSysMock eachMock = resulteMocks.get(i);
 				eachMock.setUsername(userName);
 				// 为每个接收者包装信件
-				if (mailBuffers.containsKey(email) && mailBuffers.get(email).size() != 0) {
-					mailBuffers.get(email).add(eachMock);
-				} else {
-					List<IfSysMock> mock = new ArrayList<IfSysMock>();
-					mock.add(eachMock);
-					mailBuffers.put(email, mock);
-				}
+                if(!mailBuffers.containsKey(email)){
+                    List<IfSysMock> mock = new ArrayList<>();
+                    mock.add(eachMock);
+                    mailBuffers.put(email, mock);
+                }
+                mailBuffers.get(email).add(eachMock);
 			}
 		}
 		// 2.分发收件人
@@ -117,7 +117,7 @@ public class SendResulteAnalysis {
 			addressTo.add(email);
 			mailSenderService.setTo(addressTo);
 
-			String userName = "";
+			String userName;
 			try {
 				userName = ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
 			} catch (Exception e) {
@@ -136,7 +136,7 @@ public class SendResulteAnalysis {
 		System.out.println("邮件发送成功！");
 	}
 
-	 @Test
+	// @Test
 	public void testAutoTest() {
         int jnrCount = 15;
         // 发送结果分析
