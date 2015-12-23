@@ -125,8 +125,8 @@ public class IfSysMockController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/addifsysmock.do")
-	public @ResponseBody ResponseDto addIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
-		ResponseDto reDto = new ResponseDto();
+	public @ResponseBody IfSysMockAddRspDto addIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
+		IfSysMockAddRspDto reDto = new IfSysMockAddRspDto();
 		// 验证请求参数合法性
 		String code = dto.validation();
 		// 没有通过则返回对应的返回码
@@ -144,6 +144,7 @@ public class IfSysMockController extends BaseController {
 		boolean flag = ifSysMockService.addIfSysMock(ifSysMock);
 		if (flag) {
 			reDto.setRspCd(SysCode.SUCCESS);
+			reDto.setId(ifSysMock.getId());
 		} else {
 			reDto.setRspCd(CodeItem.FAILURE);
 		}
@@ -208,8 +209,8 @@ public class IfSysMockController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/updateifsysmock.do")
-	public @ResponseBody ResponseDto updateIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
-		ResponseDto reDto = new ResponseDto();
+	public @ResponseBody IfSysMockAddRspDto updateIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
+		IfSysMockAddRspDto reDto = new IfSysMockAddRspDto();
 		// 验证请求参数合法性
 		String code = dto.validation();
 		// 没有通过则返回对应的返回码
@@ -226,6 +227,7 @@ public class IfSysMockController extends BaseController {
 		}
 		boolean flag = ifSysMockService.updateIfSysMock(ifSysMock);
 		if (flag) {
+			reDto.setId(ifSysMock.getId());
 			reDto.setRspCd(SysCode.SUCCESS);
 		} else {
 			reDto.setRspCd(CodeItem.FAILURE);
@@ -348,7 +350,7 @@ public class IfSysMockController extends BaseController {
 	@RequestMapping("/getmockbypage.do")
 	public @ResponseBody IfSysMockPageRspDto getmockbypage(@RequestBody IfSysMockPageReqDto dto) {
 		IfSysMockPageRspDto reDto = new IfSysMockPageRspDto();
-		PageHelper.startPage(dto.getPageNum(),Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize=20")));
+		PageHelper.startPage(dto.getPageNum(),10);
 		IfSysMock ifSysMock=null;
 		try {
 			ifSysMock=createBO(dto, IfSysMock.class);
@@ -368,6 +370,26 @@ public class IfSysMockController extends BaseController {
 		
 	}
 	
+	
+	
+	@RequestMapping("/getrspcdbyifid.do")
+	public @ResponseBody RetrunCodeRspDto getReturnCodeByIfId(@RequestBody ReturnCodeReqDto dto) {
+		debug("调用getReturnCodeByIfId");
+		RetrunCodeRspDto rdto = new RetrunCodeRspDto();
+		int ifId = dto.getIfId();
+		if (ifId == 0) {
+			rdto.setRspCd(CodeItem.IF_ID_FAILURE);
+			return rdto;
+		}
+		List<ReturnCode> list = retrunCodeService.getReturnCodeByIfId(ifId);
+		if (list != null) {
+			rdto.setList(list);
+			rdto.setRspCd(SysCode.SUCCESS);
+		} else {
+			rdto.setRspCd(CodeItem.FAILURE);
+		}
+		return rdto;
+	}
 	
 	
 	
