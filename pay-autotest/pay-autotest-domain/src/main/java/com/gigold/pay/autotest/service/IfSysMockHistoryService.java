@@ -62,6 +62,7 @@ public class IfSysMockHistoryService extends Domain {
 		try {
 			list = ifSysMockHistoryDAO.getNewestReslutOf(limit);
 		} catch (Exception e) {
+			System.out.println(e);
 			list = null;
 		}
 		return list;
