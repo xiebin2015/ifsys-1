@@ -10,6 +10,7 @@ package com.gigold.pay.scripte.service;
 import java.util.*;
 
 import com.gigold.pay.autotest.bo.IfSysMock;
+import com.gigold.pay.autotest.bo.InterFaceInfo;
 import com.gigold.pay.autotest.email.MailSenderService;
 import com.gigold.pay.autotest.service.IfSysMockHistoryService;
 import com.gigold.pay.autotest.service.IfSysMockService;
@@ -172,7 +173,7 @@ public class IfSysAutoTest extends Domain {
 	                if(!eachIfSet.containsKey(ifId)){
 	                    eachIfSet.put(ifId,new HashMap<String,Object>());
 	                    eachIfSet.get(ifId).put("ifPassRate",new Float(0)); //后面计算
-	                    String ifName = interFaceService.getInterFaceById(eachHisMock.getIfId()).getIfName();
+	                    String ifName = eachHisMock.getIfName();
 	                    eachIfSet.get(ifId).put("ifName",(ifName!=null)?ifName:"0"); //取接口名,取不到则为0
 	                    eachIfSet.get(ifId).put("ifTestData",new ArrayList<IfSysMockHistory>());
 	                }
@@ -201,14 +202,23 @@ public class IfSysAutoTest extends Domain {
 	        // 格式化结束
 
 
-	        // HeadIFID 去重/排序
-	        Map<String,String> IfIDNameMap = new TreeMap<String,String>();
+	        // 去重 - HeadIFID 去重/排序
+	        Map<String,String> IfIDNameMap = new TreeMap<String,String>();// id-名字映射
+	        Map<String,String> IfIDDsnrMap = new TreeMap<String,String>(); // id-设计者映射
 	        for (Iterator iter = HeadIFID.iterator(); iter.hasNext();) {
-	            String element = String.valueOf(iter.next());
-	            int intId = Integer.parseInt(element);
-	            String StrId = element;
-	            IfIDNameMap.put(StrId,interFaceService.getInterFaceById(intId).getIfName());
+	            String _ifId = String.valueOf(iter.next());
+	            int intId = Integer.parseInt(_ifId);
+	            IfIDNameMap.put(_ifId,_ifId);
 	        }
+	        // 去重 - 替换接口名
+	        Iterator<String> iter = IfIDNameMap.keySet().iterator();
+	        while (iter.hasNext()) {
+	            String key = iter.next();
+	            InterFaceInfo ifinfo=interFaceService.getInterFaceById(Integer.parseInt(key));
+	            IfIDNameMap.put(key,ifinfo.getIfName());
+	            IfIDDsnrMap.put(key,ifinfo.getDsname());
+	        }
+	        // 去重 - 结束
 
 	        // JNR集合
 	        Set<String> OrderedHeadJNRSet = initedDataSet.keySet();
@@ -223,33 +233,50 @@ public class IfSysAutoTest extends Domain {
 	        float _passRate = 0;
 	        for(int i=0;i<lastRst.size();i++){
 	            IfSysMockHistory eachRst = lastRst.get(i);
+//	            // 初始化接口初始为 通过状态
+//	            String strIfId = String.valueOf(eachRst.getId());
+//	            if(!newestPassRate.containsKey(strIfId)){
+//	                newestPassRate.put(strIfId,1);
+//	            }
 	            // 获取本条mock的测试结果
 	            _passRate += (eachRst.getTestResult().equals("1")?1:0);
+//	            // 获取每个接口的当前状态
+//	            int eachRstNowStat = newestPassRate.get(strIfId);
+//	            // 若一直是通过状态,则写最新状态(一票否决状态)
+//	            if(eachRstNowStat==1){
+//	                newestPassRate.put(strIfId,nowrst);
+//	            }
 	        }
 	        // 计算通过率 - 按mock算
 	        float mockPassRate = 100*_passRate/mockCount;
 
-
+	        String lastJNR = lastRst.get(0).getJrn();
 	        // 发送邮件
 	        String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
 	        List<String> copyTo = new ArrayList<String>();
 	        for(int i=0;i<copyList.length;i++){
 	            String email = copyList[i];
 	            System.out.println(email);
-	      
+	           
 	            copyTo.add(email);
 	        }
 	            mailSenderService.setTo(copyTo);
+	           // String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
 	            mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
 	            mailSenderService.setTemplateName("copyMail.vm");// 设置的邮件模板
 	            // 发送结果
 	            Map model = new HashMap();
 	            model.put("initedDataSet", initedDataSet);// 所有数据
 	            model.put("IfIDNameMap", IfIDNameMap);// 表列头
+	            model.put("IfIDDsnrMap", IfIDDsnrMap);// 设计者映射
 	            model.put("OrderedHeadJNRSet", OrderedHeadJNRSet);//表行头
+	         //   model.put("userName", userName);
+	            // 最近一条JNR
+	            model.put("lastJNR", lastJNR);
 	            // 指标数据
 	            model.put("ifCount", ifCount);
-	            model.put("caseCount", caseCount);
+	            // model.put("caseCount", caseCount); //所有的
+	            model.put("caseCount", mockCount);
 	            model.put("jnrCount", jnrCount);
 	            model.put("mockPassRate", (float)(Math.round(mockPassRate*100))/100);//保留两位
 	            mailSenderService.sendWithTemplateForHTML(model);

@@ -4,24 +4,23 @@
 
 	<resultMap type="com.gigold.pay.autotest.bo.IfSysRefer" id="ifSysRefResultMap">
 		<id property="id" column="ID" />
-		<result property="ifId" column="IF_ID" />
-		<result property="ifId" column="IF_ID" />
-		<result property="refId" column="REFER_ID" />
+		<result property="mockId" column="MOCK_ID" />
+		<result property="refMockId" column="REFER_MOCK_ID" />
 		<result property="ordNum" column="ORD_NUM" />
 		
 
 	</resultMap>
 
-	<!-- 获取接口的依赖列表 -->
+	<!-- 获取测试用例的依赖列表 -->
 	<select id="getReferList" parameterType="int" resultMap="ifSysRefResultMap">
      <![CDATA[ 
         select 
         ID,
-        IF_ID,
-        REFER_ID,
+        MOCK_ID,
+        REFER_MOCK_ID,
         ORD_NUM
         from  T_IF_REFER
-        where IF_ID=#{ifId}
+        where MOCK_ID=#{mockId}
         and STSTUS='Y'
         order by ORD_NUM
       ]]>

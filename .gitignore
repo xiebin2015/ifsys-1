@@ -10,3 +10,5 @@ ifsys/src/main/webapp/webapp.iml
 .idea/.name
 
 .idea/*.xml
+
+pay-autotest/pay-email/src/main/resources/system.properties
