@@ -174,4 +174,8 @@ public interface IfSysMockDAO {
 	 * @return
 	 */
 	public int writeBack(IfSysMock ifsysmock);
+	
+	
+	
+	public List<IfSysMock> queryMockByPage(IfSysMock ifsysmock);
 }
