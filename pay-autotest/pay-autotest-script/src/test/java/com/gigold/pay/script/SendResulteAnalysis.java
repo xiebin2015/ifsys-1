@@ -7,13 +7,7 @@
  */
 package com.gigold.pay.script;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -141,7 +135,7 @@ public class SendResulteAnalysis {
         int jnrCount = 15;
         // 发送结果分析
         List<IfSysMockHistory> recentRst = ifSysMockHistoryService.getNewestReslutOf(jnrCount);
-
+        if(recentRst==null){System.out.println("查询最近的mocks查询结果为空");return;}
         Map< String,List<IfSysMockHistory> > mailBuffers = new HashMap();
         for(int i=0;i<recentRst.size();i++){
             IfSysMockHistory history = recentRst.get(i);
@@ -211,8 +205,8 @@ public class SendResulteAnalysis {
 
 
         // 去重 - HeadIFID 去重/排序
-        Map<String,String> IfIDNameMap = new TreeMap<String,String>();// id-名字映射
-        Map<String,String> IfIDDsnrMap = new TreeMap<String,String>(); // id-设计者映射
+        Map<String,String> IfIDNameMap = new TreeMap<>();// id-名字映射
+        Map<String,String> IfIDDsnrMap = new TreeMap<>(); // id-设计者映射
         for (Iterator iter = HeadIFID.iterator(); iter.hasNext();) {
             String _ifId = String.valueOf(iter.next());
             int intId = Integer.parseInt(_ifId);
@@ -223,8 +217,10 @@ public class SendResulteAnalysis {
         while (iter.hasNext()) {
             String key = iter.next();
             InterFaceInfo ifinfo=interFaceService.getInterFaceById(Integer.parseInt(key));
-            IfIDNameMap.put(key,ifinfo.getIfName());
-            IfIDDsnrMap.put(key,ifinfo.getDsname());
+            if(ifinfo!=null){
+                IfIDNameMap.put(key,ifinfo.getIfName());
+                IfIDDsnrMap.put(key,ifinfo.getDsname());
+            }
         }
         // 去重 - 结束
 
