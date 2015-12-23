@@ -171,9 +171,12 @@ $(function() {
 			var sendData = {};
 			sendData.id = $ele.find(".hideInp").attr("data-id");
 			sendData.ifId = $(".addBtn").attr("data-ifId");
+			sendData.rspCodeId = $ele.find("select").val();
+			var rspCode=$ele.find("option:selected").text();
+			
 			sendData.requestJson = $ele.find(".reqJson").html();
 			sendData.responseJson = $ele.find(".rspJson").html();
-			console.log(sendData);
+			console.log(rspCode);
 			gigold.pay.interFace.ajaxHandler({
 				"url":"autotest/updateifsysmock.do",
 				"data":JSON.stringify(sendData),
@@ -181,8 +184,11 @@ $(function() {
 					console.log(data);
 					if (data.rspCd == "00000") {
 						alert("保存成功");
-						$ele.find(".hideInp").attr("data-id",data.id);
+						$ele.find(".hideInp").attr("data-id",data.ifSysMock.id);
 						$ele.find(".addRspBtn").addClass("am-disabled");
+						$ele.find(".rspCdP").find("select").remove();
+						$ele.find(".rspCdP").find(".rspCd").html(data.ifSysMock.rspCode);
+						$ele.find(".rspCdP").find(".rspCdDesc").html(data.ifSysMock.rspCodeDesc);
 	              }
 				}
 			});
@@ -503,13 +509,13 @@ function addCodMod(data){
 	var htmlStr = "";
 		htmlStr+='<div class="rspBox">';
 		htmlStr+='<input type="hidden" class="hideInp" data-id="" data-ifId="" />'
-		htmlStr+='<p class="rspCdP"><select data-am-selected>';
+		htmlStr+='<p class="rspCdP"><select data-am-selected id="">';
 		for(var i=0;i<listss.length;i++){
  	 		htmlStr+='<option value='+listss[i].id+'>'+listss[i].rspCode+'</option>';
 		}
   		htmlStr+='</select>';
 		htmlStr+='<span class="rspCd"></span>';
-		htmlStr+='<code class="rspCdDesc">qqqqq</code><button class="am-btn am-radius relyBtn am-btn-xs am-btn-secondary">依赖</button></p><hr />';
+		htmlStr+='<code class="rspCdDesc"></code><button class="am-btn am-radius relyBtn am-btn-xs am-btn-secondary">依赖</button></p><hr />';
 		htmlStr+='<p><span >入参:</span><pre class="reqJson" contenteditable="true"></pre></p>';
 		htmlStr+='<p><span >出参:</span><pre class="rspJson" contenteditable="true"></pre></p>';
 		htmlStr+='<div class="bianjiBtn">';

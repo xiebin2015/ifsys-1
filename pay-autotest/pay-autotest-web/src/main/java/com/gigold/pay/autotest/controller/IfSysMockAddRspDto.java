@@ -7,6 +7,7 @@
  */
 package com.gigold.pay.autotest.controller;
 
+import com.gigold.pay.autotest.bo.IfSysMock;
 import com.gigold.pay.framework.web.ResponseDto;
 
 /**
@@ -20,18 +21,18 @@ import com.gigold.pay.framework.web.ResponseDto;
 public class IfSysMockAddRspDto extends ResponseDto {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 1L;
-	private int id;
+	private IfSysMock ifSysMock;
 	/**
-	 * @return the id
+	 * @return the ifSysMock
 	 */
-	public int getId() {
-		return id;
+	public IfSysMock getIfSysMock() {
+		return ifSysMock;
 	}
 	/**
-	 * @param id the id to set
+	 * @param ifSysMock the ifSysMock to set
 	 */
-	public void setId(int id) {
-		this.id = id;
+	public void setIfSysMock(IfSysMock ifSysMock) {
+		this.ifSysMock = ifSysMock;
 	}
 
 	
