@@ -326,9 +326,9 @@ public class IfSysMockController extends BaseController {
 			IfSysMock mock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
 			mock.setIfId(ifId);
 			mock.setRspCodeId(rscdObj.getId());
-			//测试数据表中确认是否已经村子对应返回码的测试数据
-			IfSysMock ifMock = ifSysMockService.getMockInfoByIfIdAndRspCdId(mock);
-			if (ifMock == null) {
+			//测试数据表中确认是否已经存在对应返回码的测试数据
+			List<IfSysMock> ifMockList = ifSysMockService.getMockInfoByIfIdAndRspCdId(mock);
+			if (ifMockList == null||ifMockList.size()==0) {
 				// 获取接口请求字段的JSON展示字符串
 				InterFaceField interFaceField = (InterFaceField) SpringContextHolder.getBean(InterFaceField.class);
 				interFaceField.setIfId(ifId);
@@ -347,11 +347,20 @@ public class IfSysMockController extends BaseController {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * Title: getmockbypage<br/>
+	 * Description: 分页获取测试用例数据列表<br/>
+	 * @author xiebin
+	 * @date 2015年12月24日上午10:33:18
+	 *
+	 * @param dto
+	 * @return
+	 */
 	@RequestMapping("/getmockbypage.do")
 	public @ResponseBody IfSysMockPageRspDto getmockbypage(@RequestBody IfSysMockPageReqDto dto) {
 		IfSysMockPageRspDto reDto = new IfSysMockPageRspDto();
-		PageHelper.startPage(dto.getPageNum(),10);
+		PageHelper.startPage(dto.getPageNum(),5);
 		IfSysMock ifSysMock=null;
 		try {
 			ifSysMock=createBO(dto, IfSysMock.class);

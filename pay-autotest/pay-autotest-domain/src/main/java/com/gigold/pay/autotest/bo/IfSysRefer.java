@@ -23,13 +23,59 @@ import com.gigold.pay.framework.core.Domain;
 @Component
 @Scope("prototype")
 public class IfSysRefer extends Domain{
-  private int id;
+  /** serialVersionUID */
+	private static final long serialVersionUID = 1L;
+private int id;
   //测试用例ID
   private int mockId;
   //被依赖测试用例ID
   private int refMockId;
   //依赖序号
   private int ordNum;
+  //返回码
+  private String rspCode;
+  //返回码描述
+  private String rspCodeDesc;
+  //接口名
+  private String ifName;
+  
+  
+/**
+ * @return the rspCode
+ */
+public String getRspCode() {
+	return rspCode;
+}
+/**
+ * @param rspCode the rspCode to set
+ */
+public void setRspCode(String rspCode) {
+	this.rspCode = rspCode;
+}
+/**
+ * @return the rspCodeDesc
+ */
+public String getRspCodeDesc() {
+	return rspCodeDesc;
+}
+/**
+ * @param rspCodeDesc the rspCodeDesc to set
+ */
+public void setRspCodeDesc(String rspCodeDesc) {
+	this.rspCodeDesc = rspCodeDesc;
+}
+/**
+ * @return the ifName
+ */
+public String getIfName() {
+	return ifName;
+}
+/**
+ * @param ifName the ifName to set
+ */
+public void setIfName(String ifName) {
+	this.ifName = ifName;
+}
 /**
  * @return the id
  */
