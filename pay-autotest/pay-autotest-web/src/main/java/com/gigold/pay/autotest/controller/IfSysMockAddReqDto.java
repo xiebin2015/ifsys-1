@@ -42,8 +42,21 @@ public class IfSysMockAddReqDto extends RequestDto {
 	
 	private int rspCodeId;
 	
+	private String caseName;
 	
 	
+	/**
+	 * @return the caseName
+	 */
+	public String getCaseName() {
+		return caseName;
+	}
+	/**
+	 * @param caseName the caseName to set
+	 */
+	public void setCaseName(String caseName) {
+		this.caseName = caseName;
+	}
 	/**
 	 * @return the rspCodeId
 	 */
