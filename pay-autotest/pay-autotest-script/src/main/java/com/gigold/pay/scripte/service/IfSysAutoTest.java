@@ -127,9 +127,8 @@ public class IfSysAutoTest extends Domain {
 		// 发送结果分析
 		List<IfSysMockHistory> recentRst = ifSysMockHistoryService.getNewestReslutOf(jnrCount);
 		if(recentRst==null){System.out.println("查询最近的mocks查询结果为空");return;}
-		Map< String,List<IfSysMockHistory> > mailBuffers = new HashMap();
-		for(int i=0;i<recentRst.size();i++){
-			IfSysMockHistory history = recentRst.get(i);
+		Map< String,List<IfSysMockHistory> > mailBuffers = new HashMap<>();
+		for(IfSysMockHistory history:recentRst){
 			String JNR = history.getJrn();
 
 			// 为每个接收者包装信件
@@ -168,10 +167,9 @@ public class IfSysAutoTest extends Domain {
 			List<IfSysMockHistory> histMocks = (List<IfSysMockHistory>)entry.getValue();//[{if1,test1,info1},{if1,test2,info2}]
 
 			// 遍历所有数据,并分装到eachIfset
-			Map<String,Map<String,Object>> eachIfSet = new HashMap();// {if1 : {null,null,[] },if2 : { }}
-			for(int i=0;i<histMocks.size();i++){
-				IfSysMockHistory eachHisMock = histMocks.get(i);//{if1,test1,info1}
-
+			Map<String,Map<String,Object>> eachIfSet = new HashMap<>();// {if1 : {null,null,[] },if2 : { }}
+			for(IfSysMockHistory eachHisMock:histMocks){
+				//{if1,test1,info1}
 				//判断eachIfSet是否已经有该接口的数据,若没有,则新建
 				String ifId = String.valueOf(eachHisMock.getIfId());
 				if(!eachIfSet.containsKey(ifId)){
@@ -211,7 +209,6 @@ public class IfSysAutoTest extends Domain {
 		Map<String,String> IfIDDsnrMap = new TreeMap<>(comparator); // id-设计者映射
 		for (Iterator iter = HeadIFID.iterator(); iter.hasNext();) {
 			String _ifId = String.valueOf(iter.next());
-			int intId = Integer.parseInt(_ifId);
 			IfIDNameMap.put(_ifId,_ifId);
 		}
 		// 去重 - 替换接口名
@@ -237,8 +234,7 @@ public class IfSysAutoTest extends Domain {
 		List<IfSysMockHistory> lastRst = ifSysMockHistoryService.getNewestReslutOf(1);//最近一批数据
 		float mockCount = lastRst.size();
 		float _passRate = 0;
-		for(int i=0;i<lastRst.size();i++){
-			IfSysMockHistory eachRst = lastRst.get(i);
+		for(IfSysMockHistory eachRst:lastRst){
 //            // 初始化接口初始为 通过状态
 //            String strIfId = String.valueOf(eachRst.getId());
 //            if(!newestPassRate.containsKey(strIfId)){
@@ -260,10 +256,8 @@ public class IfSysAutoTest extends Domain {
 		// 发送邮件
 		String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
 		List<String> copyTo = new ArrayList<String>();
-		for(int i=0;i<copyList.length;i++){
-			String email = copyList[i];
+		for(String email:copyList){
 			System.out.println(email);
-
 			copyTo.add(email);
 		}
 		mailSenderService.setTo(copyTo);
@@ -271,7 +265,7 @@ public class IfSysAutoTest extends Domain {
 		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
 		mailSenderService.setTemplateName("copyMail.vm");// 设置的邮件模板
 		// 发送结果
-		Map model = new HashMap();
+		Map<String,Object> model = new HashMap<>();
 		model.put("initedDataSet", initedDataSet);// 所有数据
 		model.put("IfIDNameMap", IfIDNameMap);// 表列头
 		model.put("IfIDDsnrMap", IfIDDsnrMap);// 设计者映射
