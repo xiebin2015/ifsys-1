@@ -26,6 +26,7 @@
 欢迎加入 独孤九剑 接口自动化测试!
 <br>
 当你收到这封邮件的时候，表示你关注的接口出现了点问题...
+
 <br>
 <table>
     <tr class='title'>
@@ -38,42 +39,48 @@
         <td>访问模式</td>
     </tr>
 
-    #foreach( $mock in ${resulteMocks})
-        ## 判断结果
-        #if($mock.getTestResult() == '0' )
-            #set($resultStyle = 'failed')
-            #set($result = 'failed')
-        #elseif($mock.getTestResult() == '1' )
-            #set($resultStyle = 'passed')
-            #set($result = 'passed')
-        #elseif($mock.getTestResult() == '-1')
-            #set($resultStyle = 'problem')
-            #set($result = 'problem')
-        #else
-            #set($resultStyle = 'unknow')
-            #set($result = $mock.getTestResult())
-        #end
+    #foreach( $mockListOfIf in $ifOfmockSetList)
+        #set($IfMocksize = $mockListOfIf.size())
+        #set($isFirst = "true")
+        #foreach( $mock in $mockListOfIf)
+            ## 判断结果
+            #if($mock.getTestResult() == '0' )
+                #set($resultStyle = 'failed')
+                #set($result = 'failed')
+            #elseif($mock.getTestResult() == '1' )
+                #set($resultStyle = 'passed')
+                #set($result = 'passed')
+            #elseif($mock.getTestResult() == '-1')
+                #set($resultStyle = 'problem')
+                #set($result = 'problem')
+            #else
+                #set($resultStyle = 'unknow')
+                #set($result = $mock.getTestResult())
+            #end
 
-        ## 比较相等
-        #if($mock.getRealRspCode() != $mock.getRspCode())
-            #set($rspCodeStyle = 'text-problem')
-        #end
+            ## 比较相等
+            #if($mock.getRealRspCode() != $mock.getRspCode())
+                #set($rspCodeStyle = 'text-problem')
+            #end
 
-        #if($mock.getResponseJson() != $mock.getRealResponseJson())
-            #set($ResponseJsonStyle = 'text-problem')
+            #if($mock.getResponseJson() != $mock.getRealResponseJson())
+                #set($ResponseJsonStyle = 'text-problem')
+            #end
+            <tr>
+                #if($isFirst == "true")
+                    #set($isFirst = "false")
+                    <td rowspan="$IfMocksize">$!mockListOfIf[0].getIfId()</td>
+                    <td rowspan="$IfMocksize" title='$!mockListOfIf[0].getIfDESC()'>$!mockListOfIf[0].getIfName()</td>
+                #end
+                <td class='$!{resultStyle}'>$!{result}</td>
+                <td><pre>$!mock.getRequestJson()</pre></td>
+                <td>预期:$!mock.getRspCode()</td>
+                <td class='$!rspCodeStyle'>实际:$!mock.getRealRspCode()</td>
+                ##<td class='flexJson'>预期:<pre>$!mock.getResponseJson()</pre></td>
+                ##<td class='flexJson $!ResponseJsonStyle'>实际:<pre>$!mock.getRealResponseJson()</pre></td>
+                <td>$!mock.getIfPROTOCOL()</td>
+            </tr>
         #end
-
-        <tr>
-            <td>$!mock.getIfId()</td>
-            <td title='$mock.getIfDESC()'>$!mock.getIfName()</td>
-            <td class='$!{resultStyle}'>$!{result}</td>
-            <td><pre>$!mock.getRequestJson()</pre></td>
-            <td>预期:$!mock.getRspCode()</td>
-            <td class='$!rspCodeStyle'>实际:$!mock.getRealRspCode()</td>
-            ##<td class='flexJson'>预期:<pre>$!mock.getResponseJson()</pre></td>
-            ##<td class='flexJson $!ResponseJsonStyle'>实际:<pre>$!mock.getRealResponseJson()</pre></td>
-            <td>$!mock.getIfPROTOCOL()</td>
-        </tr>
     #end
 </table>
 <br>祝工作愉快!
