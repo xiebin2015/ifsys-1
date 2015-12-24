@@ -9,6 +9,7 @@
 		<result property="ordNum" column="ORD_NUM" />
 		<result property="rspCode" column="RSP_CODE" />
 		<result property="rspCodeDesc" column="RSP_CODE_DESC" />
+		<result property="caseName" column="CASE_NAME" />
 		<result property="ifName" column="IF_NAME" />
 
 
@@ -59,6 +60,7 @@
   <![CDATA[ 
 		select ID,
 		MOCK_ID,
+        CASE_NAME,
 		REFER_MOCK_ID,
 		(select RSP_CODE from T_IF_RETRUN_CODE cc where cc.ID=RSP_CODE_ID) RSP_CODE,
 		(select RSP_CODE_DESC from T_IF_RETRUN_CODE cc where
@@ -72,6 +74,8 @@
 		REFER_MOCK_ID,
 		(select RSP_CODE_ID from T_IF_AUTO_MOCK au where au.ID=REFER_MOCK_ID)
 		RSP_CODE_ID,
+        (select CASE_NAME from T_IF_AUTO_MOCK au where au.ID=REFER_MOCK_ID)
+		CASE_NAME,
 		(select IF_ID from T_IF_AUTO_MOCK au where au.ID=REFER_MOCK_ID) IF_ID,
 		ORD_NUM
 		from T_IF_REFER

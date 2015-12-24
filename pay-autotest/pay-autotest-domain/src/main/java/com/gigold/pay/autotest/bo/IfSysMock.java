@@ -33,6 +33,7 @@ public class IfSysMock {
 	private String testResult;
 	private String realRspCode;
 	private String realResponseJson;
+	private String caseName;
 	
 	private String jrn;
 
@@ -58,6 +59,20 @@ public class IfSysMock {
 	
 	
 	
+	/**
+	 * @return the caseName
+	 */
+	public String getCaseName() {
+		return caseName;
+	}
+
+	/**
+	 * @param caseName the caseName to set
+	 */
+	public void setCaseName(String caseName) {
+		this.caseName = caseName;
+	}
+
 	/**
 	 * @return the ifSysId
 	 */
