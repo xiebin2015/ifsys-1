@@ -231,7 +231,7 @@ $(function() {
 		$ele.find(".addRspBtn").removeClass("am-disabled");
 	});
 
-	//保存修改的返回码数据
+	//保存修改的测试用例数据
 	$(document).on("click", ".addRspBtn", function() {
 
 		var $ele = $(this).parent().parent();
@@ -239,11 +239,12 @@ $(function() {
 		sendData.id = $ele.find(".hideInp").attr("data-id");
 		sendData.ifId = $(".addBtn").attr("data-ifId");
 		sendData.rspCodeId = $ele.find("select").val();
+		sendData.caseName = $ele.find("input[name=caseName]").val();
 		var rspCode = $ele.find("option:selected").text();
 
 		sendData.requestJson = $ele.find(".reqJson").html();
 		sendData.responseJson = $ele.find(".rspJson").html();
-		console.log(rspCode);
+		console.log(sendData);
 		gigold.pay.interFace.ajaxHandler({
 			"url": "autotest/updateifsysmock.do",
 			"data": JSON.stringify(sendData),
@@ -335,7 +336,9 @@ $(function() {
 						htmlStr += '<div class="rspBox">';
 						htmlStr += '<input type="hidden" class="hideInp" data-id="' + mock.id + '" data-ifId="' + mock.ifId + '" />';
 						htmlStr += '<p><span class="rspCd">' + mock.rspCode + ':</span>';
-						htmlStr += '<code class="rspCdDesc">' + mock.rspCodeDesc + '</code><button class="am-btn am-radius relyBtn am-btn-xs am-btn-secondary">依赖</button></p><hr />';
+						htmlStr += '<code class="rspCdDesc">' + mock.rspCodeDesc + '</code>';
+						htmlStr +='<button class="am-btn am-radius relyBtn am-btn-xs am-btn-secondary">依赖</button></p><hr />';
+						htmlStr += '<p><span >用例名称:<input name="caseName" value="'+mock.caseName+'"</span></p>';
 						htmlStr += '<p><span >入参:</span><pre class="reqJson">' + mock.requestJson + '</pre></p>';
 						htmlStr += '<p><span >出参:</span><pre class="rspJson">' + mock.responseJson + '</pre></p>';
 						htmlStr += '<div class="bianjiBtn">';
@@ -414,6 +417,7 @@ function loadMockInfoByPage(pageInfo) {
 		function(index, rowData) {
 			listStr += '<tr data-id=' + rowData.id + '>' 
 			+'<td  width=60 class="">' + rowData.id + '</td>' 
+			+'<td class="textLeft">' + rowData.caseName + '</td>' 
 			+'<td class="textLeft">' + rowData.ifName + '</td>' 
 			+'<td class="textLeft">' + rowData.rspCode +'</td>' 
 			+ '<td class="textLeft">' + rowData.rspCodeDesc + '</td>' 
@@ -553,7 +557,6 @@ $('#ifmockProId').change(function() {
 
 //搜索事件
 $("#mocksearch").click(function() {
-	alert();
 	ajaxMockData({
 		"pageNum": 1,
 		"ifName": $("#ifmockName").val(),
@@ -562,6 +565,25 @@ $("#mocksearch").click(function() {
 		"ifName": $("#ifmockName").val()
 	});
 });
+
+//回车搜索
+$("#ifmockName").focus(function() {
+	document.onkeydown = function(event) {
+		var e = event || window.event || arguments.callee.caller.arguments[0];
+		if (e && e.keyCode == 13) {
+			ajaxMockData({
+				"pageNum": 1,
+				"ifName": $("#ifmockName").val(),
+				"ifSysId": $("#ifmockSysId").val(),
+				"ifProId": $("ifmockProId").val(),
+				"ifName": $("#ifmockName").val()
+			});
+			return false;
+		}
+	};
+})
+
+
 function relyAjaxFn(id){
 	var sendData = {};
 	sendData.mockId = id;
@@ -585,6 +607,7 @@ function renderRely(data){
 	for(var i=0;i<list.length;i++){
 		 listStr +=  '<tr data-id='+list[i].id+'><td  class="">' + list[i].mockId + '</td>' 
 			+'<td  class="">' + list[i].refMockId + '</td>' 
+			+'<td class="textLeft">' + list[i].caseName + '</td>' 
 			+'<td class="textLeft">' + list[i].ifName + '</td>' 
 			+'<td class="textLeft">' + list[i].rspCode +'</td>' 
 			+ '<td class="textLeft">' + list[i].rspCodeDesc + '</td>' 
@@ -610,6 +633,7 @@ function addCodMod(data) {
 	htmlStr += '</select>';
 	htmlStr += '<span class="rspCd"></span>';
 	htmlStr += '<code class="rspCdDesc"></code><button class="am-btn am-radius relyBtn am-btn-xs am-btn-secondary" disabled>依赖</button></p><hr />';
+	htmlStr += '<p><span >用例名称:<input name="caseName" value=""</span></p>';
 	htmlStr += '<p><span >入参:</span><pre class="reqJson" contenteditable="true"></pre></p>';
 	htmlStr += '<p><span >出参:</span><pre class="rspJson" contenteditable="true"></pre></p>';
 	htmlStr += '<div class="bianjiBtn">';

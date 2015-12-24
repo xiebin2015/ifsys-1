@@ -38,8 +38,23 @@ private int id;
   private String rspCodeDesc;
   //接口名
   private String ifName;
+  //用例名称
+  private String caseName;
   
   
+  
+/**
+ * @return the caseName
+ */
+public String getCaseName() {
+	return caseName;
+}
+/**
+ * @param caseName the caseName to set
+ */
+public void setCaseName(String caseName) {
+	this.caseName = caseName;
+}
 /**
  * @return the rspCode
  */
