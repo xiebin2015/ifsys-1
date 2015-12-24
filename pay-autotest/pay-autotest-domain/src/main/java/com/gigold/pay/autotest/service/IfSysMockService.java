@@ -143,8 +143,8 @@ public class IfSysMockService {
 		boolean flag = false;
 		try {
 			int count = 0;
-			IfSysMock ifMock=getMockInfoByIfIdAndRspCdId(ifSysMock);
-			if (ifMock==null) {
+			List<IfSysMock> list=getMockInfoByIfIdAndRspCdId(ifSysMock);
+			if (list==null||list.size()==0) {
 				count = ifSysMockDao.addIfSysMock(ifSysMock);
 			} 
 			if (count > 0) {
@@ -257,14 +257,14 @@ public class IfSysMockService {
 	 * @param
 	 * @return
 	 */
-	public IfSysMock getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock) {
-		IfSysMock ifmock = null;
+	public List<IfSysMock> getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock) {
+		List<IfSysMock> list= null;
 		try {
-			ifmock = ifSysMockDao.getMockInfoByIfIdAndRspCdId(ifSysMock);
+			list = ifSysMockDao.getMockInfoByIfIdAndRspCdId(ifSysMock);
 		} catch (Exception e) {
-			ifmock = null;
+			list = null;
 		}
-		return ifmock;
+		return list;
 	}
 	
 	/**
