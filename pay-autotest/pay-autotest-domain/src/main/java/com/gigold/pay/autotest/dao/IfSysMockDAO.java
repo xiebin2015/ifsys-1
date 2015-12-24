@@ -81,7 +81,7 @@ public interface IfSysMockDAO {
 	 * @param ifSysMock
 	 * @return
 	 */
-	public IfSysMock getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock);  
+	public List<IfSysMock> getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock);  
 	/**
 	 * 
 	 * Title: getReferByIfId<br/>
