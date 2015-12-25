@@ -32,4 +32,12 @@ class CodeItem {
 	public static final String ID_FAILURE = "D0005";
 	// 关注者调用信息不能为空
     public static final String REMARK_FAILURE = "D0006";
+    //被关注接口ID不能为空
+    public static final String FLLOW_IF_ID_FAILURE = "D0007";
+    //系统ID不能为空
+    public static final String SYS_ID_FAILURE = "D0008";
+    //请检查必填项是否已录入
+    public static final String NEDD_ITEM_FAILURE = "D0009";
+    //参数不合法
+    public static final String INVAILD_PARM_FAILURE = "D0010";
 }

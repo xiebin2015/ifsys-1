@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.druid.util.StringUtils;
 import com.gigold.pay.framework.core.SysCode;
+import com.gigold.pay.framework.util.common.StringUtil;
 import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.framework.web.ResponseDto;
 import com.gigold.pay.ifsys.bo.InterFaceField;
@@ -96,6 +97,19 @@ public class InterFaceFieldController extends BaseController {
 	@RequestMapping(value = "/getInterFaceFieldsJson.do")
 	public @ResponseBody InterFaceFieldResJsonDto getReqestInfoByIfId(@RequestBody InterFaceFieldReqDto qdto) {
 		InterFaceField interFaceField = qdto.getInterFaceField();
+		InterFaceFieldResJsonDto dto = new InterFaceFieldResJsonDto();
+		if(interFaceField==null){
+			dto.setRspCd(CodeItem.NEDD_ITEM_FAILURE);
+			return dto;
+		}
+		if(StringUtil.isBlank(interFaceField.getFieldFlag())||interFaceField.getIfId()==0){
+			dto.setRspCd(CodeItem.NEDD_ITEM_FAILURE);
+			return dto;
+		}
+		if(!"1".equals(interFaceField.getFieldFlag())&&!"2".equals(interFaceField.getFieldFlag())){
+			dto.setRspCd(CodeItem.INVAILD_PARM_FAILURE);
+			return dto;
+		}
 		StringBuilder ss = new StringBuilder();
 		ss.append("{");
 		//设置响应字段 返回码
@@ -108,7 +122,7 @@ public class InterFaceFieldController extends BaseController {
 		}
 		String jsonStr = ss.toString().replaceAll(",\\}", "}").replaceAll(",\\]", "]");
 		jsonStr = jsonStr.substring(0, jsonStr.length() - 1);
-		InterFaceFieldResJsonDto dto = new InterFaceFieldResJsonDto();
+		
 		dto.setRspCd(SysCode.SUCCESS);
 		dto.setJsonStr(ForMatJSONStr.format(jsonStr));
 		return dto;
