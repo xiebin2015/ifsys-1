@@ -61,9 +61,9 @@ public class SendResulteAnalysis {
 	@Test
 	public void work() {
 		System.out.println("开始调用接口");
-		autoTest();
+		//autoTest();
 		System.out.println("调用接口结束");
-        testAutoTest();
+        //testAutoTest();
         sendMail();
 		System.out.println("work");
 	}
@@ -136,7 +136,6 @@ public class SendResulteAnalysis {
         System.out.println("邮件发送成功！");
 	}
 
-	//@Test
 	//@Test
 	public void testAutoTest() {
         int jnrCount = 15;
