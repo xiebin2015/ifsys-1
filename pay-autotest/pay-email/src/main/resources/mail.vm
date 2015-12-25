@@ -30,11 +30,11 @@
 <br>
 <table>
     <tr class='title'>
-        <td>接口id</td>
-        <td>接口名</td>
+        <td>接口</td>
         <td>测试结果</td>
         <td>输入参数</td>
         <td colspan=2 style='text-align:center'>返回码</td>
+        <td style='text-align:center'>接口地址</td>
        ## <td colspan=2 style='text-align:center'>输出参数</td>
         <td>访问模式</td>
     </tr>
@@ -69,13 +69,13 @@
             <tr>
                 #if($isFirst == "true")
                     #set($isFirst = "false")
-                    <td rowspan="$IfMocksize">$!mockListOfIf[0].getIfId()</td>
-                    <td rowspan="$IfMocksize" title='$!mockListOfIf[0].getIfDESC()'>$!mockListOfIf[0].getIfName()</td>
+                    <td rowspan="$IfMocksize" title='$!mockListOfIf[0].getIfDESC()'>$!mockListOfIf[0].getIfId() - $!mockListOfIf[0].getIfName()</td>
                 #end
                 <td class='$!{resultStyle}'>$!{result}</td>
                 <td><pre>$!mock.getRequestJson()</pre></td>
                 <td>预期:$!mock.getRspCode()</td>
                 <td class='$!rspCodeStyle'>实际:$!mock.getRealRspCode()</td>
+                <td>$!mock.getIfURL()</td>
                 ##<td class='flexJson'>预期:<pre>$!mock.getResponseJson()</pre></td>
                 ##<td class='flexJson $!ResponseJsonStyle'>实际:<pre>$!mock.getRealResponseJson()</pre></td>
                 <td>$!mock.getIfPROTOCOL()</td>
