@@ -89,6 +89,7 @@ public class SendResulteAnalysis {
             }
             // 增加mock
             rstItfces.get(key).add(ifSysMock);
+            System.out.println(String.valueOf(ifSysMock.getId())+" -- "+ifSysMock.getCaseName());
         }
 
 
