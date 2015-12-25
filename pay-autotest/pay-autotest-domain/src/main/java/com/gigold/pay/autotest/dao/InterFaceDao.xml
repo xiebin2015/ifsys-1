@@ -62,6 +62,11 @@
 		or IF_PRO_NAME like '%${ifName}%'
 		or USERNAME like '%${ifName}%' )
 		and inteFace.ISVALID='Y'
+		
+		 and inteFace.IF_PROTOCOL='HTTP'
+		 and inteFace.IF_TYPE!='GET'
+		 and inteFace.IF_PRO_ID!=2
+		  
 		<if test="ifSysId != null and ifSysId!=0">
 			and inteFace.IF_SYS_ID = #{ifSysId}
 		</if>
@@ -84,6 +89,8 @@
 		from T_IF_INTERFACE ii
 		where ii.ISVALID='Y'
 	    and ii.IF_PROTOCOL='HTTP'
+	    and ii.IF_TYPE!='GET'
+	    and ii.IF_PRO_ID!=2
 	</select>
 	
 	
