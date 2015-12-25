@@ -127,7 +127,7 @@
 			FIELD_REFER_VALUE=#{fieldReferValue}
 		</if>
 		</set>
-		where ID=#{id} and ISVALID='Y'
+		where ID=#{id}
 	</update>
 
 
