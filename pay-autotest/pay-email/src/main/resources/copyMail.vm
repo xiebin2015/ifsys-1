@@ -10,7 +10,7 @@
     .his tr:hover td{background: #d1d1d1;transition:none;}
     .his tr{height:10px}
     table { border-collapse: collapse; }
-    td { border: 1px solid #e8e8e8;}
+    td { border: 1px solid #e8e8e8;color:#ccc}
     .f{background: #ff594d!important; }
     a{background: #ff594d;display: block}
     .failed{background: #FF4648 }
@@ -20,7 +20,7 @@
     .failed14{background: #E0FF6C  }
     .passed{background: #5BFF50  }
     .normal{background:none}
-    .head{background:grey;color:#fff;font-size:.5rem}
+    .head{background:grey;color:#eee;font-size:.5rem}
 </style>
 <body style='width:100%'>
 
@@ -84,7 +84,7 @@
         #foreach( $JNR in $OrderedHeadJNRSet)
             <td class="head" style="background:#585eaa;font-size:.75em;" title="$!JNR.substring(0,4)-$!JNR.substring(4,6)-$!JNR.substring(6,8)&#10;$!JNR.substring(8,10):$!JNR.substring(10,12):$!JNR.substring(12,14)">$!JNR.substring(8,10)</td>
         #end
-        <td class="head"></td>
+        <td class="head" style="background:#585eaa;"></td>
     </tr>
 </table>
 

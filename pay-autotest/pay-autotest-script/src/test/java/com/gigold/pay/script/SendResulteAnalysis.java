@@ -64,7 +64,7 @@ public class SendResulteAnalysis {
 		//autoTest();
 		System.out.println("调用接口结束");
         testAutoTest();
-        sendMail();
+        //sendMail();
 		System.out.println("work");
 	}
 
