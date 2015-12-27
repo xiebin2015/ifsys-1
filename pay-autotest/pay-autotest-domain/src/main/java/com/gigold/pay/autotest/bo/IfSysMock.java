@@ -28,13 +28,14 @@ public class IfSysMock {
 	private int rspCodeId;
 	private String rspCode;
 	private String rspCodeDesc;
+	private String preCodeDesc;
 	private String requestJson;
 	private String responseJson;
 	private String testResult;
 	private String realRspCode;
 	private String realResponseJson;
 	private String caseName;
-	
+
 	private String jrn;
 
 	//所属接口信息
@@ -56,9 +57,15 @@ public class IfSysMock {
 	
 	private int ifSysId;
 	private int ifProId;
-	
-	
-	
+
+	public String getPreCodeDesc() {
+		return preCodeDesc;
+	}
+
+	public void setPreCodeDesc(String preCodeDesc) {
+		this.preCodeDesc = preCodeDesc;
+	}
+
 	/**
 	 * @return the caseName
 	 */
