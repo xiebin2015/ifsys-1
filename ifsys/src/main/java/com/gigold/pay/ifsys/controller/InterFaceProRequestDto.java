@@ -27,5 +27,4 @@ public class InterFaceProRequestDto extends RequestDto {
         this.interFacePro = interFacePro;
     }
 
-
 }
