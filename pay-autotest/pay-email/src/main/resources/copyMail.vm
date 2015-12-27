@@ -13,12 +13,12 @@
     td { border: 1px solid #e8e8e8;}
     .f{background: #ff594d!important; }
     a{background: #ff594d;display: block}
-    .failed{background: #ee0414 }
-    .failed44{background: #ee4e5c  }
-    .failed34{background: #ee966e  }
-    .failed24{background: #eecf80  }
-    .failed14{background: #d2ee87  }
-    .passed{background: #2aff3c  }
+    .failed{background: #FF4648 }
+    .failed44{background: #FF4C27  }
+    .failed34{background: #FF792F  }
+    .failed24{background: #FFAE3B  }
+    .failed14{background: #E0FF6C  }
+    .passed{background: #5BFF50  }
     .normal{background:none}
     .head{background:grey;color:#fff;font-size:.5rem}
 </style>
@@ -80,9 +80,9 @@
     </tr>
     #end
     <tr>
-        <td class="head" style="font-size:.75em;" title="批次号">批次</td>
+        <td class="head" style="background:#585eaa;font-size:.75em;" title="批次号">批次</td>
         #foreach( $JNR in $OrderedHeadJNRSet)
-            <td class="head" style="font-size:.75em;" title="$!JNR.substring(0,4)-$!JNR.substring(4,6)-$!JNR.substring(6,8)&#10;$!JNR.substring(8,10):$!JNR.substring(10,12):$!JNR.substring(12,14)">$!JNR.substring(8,10)</td>
+            <td class="head" style="background:#585eaa;font-size:.75em;" title="$!JNR.substring(0,4)-$!JNR.substring(4,6)-$!JNR.substring(6,8)&#10;$!JNR.substring(8,10):$!JNR.substring(10,12):$!JNR.substring(12,14)">$!JNR.substring(8,10)</td>
         #end
         <td class="head"></td>
     </tr>
