@@ -33,6 +33,7 @@ public class IfSysMock {
 	private String testResult;
 	private String realRspCode;
 	private String realResponseJson;
+	private String caseName;
 	
 	private String jrn;
 
@@ -51,10 +52,55 @@ public class IfSysMock {
 	private String remark;
 	private String email;
 	private String username;
+	
+	
+	private int ifSysId;
+	private int ifProId;
+	
+	
+	
+	/**
+	 * @return the caseName
+	 */
+	public String getCaseName() {
+		return caseName;
+	}
 
-	
-	
-	
+	/**
+	 * @param caseName the caseName to set
+	 */
+	public void setCaseName(String caseName) {
+		this.caseName = caseName;
+	}
+
+	/**
+	 * @return the ifSysId
+	 */
+	public int getIfSysId() {
+		return ifSysId;
+	}
+
+	/**
+	 * @param ifSysId the ifSysId to set
+	 */
+	public void setIfSysId(int ifSysId) {
+		this.ifSysId = ifSysId;
+	}
+
+	/**
+	 * @return the ifProId
+	 */
+	public int getIfProId() {
+		return ifProId;
+	}
+
+	/**
+	 * @param ifProId the ifProId to set
+	 */
+	public void setIfProId(int ifProId) {
+		this.ifProId = ifProId;
+	}
+
 	/**
 	 * @return the jrn
 	 */

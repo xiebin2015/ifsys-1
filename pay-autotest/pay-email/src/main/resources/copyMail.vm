@@ -33,7 +33,12 @@
 <table class='his'>
     #foreach( $ifId in $IfIDNameMap.keySet())
     <tr>
-        <td class="head" style="white-space: nowrap;text-overflow: ellipsis;text-align:left;font-size:.75em;" title="$ifId,$IfIDNameMap[$ifId]">$IfIDNameMap[$ifId]</td>
+        #if($IfIDNameMap[$ifId].length()>=9)
+            #set($ifnamelength = 9)
+        #else
+            #set($ifnamelength = $IfIDNameMap[$ifId].length())
+        #end
+        <td class="head" style="white-space: nowrap;text-overflow: ellipsis;text-align:left;font-size:.75em;" title="$IfIDNameMap[$ifId]">$ifId - $IfIDNameMap[$ifId].substring(0,$ifnamelength)</td>
         #foreach( $JNR in $OrderedHeadJNRSet)
 
             #set( $passRate = $initedDataSet[$JNR].get($ifId).get("ifPassRate") )
@@ -87,8 +92,8 @@
 <br>测试接口数:${ifCount}
 <br>测试用例数:${caseCount}
 <br>测试通过率(最新):${mockPassRate} %
-<br>测试覆盖率覆盖率(最新): --
-<br>测试覆盖率覆盖率(总体): --
+<br>测试覆盖率(最新): --
+<br>测试覆盖率(总体): --
 
 <br>祝工作愉快!
 </body>

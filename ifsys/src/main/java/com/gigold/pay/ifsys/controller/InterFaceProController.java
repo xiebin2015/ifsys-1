@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gigold.pay.framework.core.SysCode;
 import com.gigold.pay.framework.web.BaseController;
+import com.gigold.pay.ifsys.bo.InterFaceInfo;
 import com.gigold.pay.ifsys.bo.InterFacePro;
 import com.gigold.pay.ifsys.service.InterFaceProService;
 
@@ -52,7 +53,12 @@ public class InterFaceProController extends BaseController{
     
     @RequestMapping(value = "/getProInfoBySysId.do")
     public @ResponseBody InterFaceProResponseDto getProInfoBySysId( @RequestBody InterFaceProRequestDto qdto) {
-        InterFaceProResponseDto dto = new InterFaceProResponseDto();
+    	InterFaceProResponseDto dto = new InterFaceProResponseDto();
+    	InterFacePro interFacePro=qdto.getInterFacePro();
+    	if(interFacePro==null||interFacePro.getSysId()==0){
+    		dto.setRspCd(CodeItem.SYS_ID_FAILURE);
+    		return dto;
+    	}
         List<InterFacePro> rlist = interFaceProService.getProInfoBySysId(qdto.getInterFacePro());
         if (rlist != null) {
             dto.setProList(rlist);

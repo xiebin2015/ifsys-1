@@ -13,6 +13,7 @@
 		<result property="realRspCode" column="REAL_RSP_CODE" />
 		<result property="realResponseJson" column="REAL_RESPONSE_JSON" />
 		<result property="testResult" column="TEST_RESULT" />
+		<result property="caseName" column="CASE_NAME" />
 
 		<!-- 额外的接口信息数据 @chenkuan 2015.12.08 -->
 		<result property="ifName" column="IF_NAME" />
@@ -36,9 +37,9 @@
 	</resultMap>
 
 
-<!-- 查询测试用例 -->
+<!-- 查询测试用例列表 -->
 	<select id="queryMockByPage" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
-		resultMap="joinResultMap">
+		resultMap="ifSysMockResultMap">
 		select ID,
 		IF_ID,
 		IF_NAME,
@@ -46,9 +47,11 @@
 		IF_PRO_ID,
 		RSP_CODE_ID,
 		RSP_CODE,
+		CASE_NAME,
 		RSP_CODE_DESC from
 		(select au.ID,
 		au.IF_ID,
+		au.CASE_NAME,
 		(select IF_NAME from T_IF_INTERFACE ii where ii.ID=au.IF_ID ) IF_NAME,
 		(select IF_SYS_ID from T_IF_INTERFACE ii where ii.ID=au.IF_ID )
 		IF_SYS_ID,
@@ -98,12 +101,14 @@
         T_IF_AUTO_MOCK
         (
          IF_ID,
+         CASE_NAME,
          RSP_CODE_ID,
          REQUEST_JSON,
          RESPONSE_JSON
         )
         values(
         #{ifId},
+        #{caseName},
         #{rspCodeId},
         #{requestJson},
         #{responseJson})
@@ -115,6 +120,9 @@
 		<set>
 			<if test="rspCodeId!=null and rspCodeId!=''">
 				RSP_CODE_ID=#{rspCodeId},
+			</if>
+			<if test="caseName!=null and caseName!=''">
+				CASE_NAME=#{caseName},
 			</if>
 			<if test="requestJson!=null and requestJson!=''">
 				REQUEST_JSON=#{requestJson},
@@ -156,6 +164,7 @@
 		select au.ID,
 		au.IF_ID,
 		au.RSP_CODE_ID,
+		au.CASE_NAME,
 		(select rc.RSP_CODE from T_IF_RETRUN_CODE rc where rc.ID=au.RSP_CODE_ID) RSP_CODE,
         (select rc.RSP_CODE_DESC from T_IF_RETRUN_CODE rc where rc.ID=au.RSP_CODE_ID) RSP_CODE_DESC,
 		au.REQUEST_JSON,
@@ -176,12 +185,14 @@
 		select ID,
 		IF_ID,
 		RSP_CODE_ID,
+		(select RSP_CODE_DESC from T_IF_RETRUN_CODE cc where au.RSP_CODE_ID=cc.ID) RSP_CODE_DESC,
+		(select RSP_CODE from T_IF_RETRUN_CODE cc where au.RSP_CODE_ID=cc.ID) RSP_CODE,
 		REQUEST_JSON,
 		RESPONSE_JSON,
 		REAL_RSP_CODE,
 		REAL_RESPONSE_JSON,
 		TEST_RESULT
-		from T_IF_AUTO_MOCK
+		from T_IF_AUTO_MOCK au
 		where ID=#{id}
 		and STATUS='Y'
 		 
@@ -248,6 +259,7 @@
 			a.ID,
 			b.IF_NAME,b.IF_DESC,b.IF_URL,b.IF_PROTOCOL,
 			a.IF_ID,
+			a.CASE_NAME,
 			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
 			a.REQUEST_JSON,
 			a.RESPONSE_JSON,
@@ -272,6 +284,7 @@
 			b.IF_DESC,
 			b.IF_URL,
 			b.IF_PROTOCOL,
+			a.CASE_NAME,
 			a.IF_ID,
 			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
 			a.REQUEST_JSON,
@@ -296,6 +309,7 @@
 			a.IF_ID,
 			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
 			a.REQUEST_JSON,
+			a.CASE_NAME,
 			a.RESPONSE_JSON,
 			a.REAL_RSP_CODE,
 			a.REAL_RESPONSE_JSON,

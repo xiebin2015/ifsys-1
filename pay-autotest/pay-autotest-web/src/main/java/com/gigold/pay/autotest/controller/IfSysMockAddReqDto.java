@@ -40,9 +40,35 @@ public class IfSysMockAddReqDto extends RequestDto {
 	//真实返回报文
 	private String realResponseJson;
 	
+	private int rspCodeId;
+	
+	private String caseName;
 	
 	
-	
+	/**
+	 * @return the caseName
+	 */
+	public String getCaseName() {
+		return caseName;
+	}
+	/**
+	 * @param caseName the caseName to set
+	 */
+	public void setCaseName(String caseName) {
+		this.caseName = caseName;
+	}
+	/**
+	 * @return the rspCodeId
+	 */
+	public int getRspCodeId() {
+		return rspCodeId;
+	}
+	/**
+	 * @param rspCodeId the rspCodeId to set
+	 */
+	public void setRspCodeId(int rspCodeId) {
+		this.rspCodeId = rspCodeId;
+	}
 	/**
 	 * @return the id
 	 */
