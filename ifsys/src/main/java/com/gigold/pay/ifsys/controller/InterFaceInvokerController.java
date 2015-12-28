@@ -41,7 +41,6 @@ public class InterFaceInvokerController extends BaseController {
 	@Autowired
 	InterFaceInvokerService interFaceInvokerService;
 
-	
 	/**
 	 * @return the interFaceInvokerService
 	 */
@@ -50,18 +49,20 @@ public class InterFaceInvokerController extends BaseController {
 	}
 
 	/**
-	 * @param interFaceInvokerService the interFaceInvokerService to set
+	 * @param interFaceInvokerService
+	 *            the interFaceInvokerService to set
 	 */
 	public void setInterFaceInvokerService(InterFaceInvokerService interFaceInvokerService) {
 		this.interFaceInvokerService = interFaceInvokerService;
 	}
 
 	@RequestMapping("/addinvoker.do")
-	public @ResponseBody InterFaceInvokerAddResDto addInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
+	public @ResponseBody InterFaceInvokerAddResDto addInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto,
+			HttpSession session) {
 		debug("调用 addInterFaceInvoker");
 		InterFaceInvokerAddResDto rdto = new InterFaceInvokerAddResDto();
-		String rspCode=dto.vaildate();
-		if(!SysCode.SUCCESS.equals(rspCode)){
+		String rspCode = dto.vaildate();
+		if (!SysCode.SUCCESS.equals(rspCode)) {
 			rdto.setRspCd(rspCode);
 			return rdto;
 		}
@@ -72,18 +73,18 @@ public class InterFaceInvokerController extends BaseController {
 			rdto.setRspInf("用户未登录");
 			return rdto;
 		}
-		InterFaceInvoker invoker=null;
+		InterFaceInvoker invoker = null;
 		try {
 			invoker = createBO(dto, InterFaceInvoker.class);
 		} catch (PendingException e) {
 			debug("创建BO失败");
 			e.printStackTrace();
 		}
-		
+
 		invoker.setuId(userInfo.getId());
 		// 添加关注信息
 		invoker = interFaceInvokerService.addInterFaceInvoker(invoker);
-		if (invoker!=null) {
+		if (invoker != null) {
 			rdto.setInvoker(invoker);
 			rdto.setRspCd(SysCode.SUCCESS);
 			rdto.setRspInf("关注成功");
@@ -95,11 +96,12 @@ public class InterFaceInvokerController extends BaseController {
 		return rdto;
 
 	}
-	
+
 	/**
 	 * 
 	 * Title: getInvokerList<br/>
 	 * Description: 获取接口关注列表<br/>
+	 * 
 	 * @author xiebin
 	 * @date 2015年11月23日下午5:06:49
 	 *
@@ -110,24 +112,30 @@ public class InterFaceInvokerController extends BaseController {
 	@RequestMapping("/getinvokerlist.do")
 	public @ResponseBody InterFaceInvokerResDto getInvokerListByFollowId(@RequestBody InterFaceInvokerReqDto dto) {
 		debug("调用 getInvokerListByFollowId");
-		InterFaceInvokerResDto rdto=new InterFaceInvokerResDto();
+		InterFaceInvokerResDto rdto = new InterFaceInvokerResDto();
+		if (dto.getIfFollowedId() == 0) {
+			rdto.setRspCd(CodeItem.FLLOW_IF_ID_FAILURE);
+			return rdto;
+		}
 		InterFaceInvoker invoker = (InterFaceInvoker) SpringContextHolder.getBean(InterFaceInvoker.class);
 		invoker.setIfFollowedId(dto.getIfFollowedId());
-		List<InterFaceInvoker> list=interFaceInvokerService.getInvokerList(invoker);
-		if(list!=null){
+		List<InterFaceInvoker> list = interFaceInvokerService.getInvokerList(invoker);
+		if (list != null) {
 			rdto.setList(list);
 			rdto.setRspCd(SysCode.SUCCESS);
-		}else{
+		} else {
 			rdto.setRspCd(CodeItem.IF_FAILURE);
 			rdto.setRspInf("获取失败");
 		}
-		
+
 		return rdto;
 	}
+
 	/**
 	 * 
 	 * Title: deleteInterFaceInvoker<br/>
 	 * Description: 取消关注<br/>
+	 * 
 	 * @author xiebin
 	 * @date 2015年12月21日下午2:50:30
 	 *
@@ -136,7 +144,8 @@ public class InterFaceInvokerController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/deleteinvoker.do")
-	public @ResponseBody ResponseDto deleteInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto, HttpSession session) {
+	public @ResponseBody ResponseDto deleteInterFaceInvoker(@RequestBody InterFaceInvokerReqDto dto,
+			HttpSession session) {
 		debug("调用 deleteInterFaceInvoker");
 		ResponseDto rdto = new ResponseDto();
 		// 在session中取uid
@@ -146,7 +155,7 @@ public class InterFaceInvokerController extends BaseController {
 			rdto.setRspInf("用户未登录");
 			return rdto;
 		}
-		
+
 		// 取消关注信息
 		boolean flag = interFaceInvokerService.deleteInvoker(dto.getId());
 		if (flag) {
@@ -160,5 +169,5 @@ public class InterFaceInvokerController extends BaseController {
 		return rdto;
 
 	}
-	
+
 }

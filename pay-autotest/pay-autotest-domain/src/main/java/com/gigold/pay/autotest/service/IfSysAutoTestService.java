@@ -277,10 +277,23 @@ public class IfSysAutoTestService extends Domain {
 	public String getAddressUrl(String url, String action) {
 		String addressUrl = "";
 		if (StringUtil.isNotBlank(url) && StringUtil.isNotBlank(action)) {
+			url=url.trim();
+			action=action.trim();
 			if (url.endsWith("/")) {
-				addressUrl = url + action;
+				if(action.startsWith("/")){
+					addressUrl=url+action.substring(1);
+				}else{
+					addressUrl = url + action;
+				}
+				
 			} else {
-				addressUrl = url + "/" + action;
+				if(action.startsWith("/")){
+					addressUrl=url+action;
+				}else{
+					addressUrl = url + "/" + action;
+				}
+				
+				
 			}
 		}
 		return addressUrl;
