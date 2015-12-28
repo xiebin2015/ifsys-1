@@ -8,6 +8,14 @@ public interface InterFaceDao {
 	/**
 	 * 根据Id获得接口信息
 	 * 
+	 * @param
+	 * @return
+	 */
+	public int getAllIfSysCount();
+
+	/**
+	 * 根据Id获得接口信息
+	 *
 	 * @param id
 	 * @return
 	 */

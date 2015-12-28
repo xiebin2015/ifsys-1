@@ -10,7 +10,7 @@
     .his tr:hover td{background: #d1d1d1;transition:none;}
     .his tr{height:10px}
     table { border-collapse: collapse; }
-    td { border: 1px solid #e8e8e8;color:#ccc}
+    td { border: 1px solid #e8e8e8;}
     .f{background: #ff594d!important; }
     a{background: #ff594d;display: block}
     .failed{background: #FF4648 }
@@ -21,6 +21,10 @@
     .passed{background: #5BFF50  }
     .normal{background:none}
     .head{background:grey;color:#eee;font-size:.5rem}
+    .progress{width: 200px;display: block;height: 20px;border: 1px solid grey;}
+    .progress span{display: block;height: 20px;background: #585eaa;}
+    .rate span{float:left}
+    small{font-size:0.75em;color:grey}
 </style>
 <body style='width:100%'>
 
@@ -89,11 +93,13 @@
 </table>
 
 <p>2.其他指标</p>
-<br>测试接口数:${ifCount}
-<br>测试用例数:${caseCount}
-<br>测试通过率(最新):${mockPassRate} %
-<br>测试覆盖率(最新): --
-<br>测试覆盖率(总体): --
+<p>测试接口数:${ifCount}</p>
+<p>测试用例数:${caseCount}</p>
+<p class="rate"><span>测试通过率(最新): </span><span class="progress"><span style="width:${mockPassRate}%"></span></span> ${mockPassRate} %</p>
+<p class="rate"><span>用例覆盖率(最新): </span><span class="progress"><span style="width:${CCcoverage}%"></span></span> ${CCcoverage} %</p>
+<p class="rate"><span>接口覆盖率(最新): </span><span class="progress"><span style="width:${IFcoverage}%"></span></span> ${IFcoverage} %</p>
+<p><small>用例覆盖率:已测用例数/用例总数</small></p>
+<p><small>接口覆盖率:已测接口数/接口总数</small></p>
 
 <br>祝工作愉快!
 </body>
