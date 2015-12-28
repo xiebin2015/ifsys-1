@@ -62,11 +62,9 @@ public class IfSysAutoTestService extends Domain {
 		if (relRspCode.equals(mock.getRspCode())) {
 			// 实际响应返回码与预期的一致的情况
 			ifsysmock.setTestResult("1");
-
-		} else if (!StringUtil.isBlank(relRspCode)) {
+		} else if (StringUtil.isNotEmpty(relRspCode)&&(!relRspCode.equals("null"))) {
 			// 实际响应返回码与预期的不一致,且非空的情况
 			ifsysmock.setTestResult("0");
-
 		} else {
 			ifsysmock.setTestResult("-1");
 		}
