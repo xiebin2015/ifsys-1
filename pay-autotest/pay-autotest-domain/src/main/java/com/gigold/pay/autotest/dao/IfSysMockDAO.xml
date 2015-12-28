@@ -8,6 +8,7 @@
 		<result property="rspCodeId" column="RSP_CODE_ID" />
 		<result property="rspCode" column="RSP_CODE" />
 		<result property="rspCodeDesc" column="RSP_CODE_DESC" />
+		<result property="preCodeDesc" column="PRE_CODE_DESC" />
 		<result property="requestJson" column="REQUEST_JSON" />
 		<result property="responseJson" column="RESPONSE_JSON" />
 		<result property="realRspCode" column="REAL_RSP_CODE" />
@@ -258,9 +259,11 @@
 		SELECT
 			a.ID,
 			b.IF_NAME,b.IF_DESC,b.IF_URL,b.IF_PROTOCOL,
+			(select e.RSP_CODE_DESC from T_IF_RETRUN_CODE e where e.ID=a.RSP_CODE_ID and e.IF_ID=a.IF_ID) PRE_CODE_DESC,
 			a.IF_ID,
 			a.CASE_NAME,
 			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
+			(select d.RSP_CODE_DESC from T_IF_RETRUN_CODE d where d.RSP_CODE=a.REAL_RSP_CODE and d.IF_ID=a.IF_ID) RSP_CODE_DESC,
 			a.REQUEST_JSON,
 			a.RESPONSE_JSON,
 			a.REAL_RSP_CODE,
@@ -282,11 +285,13 @@
 			a.ID,
 			b.IF_NAME,
 			b.IF_DESC,
+			(select e.RSP_CODE_DESC from T_IF_RETRUN_CODE e where e.ID=a.RSP_CODE_ID and e.IF_ID=a.IF_ID) PRE_CODE_DESC,
 			b.IF_URL,
 			b.IF_PROTOCOL,
 			a.CASE_NAME,
 			a.IF_ID,
 			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
+			(select d.RSP_CODE_DESC from T_IF_RETRUN_CODE d where d.RSP_CODE=a.REAL_RSP_CODE and d.IF_ID=a.IF_ID) RSP_CODE_DESC,
 			a.REQUEST_JSON,
 			a.RESPONSE_JSON,
 			a.REAL_RSP_CODE,
@@ -307,7 +312,9 @@
 			a.ID,
 			b.IF_NAME,b.IF_DESC,b.IF_URL,b.IF_PROTOCOL,
 			a.IF_ID,
+			(select e.RSP_CODE_DESC from T_IF_RETRUN_CODE e where e.ID=a.RSP_CODE_ID and e.IF_ID=a.IF_ID) PRE_CODE_DESC,
 			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
+			(select d.RSP_CODE_DESC from T_IF_RETRUN_CODE d where d.RSP_CODE=a.REAL_RSP_CODE and d.IF_ID=a.IF_ID) RSP_CODE_DESC,
 			a.REQUEST_JSON,
 			a.CASE_NAME,
 			a.RESPONSE_JSON,
