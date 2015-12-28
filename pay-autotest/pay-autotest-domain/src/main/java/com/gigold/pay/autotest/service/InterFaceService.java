@@ -17,6 +17,7 @@ public class InterFaceService {
 	@Autowired
 	InterFaceDao interFaceDao;
 
+
 	/**
 	 * @return the interFaceDao
 	 */
@@ -72,6 +73,26 @@ public class InterFaceService {
 			list = null;
 		}
 		return list;
+	}
+	/**
+	 *
+	 * Title: getAllIfSys<br/>
+	 * Description: 获取所有的接口信息<br/>
+	 *
+	 * @author xiebin
+	 * @date 2015年12月1日下午3:02:29
+	 *
+	 * @return
+	 */
+	public int getAllIfSysCount() {
+		int count = 0;
+		try {
+			count = interFaceDao.getAllIfSysCount();
+		} catch (Exception e) {
+			e.printStackTrace();
+			count = -1;
+		}
+		return count;
 	}
 	
 	/**
