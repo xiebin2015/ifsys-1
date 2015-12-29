@@ -337,14 +337,9 @@
 	    REAL_RESPONSE_JSON=#{realResponseJson},
 	    TEST_RESULT=#{testResult}
 	    where id=#{id}
-	    
+
 	    ]]>
 	</update>
-
-
-
-	
-
 
 </mapper>
  
