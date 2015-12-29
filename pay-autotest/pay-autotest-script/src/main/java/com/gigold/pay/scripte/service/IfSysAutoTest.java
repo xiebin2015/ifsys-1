@@ -200,7 +200,12 @@ public class IfSysAutoTest extends Domain {
 				float rstSiz = ifTestData.size();//当前单接口集合大小
 				if(rstSiz!=0){
 					float preRst = (float) (eachIfSet.get(ifId).get("ifPassRate"));
-					float nowRst = eachHisMock.getTestResult().equals("1")?1:0;
+					float nowRst = 0;
+					try {
+						nowRst = eachHisMock.getTestResult().equals("1")?1:0;
+					}catch (Exception e){
+						System.out.println("************** TestResult 为空 ************");
+					}
 					float _rate = ((rstSiz-1)*preRst+nowRst)/rstSiz;
 					eachIfSet.get(ifId).put("ifPassRate",(float)(Math.round(_rate*100))/100); //实时计算
 					_testCnt++;
