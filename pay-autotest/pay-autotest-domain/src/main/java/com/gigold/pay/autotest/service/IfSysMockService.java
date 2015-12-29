@@ -360,21 +360,20 @@ public class IfSysMockService {
 	 * @author chenhl
 	 * @date 2015年12月2日上午10:56:31
 	 *
-	 * @param ifsysmock
 	 * @return
 	 */
 	@IfSysMockHistoryAnnotation("记录测试历史")
-	public boolean writeBackRealRsp(IfSysMock ifsysmock) {
-		String realResponseJson=ForMatJSONStr.format(ifsysmock.getRealResponseJson());
-		ifsysmock.setRealResponseJson(realResponseJson);
+	public boolean writeBackRealRsp(IfSysMock ifSysMock,String testResulte,String realRspJson,String realRspCode) {
 		boolean flag = false;
-		try {
-			int count = ifSysMockDao.writeBack(ifsysmock);
-			if (count > 0) {
+ 		try {
+			if(testResulte.isEmpty())throw new Exception("回写结果为空");
+			ifSysMock.setTestResult(testResulte);
+			ifSysMock.setRealResponseJson(realRspJson);
+			ifSysMock.setRealRspCode(realRspCode);
+			if (ifSysMockDao.writeBack(ifSysMock) > 0) {
 				flag = true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			flag = false;
 		}
 		return flag;
