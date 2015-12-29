@@ -5,6 +5,7 @@
     <style type="text/css">
         table { border-collapse: collapse; }
         th,td { border: 1px solid #888; }
+        td{padding:0 5px;}
         .failed{background:#aa2116;color:#fff}
         .passed{background:#1d953f;color:#fff}
         .problem{background:#dea32c;color:#fff}
@@ -18,6 +19,8 @@
         table,td,tr{font-size:12px;}
         td{text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
         .flexJson{width:300px;}
+        .odd{background:#ECEAFF}
+        .evn{background:#fff}
     </style>
 </head>
 <body style='width:100%'>
@@ -30,18 +33,25 @@
 <br>
 <table>
     <tr class='title'>
-        <td>接口</td>
-        <td>测试结果</td>
-        <td>用例</td>
-        <td colspan=2 style='text-align:center'>返回码</td>
-        <td style='text-align:center'>接口地址</td>
-       ## <td colspan=2 style='text-align:center'>输出参数</td>
-        <td>访问模式</td>
-    </tr>
+        <td style='text-align:center'>接口</td>
+        <td style='text-align:center'>测试结果</td>
+        <td style='text-align:center'>用例</td>
+        <td style='text-align:center'>预期</td>
+        <td style='text-align:center'>实际</td>
+        <td style='text-align:center'>地址/访问模式</td>
 
+        ## <td colspan=2 style='text-align:center'>输出参数</td>
+    </tr>
+    #set($trthem = "odd")
     #foreach( $mockListOfIf in $ifOfmockSetList)
         #set($IfMocksize = $mockListOfIf.size())
         #set($isFirst = "true")
+        ## 单双行样式
+        #if($trthem =="odd")
+            #set($trthem ="evn")
+        #elseif($trthem =="evn")
+            #set($trthem = "odd")
+        #end
         #foreach( $mock in $mockListOfIf)
             ## 判断结果
             #if($mock.getTestResult() == '0' )
@@ -66,19 +76,25 @@
             #if($mock.getResponseJson() != $mock.getRealResponseJson())
                 #set($ResponseJsonStyle = 'text-problem')
             #end
-            <tr>
+            <tr class="$trthem">
                 #if($isFirst == "true")
-                    #set($isFirst = "false")
-                    <td rowspan="$IfMocksize" title='$!mockListOfIf[0].getIfDESC()'>$!mockListOfIf[0].getIfId() - $!mockListOfIf[0].getIfName()</td>
+                    <td rowspan="$IfMocksize" title='$!mockListOfIf[0].getIfDESC()'>
+                        ($!mockListOfIf[0].getIfId())$!mockListOfIf[0].getIfName()<br>
+                    </td>
                 #end
                 <td class='$!{resultStyle}'>$!{result}</td>
-                <td>$!mock.getId() - $!mock.getCaseName()</td>
-                <td>预期:$!mock.getRspCode()</td>
-                <td class='$!rspCodeStyle'>实际:$!mock.getRealRspCode()</td>
-                <td>$!mock.getIfURL()</td>
+                <td>($!mock.getId()) $!mock.getCaseName()</td>
+                <td style='text-align:right'>$!mock.getPreCodeDesc() ($!mock.getRspCode())</td>
+                <td class='$!rspCodeStyle'>($!mock.getRealRspCode()) $!mock.getRspCodeDesc()</td>
+                #if($isFirst == "true")
+                    #set($isFirst = "false")
+                    <td rowspan="$IfMocksize" title='$!mockListOfIf[0].getIfDESC()'>
+                        ($!mock.getIfPROTOCOL()) $!mock.getIfURL()
+
+                    </td>
+                #end
                 ##<td class='flexJson'>预期:<pre>$!mock.getResponseJson()</pre></td>
                 ##<td class='flexJson $!ResponseJsonStyle'>实际:<pre>$!mock.getRealResponseJson()</pre></td>
-                <td>$!mock.getIfPROTOCOL()</td>
             </tr>
         #end
     #end
