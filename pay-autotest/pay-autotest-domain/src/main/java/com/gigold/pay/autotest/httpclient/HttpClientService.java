@@ -159,8 +159,7 @@ public class HttpClientService extends Domain{
 	 * @date 2015年11月6日下午1:41:54
 	 *
 	 * @param httpclient
-	 * @param ip
-	 * @param port
+
 	 */
 	public void setProxy(DefaultHttpClient httpclient, String proxyHost, int proxyPort, String userName,
 			String password) {
@@ -180,7 +179,6 @@ public class HttpClientService extends Domain{
 	 * @date 2015年11月6日下午1:41:18
 	 *
 	 * @param httppost
-	 * @param dto
 	 * @throws UnsupportedEncodingException
 	 */
 	public void setRequestParams(HttpPost httppost, String requestData) throws UnsupportedEncodingException {
