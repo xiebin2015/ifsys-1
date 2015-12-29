@@ -10,6 +10,7 @@ package com.gigold.pay.script;
 import java.util.*;
 
 import com.gigold.pay.autotest.dao.InterFaceDao;
+import org.apache.commons.collections.list.TreeList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,10 +66,10 @@ public class SendResulteAnalysis {
 	@Test
 	public void work() {
 		System.out.println("开始调用接口");
-		autoTest();
+		//autoTest();
 		System.out.println("调用接口结束");
         sendMail();
-        testAutoTest();
+        //testAutoTest();
         System.out.println("work");
 	}
 
@@ -108,6 +109,7 @@ public class SendResulteAnalysis {
                 List<IfSysMock> emailObjs = ifSysMockService.getInterfaceFollowShipById(Integer.parseInt(ifId));
 
                 // 将接口结果集添加到收件人observers
+                int i = 1;
                 for(IfSysMock emailObj:emailObjs){ // 遍历单个接口的测试结果集,拿到测试结果
                     String email = emailObj.getEmail(); // chenkuan@qq.com
                     String Uname = emailObj.getUsername(); // chenkuan@qq.com
@@ -116,6 +118,14 @@ public class SendResulteAnalysis {
                         observers.put(key,new ArrayList<List<IfSysMock>>());//二维数组,每组为一个接口
                     }
                     observers.get(key).add(eachMockSet);// 对测试结果所包含的发件人去重,然后将相同的发件人所对应的mock所对应的接口进行关联
+                    if(i++ == emailObjs.size()){// 如果到最后,则进行一次排序
+                        Collections.sort(observers.get(key), new Comparator<List<IfSysMock>>() {
+                            @Override
+                            public int compare(List<IfSysMock> o1, List<IfSysMock> o2) {
+                                return o1.get(0).getIfId() -o2.get(0).getIfId();
+                            }
+                        });
+                    }
                 }
             }
 
