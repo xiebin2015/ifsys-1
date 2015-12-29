@@ -73,62 +73,69 @@ public class IfSysAutoTest extends Domain {
 
 		// 返回所有测试过的结果
 		List<IfSysMock> resulteMocks = ifSysMockService.filterMocksByFailed();
-
-		// 1.测试结果按接口分类
-		Map<String,List<IfSysMock>> rstItfces = new TreeMap<>();
-		for(IfSysMock ifSysMock:resulteMocks){
-			// 判断结果分类中是否已经初始化过了,若没有则初始化
-			String key  = String.valueOf(ifSysMock.getIfId());
-			if(!rstItfces.containsKey(key)){
-				rstItfces.put(key,new ArrayList<IfSysMock>()); // 键值格式为{"12":[1,2,3,4]}
-			}
-			// 增加mock
-			rstItfces.get(key).add(ifSysMock);
-		}
-
-
-		// 2.分发收件人
-		Map<String,List<List<IfSysMock>>> observers = new HashMap<>();
-		for(String ifId:rstItfces.keySet()){
-			// 每个接口的测试结果集 [1,2,3,4]
-			List<IfSysMock> eachMockSet = rstItfces.get(ifId);
-
-			// 获取接口的关注者
-			List<IfSysMock> emailObjs = ifSysMockService.getInterfaceFollowShipById(Integer.parseInt(ifId));
-
-			// 将接口结果集添加到收件人observers
-			for(IfSysMock emailObj:emailObjs){ // 遍历单个接口的测试结果集,拿到测试结果
-				String email = emailObj.getEmail(); // chenkuan@qq.com
-				String Uname = emailObj.getUsername(); // chenkuan@qq.com
-				String key = email+"::"+Uname;
-				if(!observers.containsKey(key)){
-					observers.put(key,new ArrayList<List<IfSysMock>>());//二维数组,每组为一个接口
+		if(resulteMocks.isEmpty()){
+			System.out.print("没有查询到错误的结果集");
+		}else {
+			// 1.测试结果按接口分类
+			Map<String,List<IfSysMock>> rstItfces = new TreeMap<>();
+			for(IfSysMock ifSysMock:resulteMocks){
+				// 判断结果分类中是否已经初始化过了,若没有则初始化
+				String key  = String.valueOf(ifSysMock.getIfId());
+				if(!rstItfces.containsKey(key)){
+					rstItfces.put(key,new ArrayList<IfSysMock>()); // 键值格式为{"12":[1,2,3,4]}
 				}
-				observers.get(key).add(eachMockSet);// 对测试结果所包含的发件人去重,然后将相同的发件人所对应的mock所对应的接口进行关联
+				// 增加mock
+				rstItfces.get(key).add(ifSysMock);
 			}
-		}
 
-		// 3.发件
-		for(String emailNuname:observers.keySet()){
-			// 获取每个用户的结果
-			List<List<IfSysMock>> ifOfmockSetList = observers.get(emailNuname);
-			//收件人地址和姓名
-			String email = emailNuname.split("::")[0].trim();
-			String userName = emailNuname.split("::")[1].trim();
-			// 设置收件人地址
-			List<String> addressTo = new ArrayList<>();
-			addressTo.add(email);
-			mailSenderService.setTo(addressTo);
-			mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
-			mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
-			// 发送结果
-			Map<String,Object> model = new HashMap<>();
-			model.put("ifOfmockSetList", ifOfmockSetList);
-			model.put("userName", userName);
-			//if(email.equals("chenkuan@gigold.com"))
-			mailSenderService.sendWithTemplateForHTML(model);
+
+			// 2.分发收件人
+			Map<String,List<List<IfSysMock>>> observers = new HashMap<>();
+			for(String ifId:rstItfces.keySet()){
+				// 每个接口的测试结果集 [1,2,3,4]
+				List<IfSysMock> eachMockSet = rstItfces.get(ifId);
+
+				// 获取接口的关注者
+				List<IfSysMock> emailObjs = ifSysMockService.getInterfaceFollowShipById(Integer.parseInt(ifId));
+
+				// 将接口结果集添加到收件人observers
+				for(IfSysMock emailObj:emailObjs){ // 遍历单个接口的测试结果集,拿到测试结果
+					String email = emailObj.getEmail(); // chenkuan@qq.com
+					String Uname = emailObj.getUsername(); // chenkuan@qq.com
+					String key = email+"::"+Uname;
+					if(!observers.containsKey(key)){
+						observers.put(key,new ArrayList<List<IfSysMock>>());//二维数组,每组为一个接口
+					}
+					observers.get(key).add(eachMockSet);// 对测试结果所包含的发件人去重,然后将相同的发件人所对应的mock所对应的接口进行关联
+				}
+			}
+
+			// 3.发件
+			for(String emailNuname:observers.keySet()){
+				// 获取每个用户的结果
+				List<List<IfSysMock>> ifOfmockSetList = observers.get(emailNuname);
+				//收件人地址和姓名
+				String email = emailNuname.split("::")[0].trim();
+				String userName = emailNuname.split("::")[1].trim();
+				// 设置收件人地址
+				List<String> addressTo = new ArrayList<>();
+				addressTo.add(email);
+				mailSenderService.setTo(addressTo);
+				mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+				mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
+				// 发送结果
+				Map<String,Object> model = new HashMap<>();
+				model.put("ifOfmockSetList", ifOfmockSetList);
+				model.put("userName", userName);
+
+				// if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com"))
+
+				if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com")||email.equals("liuzg@gigold.com"))
+
+					mailSenderService.sendWithTemplateForHTML(model);
+			}
+			System.out.println("邮件发送成功！");
 		}
-		System.out.println("邮件发送成功！");
 	}
 
 	public void sendAnalyMail(){

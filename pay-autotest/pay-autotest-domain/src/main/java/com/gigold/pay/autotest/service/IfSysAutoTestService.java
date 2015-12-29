@@ -79,6 +79,7 @@ public class IfSysAutoTestService extends Domain {
 		// 获取接口访问的完整地址
 		String url = getAddressUrl(interFaceInfo.getAddressUrl(), interFaceInfo.getIfUrl());
 		// 调用接口所有的测试用例
+
 		for (IfSysMock mock : interFaceInfo.getMockList()) {
 			// 设置接口访问的完整地址
 			mock.setAddressUrl(url);
