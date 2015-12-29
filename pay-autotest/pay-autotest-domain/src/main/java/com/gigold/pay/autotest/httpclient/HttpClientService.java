@@ -94,10 +94,8 @@ public class HttpClientService extends Domain{
 		DefaultHttpClient httpclient = getHttpClient();
 		List<Cookie> clist= cookieStore.getCookies();
 		for(Cookie c:clist ){
-			System.out.println(c.getPath());
 			BasicClientCookie bc=(BasicClientCookie)c;
 			bc.setPath("/");
-			System.out.println(c.getPath());
 		}
 		//设置cookies
 		httpclient.setCookieStore(cookieStore);
