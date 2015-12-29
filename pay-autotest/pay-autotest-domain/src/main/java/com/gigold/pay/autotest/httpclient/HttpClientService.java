@@ -2,6 +2,7 @@ package com.gigold.pay.autotest.httpclient;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -13,9 +14,11 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnRouteParams;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
@@ -89,6 +92,11 @@ public class HttpClientService extends Domain{
 	public String httpPost(String url, String postData) throws Exception{
 		String responseData = "";
 		DefaultHttpClient httpclient = getHttpClient();
+		List<Cookie> clist= cookieStore.getCookies();
+		for(Cookie c:clist ){
+			BasicClientCookie bc=(BasicClientCookie)c;
+			bc.setPath("/");
+		}
 		//设置cookies
 		httpclient.setCookieStore(cookieStore);
 		HttpPost httppost = createPostMethed(url);
