@@ -64,11 +64,11 @@ public class SendResulteAnalysis {
 	@Test
 	public void work() {
 		System.out.println("开始调用接口");
-		autoTest();
+		//autoTest();
 		System.out.println("调用接口结束");
+        //sendMail();
         testAutoTest();
-        sendMail();
-		System.out.println("work");
+        System.out.println("work");
 	}
 
     //@Test
@@ -205,12 +205,19 @@ public class SendResulteAnalysis {
                 // 当前接口的所有原始结果数据存放点
                 List<IfSysMockHistory> ifTestData = ((List<IfSysMockHistory>)eachIfSet.get(ifId).get("ifTestData"));
                 ifTestData.add(eachHisMock);
+                System.out.println(eachHisMock);
 
                 // 实时计算当前接口通过率
                 float rstSiz = ifTestData.size();//当前单接口集合大小
                 if(rstSiz!=0){
+
+                    float nowRst = 0;
+                    try {
+                        nowRst = eachHisMock.getTestResult().equals("1")?1:0;
+                    }catch (Exception e){
+                        System.out.println("************** TestResult 为空 ************");
+                    }
                     float preRst = (float) (eachIfSet.get(ifId).get("ifPassRate"));
-                    float nowRst = eachHisMock.getTestResult().equals("1")?1:0;
                     float _rate = ((rstSiz-1)*preRst+nowRst)/rstSiz;
                     eachIfSet.get(ifId).put("ifPassRate",(float)(Math.round(_rate*100))/100); //实时计算
                     _testCnt++;
@@ -218,6 +225,7 @@ public class SendResulteAnalysis {
                     eachIfSet.get(ifId).put("ifPassRate","没有测试数据,无法计算");
                 }
             }
+            System.out.println(eachIfSet);
             initedDataSet.put(JNR,eachIfSet); //拼装
         }
         // 格式化结束
