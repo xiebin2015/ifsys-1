@@ -9,6 +9,7 @@ package com.gigold.pay.script;
 
 import java.util.*;
 
+import com.gigold.pay.autotest.dao.InterFaceDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +46,7 @@ public class SendResulteAnalysis {
 	private IfSysStuffService ifSysStuffService;
 	private IfSysMockHistoryService ifSysMockHistoryService;
 	private InterFaceService interFaceService;
+	private InterFaceDao interFaceDao;
 
 	@Before
 	public void setup() {
@@ -55,6 +57,7 @@ public class SendResulteAnalysis {
 		ifSysStuffService = (IfSysStuffService) SpringContextHolder.getBean(IfSysStuffService.class);
 		ifSysMockHistoryService = (IfSysMockHistoryService) SpringContextHolder.getBean(IfSysMockHistoryService.class);
 		interFaceService = (InterFaceService) SpringContextHolder.getBean(InterFaceService.class);
+        interFaceDao = (InterFaceDao) SpringContextHolder.getBean(InterFaceDao.class);
 
 	}
 
@@ -63,7 +66,7 @@ public class SendResulteAnalysis {
 		System.out.println("开始调用接口");
 		autoTest();
 		System.out.println("调用接口结束");
-        //testAutoTest();
+        testAutoTest();
         sendMail();
 		System.out.println("work");
 	}
@@ -131,7 +134,7 @@ public class SendResulteAnalysis {
             Map<String,Object> model = new HashMap<>();
             model.put("ifOfmockSetList", ifOfmockSetList);
             model.put("userName", userName);
-            if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com"))
+            if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com")||email.equals("liuzg@gigold.com"))
             mailSenderService.sendWithTemplateForHTML(model);
         }
         System.out.println("邮件发送成功！");
@@ -246,17 +249,19 @@ public class SendResulteAnalysis {
         int ifCount = IfIDNameMap.size();
         // 用例总数
         int caseCount = _testCnt;
+
         // 计算通过率 - 格式化数据
         List<IfSysMockHistory> lastRst = ifSysMockHistoryService.getNewestReslutOf(1);//最近一批数据
         float mockCount = lastRst.size();
         float _passRate = 0;
+
+        // 计算当次覆盖率
+        float CCprob,CCtot,IFtst,IFtot;
+        CCprob=0;
+        CCtot = lastRst.size();
         for(IfSysMockHistory eachRst:lastRst){
-//            // 初始化接口初始为 通过状态
-//            String strIfId = String.valueOf(eachRst.getId());
-//            if(!newestPassRate.containsKey(strIfId)){
-//                newestPassRate.put(strIfId,1);
-//            }
-            // 获取本条mock的测试结果
+            if(!(eachRst.getTestResult().equals("1")||eachRst.getTestResult().equals("0")))
+                CCprob++;
             _passRate += (eachRst.getTestResult().equals("1")?1:0);
 //            // 获取每个接口的当前状态
 //            int eachRstNowStat = newestPassRate.get(strIfId);
@@ -267,8 +272,15 @@ public class SendResulteAnalysis {
         }
         // 计算通过率 - 按mock算
         float mockPassRate = 100*_passRate/mockCount;
-
         String lastJNR = lastRst.get(0).getJrn();
+        IFtst = initedDataSet.get(lastJNR).size();
+        IFtot = interFaceDao.getAllIfSysCount();
+        System.out.println(initedDataSet.get(lastJNR).size());
+
+        // 计算当次覆盖率
+        float CCcoverage = ( 1 - CCprob/CCtot );
+        float IFcoverage = ( IFtst/IFtot );
+
         // 发送邮件
         String[] copyList = SystemPropertyConfigure.getProperty("mail.default.observer").split(",");
         List<String> copyTo = new ArrayList<String>();
@@ -292,9 +304,11 @@ public class SendResulteAnalysis {
             // 指标数据
             model.put("ifCount", ifCount);
             // model.put("caseCount", caseCount); //所有的
-            model.put("caseCount", mockCount);
+            model.put("caseCount", Math.round(mockCount));
             model.put("jnrCount", jnrCount);
             model.put("mockPassRate", (float)(Math.round(mockPassRate*100))/100);//保留两位
+            model.put("CCcoverage", (float)(Math.round(CCcoverage*10000))/100);//保留两位
+            model.put("IFcoverage", (float)(Math.round(IFcoverage*10000))/100);//保留两位
             mailSenderService.sendWithTemplateForHTML(model);
         System.out.println("邮件发送成功！");
 

@@ -59,14 +59,12 @@ public class IfSysAutoTestService extends Domain {
 		ifsysmock.setRealRspCode(relRspCode);
 
 		// 1-正常 0-失败 -1-请求或响应存在其他异常
-		if (relRspCode.equalsIgnoreCase(mock.getRspCode())) {
+		if (relRspCode.equals(mock.getRspCode())) {
 			// 实际响应返回码与预期的一致的情况
 			ifsysmock.setTestResult("1");
-
-		} else if (StringUtil.isBlank(responseJson)) {
-			// 实际响应报文为空的情况
+		} else if (StringUtil.isNotEmpty(relRspCode)&&(!relRspCode.equals("null"))) {
+			// 实际响应返回码与预期的不一致,且非空的情况
 			ifsysmock.setTestResult("0");
-
 		} else {
 			ifsysmock.setTestResult("-1");
 		}
@@ -219,7 +217,6 @@ public class IfSysAutoTestService extends Domain {
 	 * @date 2015年12月22日下午4:14:44
 	 *
 	 * @param invokerOrderList
-	 * @param ifId
 	 */
 	public void invokerOrder(List<IfSysMock> invokerOrderList, int mockId) {
 		// 获取被测用例依赖其他用例的列表
@@ -271,7 +268,6 @@ public class IfSysAutoTestService extends Domain {
 	 * @author xiebin
 	 * @date 2015年12月10日上午10:43:23
 	 *
-	 * @param interFaceInfo
 	 * @return
 	 */
 	public String getAddressUrl(String url, String action) {
