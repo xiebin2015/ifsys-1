@@ -61,7 +61,7 @@ public class SendResulteAnalysis {
 
 	}
 
-	@Test
+	//@Test
 	public void work() {
 		System.out.println("开始调用接口");
 		autoTest();
@@ -76,7 +76,7 @@ public class SendResulteAnalysis {
 		ifsysCheckThreadPool.execute();
 	}
 
-    //@Test
+   // @Test
 	public void sendMail() {
 
         // 返回所有测试过的结果
@@ -134,13 +134,17 @@ public class SendResulteAnalysis {
             Map<String,Object> model = new HashMap<>();
             model.put("ifOfmockSetList", ifOfmockSetList);
             model.put("userName", userName);
+
+           // if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com"))
+
             if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com")||email.equals("liuzg@gigold.com"))
+
             mailSenderService.sendWithTemplateForHTML(model);
         }
         System.out.println("邮件发送成功！");
 	}
 
-	//@Test
+	@Test
 	public void testAutoTest() {
         int jnrCount = 15;
         // 发送结果分析
