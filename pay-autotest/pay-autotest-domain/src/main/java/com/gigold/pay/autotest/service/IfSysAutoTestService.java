@@ -62,6 +62,7 @@ public class IfSysAutoTestService extends Domain {
 		} else { // 返回码与预期不一致,或为空,或为其他
 			testResulte="-1";
 		}
+		mock.setTestResult(testResulte);
 		ifSysMockService.writeBackRealRsp(mock,testResulte,responseJson,relRspCode);
 	}
 
