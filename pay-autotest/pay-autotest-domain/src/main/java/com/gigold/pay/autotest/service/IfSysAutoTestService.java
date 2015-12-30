@@ -222,9 +222,12 @@ public class IfSysAutoTestService extends Domain {
 			IfSysRefer refer = referList.get(i);
 			// 获取被依赖的用例数据
 			IfSysMock mock = ifSysMockService.getReferByIfId(refer.getRefMockId());
-			String url = getAddressUrl(mock.getAddressUrl(), mock.getIfURL());
-			mock.setAddressUrl(url);
-			invokerOrderList.add(mock);
+			if(mock!=null){
+				String url = getAddressUrl(mock.getAddressUrl(), mock.getIfURL());
+				mock.setAddressUrl(url);
+				invokerOrderList.add(mock);
+			}
+			
 			// 如果被依赖测试用例还依赖其他测试用例
 			invokerOrder(invokerOrderList, refer.getRefMockId());
 		}
