@@ -121,7 +121,7 @@ public class IfSysAutoTest extends Domain {
 				List<String> addressTo = new ArrayList<>();
 				addressTo.add(email);
 				mailSenderService.setTo(addressTo);
-				mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+				mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件 - 详情");
 				mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
 				// 发送结果
 				Map<String,Object> model = new HashMap<>();
@@ -206,13 +206,14 @@ public class IfSysAutoTest extends Domain {
 				// 实时计算当前接口通过率
 				float rstSiz = ifTestData.size();//当前单接口集合大小
 				if(rstSiz!=0){
-					float preRst = (float) (eachIfSet.get(ifId).get("ifPassRate"));
+
 					float nowRst = 0;
 					try {
-						nowRst = eachHisMock.getTestResult().equals("1")?1:0;
+						nowRst = eachHisMock.getTestResult().isEmpty()?0:(eachHisMock.getTestResult().equals("1")?1:0);
 					}catch (Exception e){
 						System.out.println("************** TestResult 为空 ************");
 					}
+					float preRst = (float) (eachIfSet.get(ifId).get("ifPassRate"));
 					float _rate = ((rstSiz-1)*preRst+nowRst)/rstSiz;
 					eachIfSet.get(ifId).put("ifPassRate",(float)(Math.round(_rate*100))/100); //实时计算
 					_testCnt++;
@@ -262,9 +263,9 @@ public class IfSysAutoTest extends Domain {
 		CCprob=0;
 		CCtot = lastRst.size();
 		for(IfSysMockHistory eachRst:lastRst){
-			if(!(eachRst.getTestResult().equals("1")||eachRst.getTestResult().equals("0")))
+			if(!(eachRst.getTestResult()==null||eachRst.getTestResult().equals("1")||eachRst.getTestResult().equals("0")))
 				CCprob++;
-			_passRate += (eachRst.getTestResult().equals("1")?1:0);
+			_passRate += ((eachRst.getTestResult()!=null)&&eachRst.getTestResult().equals("1")?1:0);
 //            // 获取每个接口的当前状态
 //            int eachRstNowStat = newestPassRate.get(strIfId);
 //            // 若一直是通过状态,则写最新状态(一票否决状态)
@@ -292,7 +293,7 @@ public class IfSysAutoTest extends Domain {
 		}
 		mailSenderService.setTo(copyTo);
 		// String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
-		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件 - 总览");
 		mailSenderService.setTemplateName("copyMail.vm");// 设置的邮件模板
 		// 发送结果
 		Map<String,Object> model = new HashMap<>();
@@ -313,5 +314,6 @@ public class IfSysAutoTest extends Domain {
 		model.put("IFcoverage", (float)(Math.round(IFcoverage*10000))/100);//保留两位
 		mailSenderService.sendWithTemplateForHTML(model);
 		System.out.println("邮件发送成功！");
+
 	}
 }
