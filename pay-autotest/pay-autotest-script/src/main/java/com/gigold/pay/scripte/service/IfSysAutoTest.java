@@ -121,7 +121,7 @@ public class IfSysAutoTest extends Domain {
 				List<String> addressTo = new ArrayList<>();
 				addressTo.add(email);
 				mailSenderService.setTo(addressTo);
-				mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+				mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件 - 详情");
 				mailSenderService.setTemplateName("mail.vm");// 设置的邮件模板
 				// 发送结果
 				Map<String,Object> model = new HashMap<>();
@@ -293,7 +293,7 @@ public class IfSysAutoTest extends Domain {
 		}
 		mailSenderService.setTo(copyTo);
 		// String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
-		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件");
+		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件 - 总览");
 		mailSenderService.setTemplateName("copyMail.vm");// 设置的邮件模板
 		// 发送结果
 		Map<String,Object> model = new HashMap<>();
