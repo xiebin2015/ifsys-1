@@ -66,10 +66,10 @@ public class SendResulteAnalysis {
 	@Test
 	public void work() {
 		System.out.println("开始调用接口");
-		//autoTest();
+		autoTest();
 		System.out.println("调用接口结束");
         sendMail();
-        //testAutoTest();
+        testAutoTest();
         System.out.println("work");
 	}
 
@@ -229,7 +229,7 @@ public class SendResulteAnalysis {
 
                     float nowRst = 0;
                     try {
-                        nowRst = eachHisMock.getTestResult().equals("1")?1:0;
+                        nowRst = eachHisMock.getTestResult().isEmpty()?0:(eachHisMock.getTestResult().equals("1")?1:0);
                     }catch (Exception e){
                         System.out.println("************** TestResult 为空 ************");
                     }
@@ -283,9 +283,9 @@ public class SendResulteAnalysis {
         CCprob=0;
         CCtot = lastRst.size();
         for(IfSysMockHistory eachRst:lastRst){
-            if(!(eachRst.getTestResult().equals("1")||eachRst.getTestResult().equals("0")))
+            if(!(eachRst.getTestResult()==null||eachRst.getTestResult().equals("1")||eachRst.getTestResult().equals("0")))
                 CCprob++;
-            _passRate += (eachRst.getTestResult().equals("1")?1:0);
+            _passRate += ((eachRst.getTestResult()!=null)&&eachRst.getTestResult().equals("1")?1:0);
 //            // 获取每个接口的当前状态
 //            int eachRstNowStat = newestPassRate.get(strIfId);
 //            // 若一直是通过状态,则写最新状态(一票否决状态)
