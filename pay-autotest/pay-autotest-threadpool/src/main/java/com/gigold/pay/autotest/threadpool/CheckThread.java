@@ -60,7 +60,6 @@ public class CheckThread implements Runnable {
 			initData(interFaceInfo);
 			//第二步读取接口的测试数据信息 调用httpclient发送请求
 			handlerIfSys(interFaceInfo);
-
 		}
 	}
 

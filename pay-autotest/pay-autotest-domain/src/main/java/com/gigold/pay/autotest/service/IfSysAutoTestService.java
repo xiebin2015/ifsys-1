@@ -45,30 +45,24 @@ public class IfSysAutoTestService extends Domain {
 	IfSysReferService ifSysReferService;
 
 	public void writeBackContent(IfSysMock mock, String responseJson) {
-		JSONObject jsonObject = null;
-		IfSysMock ifsysmock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
-		ifsysmock.setId(mock.getId());
-		ifsysmock.setIfId(mock.getIfId());
-		ifsysmock.setRealResponseJson(responseJson);
+
+		JSONObject jsonObject;
 		try {
 			jsonObject = JSONObject.fromObject(responseJson);
 		} catch (Exception e) {
 			jsonObject = new JSONObject();
 		}
 		String relRspCode = String.valueOf(jsonObject.get("rspCd"));
-		ifsysmock.setRealRspCode(relRspCode);
-
+		String testResulte;
 		// 1-正常 0-失败 -1-请求或响应存在其他异常
-		if (relRspCode.equals(mock.getRspCode())) {
-			// 实际响应返回码与预期的一致的情况
-			ifsysmock.setTestResult("1");
-		} else if (StringUtil.isNotEmpty(relRspCode)&&(!relRspCode.equals("null"))) {
-			// 实际响应返回码与预期的不一致,且非空的情况
-			ifsysmock.setTestResult("0");
-		} else {
-			ifsysmock.setTestResult("-1");
+		if (relRspCode.equals(mock.getRspCode())) {// 返回码与预期一致
+			testResulte ="1";
+		} else if (StringUtil.isNotEmpty(relRspCode)&&(!relRspCode.equals("null"))) {// 返回码与预期不一致,但不为空
+			testResulte ="0";
+		} else { // 返回码与预期不一致,或为空,或为其他
+			testResulte="-1";
 		}
-		ifSysMockService.writeBackRealRsp(ifsysmock);
+		ifSysMockService.writeBackRealRsp(mock,testResulte,responseJson,relRspCode);
 	}
 
 	/**
@@ -85,6 +79,7 @@ public class IfSysAutoTestService extends Domain {
 		// 获取接口访问的完整地址
 		String url = getAddressUrl(interFaceInfo.getAddressUrl(), interFaceInfo.getIfUrl());
 		// 调用接口所有的测试用例
+
 		for (IfSysMock mock : interFaceInfo.getMockList()) {
 			// 设置接口访问的完整地址
 			mock.setAddressUrl(url);
