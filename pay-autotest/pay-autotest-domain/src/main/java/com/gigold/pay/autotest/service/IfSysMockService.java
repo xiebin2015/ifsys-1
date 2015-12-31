@@ -236,10 +236,10 @@ public class IfSysMockService {
 	 * @param ifId
 	 * @return
 	 */
-	public IfSysMock getReferByIfId(int ifId){
+	public IfSysMock getReferByIfId(int mockId){
 		IfSysMock ifmock = null;
 		try {
-			ifmock = ifSysMockDao.getReferByIfId(ifId);
+			ifmock = ifSysMockDao.getReferByIfId(mockId);
 		} catch (Exception e) {
 			ifmock = null;
 		}
