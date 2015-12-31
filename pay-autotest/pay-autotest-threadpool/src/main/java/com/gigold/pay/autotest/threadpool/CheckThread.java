@@ -57,7 +57,7 @@ public class CheckThread implements Runnable {
 		// 写检测接口的代码
 		for (InterFaceInfo interFaceInfo : ifsyslist) {
 			//第一步 初始化接口的测试数据
-			initData(interFaceInfo);
+			//initData(interFaceInfo);
 			//第二步读取接口的测试数据信息 调用httpclient发送请求
 			handlerIfSys(interFaceInfo);
 		}

@@ -43,7 +43,6 @@ public class HttpClientService extends Domain{
 	private static int CONNECT_TIMEOUT = 30 * 1000;
 	private static int SO_TIMEOUT = 30 * 1000;
 	private static String CHARSET="UTF-8";
-	CookieStore cookieStore=new BasicCookieStore();
 	/**
 	 * 
 	 * Title: setTimeOut<br/>
@@ -89,7 +88,7 @@ public class HttpClientService extends Domain{
 	 * @param postData
 	 * @return
 	 */
-	public String httpPost(String url, String postData) throws Exception{
+	public String httpPost(String url, String postData,CookieStore cookieStore) throws Exception{
 		String responseData = "";
 		DefaultHttpClient httpclient = getHttpClient();
 		List<Cookie> clist= cookieStore.getCookies();
