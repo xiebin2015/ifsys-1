@@ -2,6 +2,7 @@ package com.gigold.pay.autotest.httpclient;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -13,9 +14,11 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnRouteParams;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
@@ -40,7 +43,6 @@ public class HttpClientService extends Domain{
 	private static int CONNECT_TIMEOUT = 30 * 1000;
 	private static int SO_TIMEOUT = 30 * 1000;
 	private static String CHARSET="UTF-8";
-	CookieStore cookieStore=new BasicCookieStore();
 	/**
 	 * 
 	 * Title: setTimeOut<br/>
@@ -86,9 +88,14 @@ public class HttpClientService extends Domain{
 	 * @param postData
 	 * @return
 	 */
-	public String httpPost(String url, String postData) throws Exception{
+	public String httpPost(String url, String postData,CookieStore cookieStore) throws Exception{
 		String responseData = "";
 		DefaultHttpClient httpclient = getHttpClient();
+		List<Cookie> clist= cookieStore.getCookies();
+		for(Cookie c:clist ){
+			BasicClientCookie bc=(BasicClientCookie)c;
+			bc.setPath("/");
+		}
 		//设置cookies
 		httpclient.setCookieStore(cookieStore);
 		HttpPost httppost = createPostMethed(url);
@@ -149,8 +156,7 @@ public class HttpClientService extends Domain{
 	 * @date 2015年11月6日下午1:41:54
 	 *
 	 * @param httpclient
-	 * @param ip
-	 * @param port
+
 	 */
 	public void setProxy(DefaultHttpClient httpclient, String proxyHost, int proxyPort, String userName,
 			String password) {
@@ -170,7 +176,6 @@ public class HttpClientService extends Domain{
 	 * @date 2015年11月6日下午1:41:18
 	 *
 	 * @param httppost
-	 * @param dto
 	 * @throws UnsupportedEncodingException
 	 */
 	public void setRequestParams(HttpPost httppost, String requestData) throws UnsupportedEncodingException {

@@ -8,11 +8,13 @@
 		<result property="rspCodeId" column="RSP_CODE_ID" />
 		<result property="rspCode" column="RSP_CODE" />
 		<result property="rspCodeDesc" column="RSP_CODE_DESC" />
+		<result property="preCodeDesc" column="PRE_CODE_DESC" />
 		<result property="requestJson" column="REQUEST_JSON" />
 		<result property="responseJson" column="RESPONSE_JSON" />
 		<result property="realRspCode" column="REAL_RSP_CODE" />
 		<result property="realResponseJson" column="REAL_RESPONSE_JSON" />
 		<result property="testResult" column="TEST_RESULT" />
+		<result property="caseName" column="CASE_NAME" />
 
 		<!-- 额外的接口信息数据 @chenkuan 2015.12.08 -->
 		<result property="ifName" column="IF_NAME" />
@@ -36,9 +38,9 @@
 	</resultMap>
 
 
-<!-- 查询测试用例 -->
+<!-- 查询测试用例列表 -->
 	<select id="queryMockByPage" parameterType="com.gigold.pay.autotest.bo.IfSysMock"
-		resultMap="joinResultMap">
+		resultMap="ifSysMockResultMap">
 		select ID,
 		IF_ID,
 		IF_NAME,
@@ -46,9 +48,11 @@
 		IF_PRO_ID,
 		RSP_CODE_ID,
 		RSP_CODE,
+		CASE_NAME,
 		RSP_CODE_DESC from
 		(select au.ID,
 		au.IF_ID,
+		au.CASE_NAME,
 		(select IF_NAME from T_IF_INTERFACE ii where ii.ID=au.IF_ID ) IF_NAME,
 		(select IF_SYS_ID from T_IF_INTERFACE ii where ii.ID=au.IF_ID )
 		IF_SYS_ID,
@@ -98,12 +102,14 @@
         T_IF_AUTO_MOCK
         (
          IF_ID,
+         CASE_NAME,
          RSP_CODE_ID,
          REQUEST_JSON,
          RESPONSE_JSON
         )
         values(
         #{ifId},
+        #{caseName},
         #{rspCodeId},
         #{requestJson},
         #{responseJson})
@@ -115,6 +121,9 @@
 		<set>
 			<if test="rspCodeId!=null and rspCodeId!=''">
 				RSP_CODE_ID=#{rspCodeId},
+			</if>
+			<if test="caseName!=null and caseName!=''">
+				CASE_NAME=#{caseName},
 			</if>
 			<if test="requestJson!=null and requestJson!=''">
 				REQUEST_JSON=#{requestJson},
@@ -156,6 +165,7 @@
 		select au.ID,
 		au.IF_ID,
 		au.RSP_CODE_ID,
+		au.CASE_NAME,
 		(select rc.RSP_CODE from T_IF_RETRUN_CODE rc where rc.ID=au.RSP_CODE_ID) RSP_CODE,
         (select rc.RSP_CODE_DESC from T_IF_RETRUN_CODE rc where rc.ID=au.RSP_CODE_ID) RSP_CODE_DESC,
 		au.REQUEST_JSON,
@@ -176,12 +186,14 @@
 		select ID,
 		IF_ID,
 		RSP_CODE_ID,
+		(select RSP_CODE_DESC from T_IF_RETRUN_CODE cc where au.RSP_CODE_ID=cc.ID) RSP_CODE_DESC,
+		(select RSP_CODE from T_IF_RETRUN_CODE cc where au.RSP_CODE_ID=cc.ID) RSP_CODE,
 		REQUEST_JSON,
 		RESPONSE_JSON,
 		REAL_RSP_CODE,
 		REAL_RESPONSE_JSON,
 		TEST_RESULT
-		from T_IF_AUTO_MOCK
+		from T_IF_AUTO_MOCK au
 		where ID=#{id}
 		and STATUS='Y'
 		 
@@ -233,7 +245,7 @@
         from T_IF_AUTO_MOCK am ,T_IF_INTERFACE ii ,T_IF_SYSTEM sys
         where am.IF_ID=ii.ID
         and ii.IF_SYS_ID=sys.ID
-        and am.ID=#{ifId}
+        and am.ID=#{mockId}
         and am.STATUS='Y' 
 
 		 
@@ -246,20 +258,25 @@
 		<![CDATA[
 		SELECT
 			a.ID,
-			b.IF_NAME,b.IF_DESC,b.IF_URL,b.IF_PROTOCOL,
+			b.IF_NAME,
+			b.IF_DESC,
+			(select e.RSP_CODE_DESC from T_IF_RETRUN_CODE e where e.ID=a.RSP_CODE_ID and e.IF_ID=a.IF_ID) PRE_CODE_DESC,
+			b.IF_URL,
+			b.IF_PROTOCOL,
+			a.CASE_NAME,
 			a.IF_ID,
 			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
+			(select d.RSP_CODE_DESC from T_IF_RETRUN_CODE d where d.RSP_CODE=a.REAL_RSP_CODE and d.IF_ID=a.IF_ID and d.STATUS="Y") RSP_CODE_DESC,
 			a.REQUEST_JSON,
 			a.RESPONSE_JSON,
 			a.REAL_RSP_CODE,
 			a.REAL_RESPONSE_JSON,
 			a.TEST_RESULT,
 			a.TM_SMP
-
  		FROM
  			T_IF_AUTO_MOCK a left outer join T_IF_INTERFACE b ON a.IF_ID = b.ID
  		WHERE
- 			a.TEST_RESULT=#{testResult} and STATUS='Y'
+ 			a.TEST_RESULT=#{testResult} and STATUS='Y' and not ISNULL(TEST_RESULT)
       ]]>
 	</select>
 
@@ -270,10 +287,13 @@
 			a.ID,
 			b.IF_NAME,
 			b.IF_DESC,
+			(select e.RSP_CODE_DESC from T_IF_RETRUN_CODE e where e.ID=a.RSP_CODE_ID and e.IF_ID=a.IF_ID) PRE_CODE_DESC,
 			b.IF_URL,
 			b.IF_PROTOCOL,
+			a.CASE_NAME,
 			a.IF_ID,
 			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
+			(select d.RSP_CODE_DESC from T_IF_RETRUN_CODE d where d.RSP_CODE=a.REAL_RSP_CODE and d.IF_ID=a.IF_ID and d.STATUS="Y") RSP_CODE_DESC,
 			a.REQUEST_JSON,
 			a.RESPONSE_JSON,
 			a.REAL_RSP_CODE,
@@ -283,7 +303,7 @@
  		FROM
  			T_IF_AUTO_MOCK a left outer join T_IF_INTERFACE b ON a.IF_ID = b.ID
  		WHERE
- 			(ISNULL(a.TEST_RESULT) or a.TEST_RESULT!=1) and STATUS='Y'
+ 			(ISNULL(a.TEST_RESULT) or a.TEST_RESULT!=1) and STATUS='Y' and not ISNULL(TEST_RESULT)
       ]]>
 	</select>
 
@@ -292,9 +312,15 @@
 		<![CDATA[
 		SELECT
 			a.ID,
-			b.IF_NAME,b.IF_DESC,b.IF_URL,b.IF_PROTOCOL,
+			b.IF_NAME,
+			b.IF_DESC,
+			(select e.RSP_CODE_DESC from T_IF_RETRUN_CODE e where e.ID=a.RSP_CODE_ID and e.IF_ID=a.IF_ID) PRE_CODE_DESC,
+			b.IF_URL,
+			b.IF_PROTOCOL,
+			a.CASE_NAME,
 			a.IF_ID,
 			(select c.RSP_CODE from T_IF_RETRUN_CODE c where c.ID=a.RSP_CODE_ID) RSP_CODE,
+			(select d.RSP_CODE_DESC from T_IF_RETRUN_CODE d where d.RSP_CODE=a.REAL_RSP_CODE and d.IF_ID=a.IF_ID and d.STATUS="Y") RSP_CODE_DESC,
 			a.REQUEST_JSON,
 			a.RESPONSE_JSON,
 			a.REAL_RSP_CODE,
@@ -304,7 +330,7 @@
  		FROM
  			T_IF_AUTO_MOCK a left outer join T_IF_INTERFACE b ON a.IF_ID = b.ID
  		WHERE
- 			(a.TEST_RESULT='-1' or a.TEST_RESULT='1' or a.TEST_RESULT='0') and STATUS='Y'
+ 			not ISNULL(a.TEST_RESULT) and STATUS='Y' and not ISNULL(TEST_RESULT)
       ]]>
 	</select>
 
@@ -316,14 +342,9 @@
 	    REAL_RESPONSE_JSON=#{realResponseJson},
 	    TEST_RESULT=#{testResult}
 	    where id=#{id}
-	    
+
 	    ]]>
 	</update>
-
-
-
-	
-
 
 </mapper>
  

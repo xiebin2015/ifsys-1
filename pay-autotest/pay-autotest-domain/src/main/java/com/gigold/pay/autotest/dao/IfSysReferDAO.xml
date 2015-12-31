@@ -7,11 +7,15 @@
 		<result property="mockId" column="MOCK_ID" />
 		<result property="refMockId" column="REFER_MOCK_ID" />
 		<result property="ordNum" column="ORD_NUM" />
-		
+		<result property="rspCode" column="RSP_CODE" />
+		<result property="rspCodeDesc" column="RSP_CODE_DESC" />
+		<result property="caseName" column="CASE_NAME" />
+		<result property="ifName" column="IF_NAME" />
+
 
 	</resultMap>
 
-   <insert id="addMockRefer" parameterType="com.gigold.pay.autotest.bo.IfSysRefer"
+	<insert id="addMockRefer" parameterType="com.gigold.pay.autotest.bo.IfSysRefer"
 		useGeneratedKeys="true" keyProperty="id">
         <![CDATA[  
         insert into
@@ -27,14 +31,15 @@
         #{ordNum})
     ]]>
 	</insert>
-<!-- 删除依赖关系  -->
+	<!-- 删除依赖关系 -->
 	<update id="deleteMockRefer" parameterType="int">
 		update T_IF_REFER
-		set STATUS='N'
+		set
+		STATUS='N'
 		where ID =#{id}
 	</update>
 
-<!-- 修改模拟数据  -->
+	<!-- 修改模拟数据 -->
 	<update id="updateMockRefer" parameterType="com.gigold.pay.autotest.bo.IfSysRefer">
 		update T_IF_REFER
 		<set>
@@ -51,20 +56,39 @@
 
 	<!-- 获取测试用例的依赖列表 -->
 	<select id="getReferList" parameterType="int" resultMap="ifSysRefResultMap">
-     <![CDATA[ 
-        select 
-        ID,
-        MOCK_ID,
-        REFER_MOCK_ID,
-        ORD_NUM
-        from  T_IF_REFER
-        where MOCK_ID=#{mockId}
-        and STSTUS='Y'
-        order by ORD_NUM
-      ]]>
+
+  <![CDATA[ 
+		select ID,
+		MOCK_ID,
+        CASE_NAME,
+		REFER_MOCK_ID,
+		(select RSP_CODE from T_IF_RETRUN_CODE cc where cc.ID=RSP_CODE_ID) RSP_CODE,
+		(select RSP_CODE_DESC from T_IF_RETRUN_CODE cc where
+		cc.ID=RSP_CODE_ID) RSP_CODE_DESC,
+		(select IF_NAME from T_IF_INTERFACE ii where ii.ID=IF_ID) IF_NAME,
+		ORD_NUM
+		from (
+		select
+		ID,
+		MOCK_ID,
+		REFER_MOCK_ID,
+		(select RSP_CODE_ID from T_IF_AUTO_MOCK au where au.ID=REFER_MOCK_ID)
+		RSP_CODE_ID,
+        (select CASE_NAME from T_IF_AUTO_MOCK au where au.ID=REFER_MOCK_ID)
+		CASE_NAME,
+		(select IF_ID from T_IF_AUTO_MOCK au where au.ID=REFER_MOCK_ID) IF_ID,
+		ORD_NUM
+		from T_IF_REFER
+		where MOCK_ID=#{mockId}
+		and STATUS='Y'
+		order by ORD_NUM
+		) tt
+
+
+		]]>
 	</select>
 
-<!-- 更具ID获取测试用例的依赖 -->
+	<!-- 更具ID获取测试用例的依赖 -->
 	<select id="getReferById" parameterType="int" resultMap="ifSysRefResultMap">
      <![CDATA[ 
         select 
@@ -73,7 +97,7 @@
         REFER_MOCK_ID,
         ORD_NUM
         from  T_IF_REFER
-        where STSTUS='Y'
+        where STATUS='Y'
         and ID=#{id}
       ]]>
 	</select>

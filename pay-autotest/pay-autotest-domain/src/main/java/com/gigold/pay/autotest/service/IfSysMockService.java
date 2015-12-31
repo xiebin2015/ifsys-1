@@ -143,8 +143,8 @@ public class IfSysMockService {
 		boolean flag = false;
 		try {
 			int count = 0;
-			IfSysMock ifMock=getMockInfoByIfIdAndRspCdId(ifSysMock);
-			if (ifMock==null) {
+			List<IfSysMock> list=getMockInfoByIfIdAndRspCdId(ifSysMock);
+			if (list==null||list.size()==0) {
 				count = ifSysMockDao.addIfSysMock(ifSysMock);
 			} 
 			if (count > 0) {
@@ -236,10 +236,10 @@ public class IfSysMockService {
 	 * @param ifId
 	 * @return
 	 */
-	public IfSysMock getReferByIfId(int ifId){
+	public IfSysMock getReferByIfId(int mockId){
 		IfSysMock ifmock = null;
 		try {
-			ifmock = ifSysMockDao.getReferByIfId(ifId);
+			ifmock = ifSysMockDao.getReferByIfId(mockId);
 		} catch (Exception e) {
 			ifmock = null;
 		}
@@ -257,14 +257,14 @@ public class IfSysMockService {
 	 * @param
 	 * @return
 	 */
-	public IfSysMock getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock) {
-		IfSysMock ifmock = null;
+	public List<IfSysMock> getMockInfoByIfIdAndRspCdId(IfSysMock ifSysMock) {
+		List<IfSysMock> list= null;
 		try {
-			ifmock = ifSysMockDao.getMockInfoByIfIdAndRspCdId(ifSysMock);
+			list = ifSysMockDao.getMockInfoByIfIdAndRspCdId(ifSysMock);
 		} catch (Exception e) {
-			ifmock = null;
+			list = null;
 		}
-		return ifmock;
+		return list;
 	}
 	
 	/**
@@ -360,21 +360,20 @@ public class IfSysMockService {
 	 * @author chenhl
 	 * @date 2015年12月2日上午10:56:31
 	 *
-	 * @param ifsysmock
 	 * @return
 	 */
 	@IfSysMockHistoryAnnotation("记录测试历史")
-	public boolean writeBackRealRsp(IfSysMock ifsysmock) {
-		String realResponseJson=ForMatJSONStr.format(ifsysmock.getRealResponseJson());
-		ifsysmock.setRealResponseJson(realResponseJson);
+	public boolean writeBackRealRsp(IfSysMock ifSysMock,String testResulte,String realRspJson,String realRspCode) {
 		boolean flag = false;
-		try {
-			int count = ifSysMockDao.writeBack(ifsysmock);
-			if (count > 0) {
+ 		try {
+			if(testResulte.isEmpty())throw new Exception("回写结果为空");
+			ifSysMock.setTestResult(testResulte);
+			ifSysMock.setRealResponseJson(realRspJson);
+			ifSysMock.setRealRspCode(realRspCode);
+			if (ifSysMockDao.writeBack(ifSysMock) > 0) {
 				flag = true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			flag = false;
 		}
 		return flag;
@@ -383,7 +382,12 @@ public class IfSysMockService {
 	
 	
 	public List<IfSysMock> queryMockByPage(IfSysMock ifsysmock){
-			return	ifSysMockDao.queryMockByPage(ifsysmock);
-			
+			List<IfSysMock> list=null;
+			try{
+				list=ifSysMockDao.queryMockByPage(ifsysmock);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return list;
 	}
 }

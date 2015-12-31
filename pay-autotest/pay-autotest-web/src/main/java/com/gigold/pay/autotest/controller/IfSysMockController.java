@@ -125,8 +125,8 @@ public class IfSysMockController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/addifsysmock.do")
-	public @ResponseBody ResponseDto addIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
-		ResponseDto reDto = new ResponseDto();
+	public @ResponseBody IfSysMockAddRspDto addIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
+		IfSysMockAddRspDto reDto = new IfSysMockAddRspDto();
 		// 验证请求参数合法性
 		String code = dto.validation();
 		// 没有通过则返回对应的返回码
@@ -144,6 +144,7 @@ public class IfSysMockController extends BaseController {
 		boolean flag = ifSysMockService.addIfSysMock(ifSysMock);
 		if (flag) {
 			reDto.setRspCd(SysCode.SUCCESS);
+			reDto.setIfSysMock(ifSysMock);
 		} else {
 			reDto.setRspCd(CodeItem.FAILURE);
 		}
@@ -208,8 +209,8 @@ public class IfSysMockController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/updateifsysmock.do")
-	public @ResponseBody ResponseDto updateIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
-		ResponseDto reDto = new ResponseDto();
+	public @ResponseBody IfSysMockAddRspDto updateIfSysMock(@RequestBody IfSysMockAddReqDto dto) {
+		IfSysMockAddRspDto reDto = new IfSysMockAddRspDto();
 		// 验证请求参数合法性
 		String code = dto.validation();
 		// 没有通过则返回对应的返回码
@@ -226,6 +227,8 @@ public class IfSysMockController extends BaseController {
 		}
 		boolean flag = ifSysMockService.updateIfSysMock(ifSysMock);
 		if (flag) {
+			ifSysMock=ifSysMockService.getMockInfoById(ifSysMock);
+			reDto.setIfSysMock(ifSysMock);
 			reDto.setRspCd(SysCode.SUCCESS);
 		} else {
 			reDto.setRspCd(CodeItem.FAILURE);
@@ -323,9 +326,9 @@ public class IfSysMockController extends BaseController {
 			IfSysMock mock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
 			mock.setIfId(ifId);
 			mock.setRspCodeId(rscdObj.getId());
-			//测试数据表中确认是否已经村子对应返回码的测试数据
-			IfSysMock ifMock = ifSysMockService.getMockInfoByIfIdAndRspCdId(mock);
-			if (ifMock == null) {
+			//测试数据表中确认是否已经存在对应返回码的测试数据
+			List<IfSysMock> ifMockList = ifSysMockService.getMockInfoByIfIdAndRspCdId(mock);
+			if (ifMockList == null||ifMockList.size()==0) {
 				// 获取接口请求字段的JSON展示字符串
 				InterFaceField interFaceField = (InterFaceField) SpringContextHolder.getBean(InterFaceField.class);
 				interFaceField.setIfId(ifId);
@@ -344,11 +347,20 @@ public class IfSysMockController extends BaseController {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * Title: getmockbypage<br/>
+	 * Description: 分页获取测试用例数据列表<br/>
+	 * @author xiebin
+	 * @date 2015年12月24日上午10:33:18
+	 *
+	 * @param dto
+	 * @return
+	 */
 	@RequestMapping("/getmockbypage.do")
 	public @ResponseBody IfSysMockPageRspDto getmockbypage(@RequestBody IfSysMockPageReqDto dto) {
 		IfSysMockPageRspDto reDto = new IfSysMockPageRspDto();
-		PageHelper.startPage(dto.getPageNum(),Integer.parseInt(SystemPropertyConfigure.getProperty("sys.pageSize=20")));
+		PageHelper.startPage(dto.getPageNum(),5);
 		IfSysMock ifSysMock=null;
 		try {
 			ifSysMock=createBO(dto, IfSysMock.class);
@@ -368,6 +380,26 @@ public class IfSysMockController extends BaseController {
 		
 	}
 	
+	
+	
+	@RequestMapping("/getrspcdbyifid.do")
+	public @ResponseBody RetrunCodeRspDto getReturnCodeByIfId(@RequestBody ReturnCodeReqDto dto) {
+		debug("调用getReturnCodeByIfId");
+		RetrunCodeRspDto rdto = new RetrunCodeRspDto();
+		int ifId = dto.getIfId();
+		if (ifId == 0) {
+			rdto.setRspCd(CodeItem.IF_ID_FAILURE);
+			return rdto;
+		}
+		List<ReturnCode> list = retrunCodeService.getReturnCodeByIfId(ifId);
+		if (list != null) {
+			rdto.setList(list);
+			rdto.setRspCd(SysCode.SUCCESS);
+		} else {
+			rdto.setRspCd(CodeItem.FAILURE);
+		}
+		return rdto;
+	}
 	
 	
 	

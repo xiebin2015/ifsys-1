@@ -108,6 +108,9 @@ public class InterFaceInvokerReqDto extends RequestDto {
 		if(StringUtils.isEmpty(this.remark)){
 			return CodeItem.REMARK_FAILURE;
 		}
+		if(ifFollowedId==0){
+			return CodeItem.FLLOW_IF_ID_FAILURE;
+		}
 		return SysCode.SUCCESS;
 	}
 

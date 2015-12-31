@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,6 +17,7 @@ import com.gigold.pay.framework.base.DomainFactory;
 import com.gigold.pay.framework.base.SpringContextHolder;
 import com.gigold.pay.framework.bootstrap.SystemPropertyConfigure;
 import com.gigold.pay.framework.core.SysCode;
+import com.gigold.pay.framework.util.common.StringUtil;
 import com.gigold.pay.framework.web.BaseController;
 import com.gigold.pay.ifsys.bo.InterFaceField;
 import com.gigold.pay.ifsys.bo.InterFaceInfo;
@@ -94,8 +96,13 @@ public class InterFaceController extends BaseController {
 	public @ResponseBody InterFaceByIdResponseDto getInterFaceById(@RequestBody InterFaceRequestDto qdto) {
 		debug("调用getInterFaceById：");
 		InterFaceByIdResponseDto dto = new InterFaceByIdResponseDto();
+		InterFaceInfo interFaceInfo = qdto.getInterFaceInfo();
+		if (interFaceInfo == null || interFaceInfo.getId() == 0) {
+			dto.setRspCd(CodeItem.IF_ID_FAILURE);
+			return dto;
+		}
 		// 获取接口信息
-		InterFaceInfo interFaceInfo = interFaceService.getInterFaceById(qdto.getInterFaceInfo());
+		interFaceInfo = interFaceService.getInterFaceById(qdto.getInterFaceInfo());
 		if (interFaceInfo == null) {
 			dto.setRspCd(CodeItem.IF_FAILURE);
 			return dto;
@@ -104,23 +111,44 @@ public class InterFaceController extends BaseController {
 		InterFaceSysTem interFaceSysTem = (InterFaceSysTem) SpringContextHolder.getBean(InterFaceSysTem.class);
 		interFaceSysTem.setId(interFaceInfo.getIfSysId());
 		interFaceSysTem = interFaceSysService.getSysInfoById(interFaceSysTem);
-		dto.setSystem(interFaceSysTem);
+		if (interFaceSysTem == null) {
+			dto.setRspCd(CodeItem.IF_FAILURE);
+			return dto;
+		}
 		// 获取所属产品信息
 		InterFacePro interFacePro = (InterFacePro) SpringContextHolder.getBean(InterFacePro.class);
 		interFacePro.setId(interFaceInfo.getIfProId());
 		interFacePro = interFaceProService.getProInfoById(interFacePro);
-		dto.setPro(interFacePro);
+		if (interFacePro == null) {
+			dto.setRspCd(CodeItem.IF_FAILURE);
+			return dto;
+		}
 		// 获取设计者信息
-		UserInfo userInfo =(UserInfo) SpringContextHolder.getBean(UserInfo.class);
+		UserInfo userInfo = (UserInfo) SpringContextHolder.getBean(UserInfo.class);
 		userInfo.setId(interFaceInfo.getUid());
 		userInfo = userInfoService.getUser(interFaceInfo.getUid());
-		dto.setUserInfo(userInfo);
+		if (userInfo == null) {
+			dto.setRspCd(CodeItem.IF_FAILURE);
+			return dto;
+		}
 		// 获取接口定义字段信息
 		InterFaceField interFaceField = (InterFaceField) SpringContextHolder.getBean(InterFaceField.class);
 		interFaceField.setIfId(interFaceInfo.getId());
 		List<InterFaceField> fieldList = interFaceFieldService.getFieldByIfId(interFaceField);
-		dto.setFieldList(fieldList);
+		if (fieldList == null) {
+			dto.setRspCd(CodeItem.IF_FAILURE);
+			return dto;
+		}
+		// 设置接口信息
 		dto.setInterFaceInfo(interFaceInfo);
+		// 设置接口所属系统信息
+		dto.setSystem(interFaceSysTem);
+		// 设置接口所属产品信息
+		dto.setPro(interFacePro);
+		// 设置接口设计者信息
+		dto.setUserInfo(userInfo);
+		// 设置接口请求、响应字段信息
+		dto.setFieldList(fieldList);
 		dto.setRspCd(SysCode.SUCCESS);
 		return dto;
 	}
@@ -193,14 +221,26 @@ public class InterFaceController extends BaseController {
 
 	@RequestMapping("/addInterface")
 	public @ResponseBody InterFaceResponseDto addInterface(@RequestBody InterFaceRequestDto qdto, HttpSession session) {
+		InterFaceResponseDto dto = new InterFaceResponseDto();
 		InterFaceInfo interFaceInfo = qdto.getInterFaceInfo();
+		if(interFaceInfo==null){
+			dto.setRspCd(CodeItem.NEDD_ITEM_FAILURE);
+			return dto;
+		}
+		if(StringUtil.isBlank(interFaceInfo.getIfName())
+				||StringUtil.isBlank(interFaceInfo.getIfProtocol())
+				||StringUtil.isBlank(interFaceInfo.getIfUrl())
+				||0==interFaceInfo.getIfSysId()
+			    ||0==interFaceInfo.getIfProId()){
+			dto.setRspCd(CodeItem.NEDD_ITEM_FAILURE);
+			return dto;
+		}
 		UserInfo user = (UserInfo) session.getAttribute(SystemPropertyConfigure.getLoginKey());
 		if (user != null) {
 			interFaceInfo.setIfCreateBy(user.getId());
 		}
 		interFaceInfo.setIfCreateTime(new Timestamp((new Date()).getTime()));
 		boolean flag = interFaceService.addInterFace(interFaceInfo);
-		InterFaceResponseDto dto = new InterFaceResponseDto();
 		if (flag) {
 			dto.setRspCd(SysCode.SUCCESS);
 			dto.setInterFaceInfo(interFaceInfo);
@@ -221,8 +261,13 @@ public class InterFaceController extends BaseController {
 	 */
 	@RequestMapping("/deleteInterFaceById")
 	public @ResponseBody InterFaceResponseDto deleteInterFace(@RequestBody InterFaceRequestDto qdto) {
-		boolean flag = interFaceService.deleteInterFaceById(qdto.getInterFaceInfo());
 		InterFaceResponseDto dto = new InterFaceResponseDto();
+		InterFaceInfo interFaceInfo=qdto.getInterFaceInfo();
+		if(interFaceInfo==null||interFaceInfo.getId()==0){
+			dto.setRspCd(CodeItem.IF_ID_FAILURE);
+			return dto;
+		}
+		boolean flag = interFaceService.deleteInterFaceById(qdto.getInterFaceInfo());
 		if (flag) {
 			dto.setRspCd(SysCode.SUCCESS);
 
@@ -242,8 +287,13 @@ public class InterFaceController extends BaseController {
 	@RequestMapping("/updateInterFace")
 	public @ResponseBody InterFaceResponseDto updateInterFace(@RequestBody InterFaceRequestDto qdto) {
 		InterFaceInfo interFaceInfo = qdto.getInterFaceInfo();
-		boolean flag = interFaceService.updateInterFace(interFaceInfo);
 		InterFaceResponseDto dto = new InterFaceResponseDto();
+		if(interFaceInfo==null||interFaceInfo.getId()==0){
+			dto.setRspCd(CodeItem.IF_ID_FAILURE);
+			return dto;
+		}
+		boolean flag = interFaceService.updateInterFace(interFaceInfo);
+		
 		if (flag) {
 			dto.setRspCd(SysCode.SUCCESS);
 			dto.setInterFaceInfo(interFaceInfo);

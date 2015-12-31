@@ -10,6 +10,8 @@ package com.gigold.pay.autotest.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.client.CookieStore;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,32 +47,25 @@ public class IfSysAutoTestService extends Domain {
 	IfSysReferService ifSysReferService;
 
 	public void writeBackContent(IfSysMock mock, String responseJson) {
-		JSONObject jsonObject = null;
-		IfSysMock ifsysmock = (IfSysMock) SpringContextHolder.getBean(IfSysMock.class);
-		ifsysmock.setId(mock.getId());
-		ifsysmock.setIfId(mock.getIfId());
-		ifsysmock.setRealResponseJson(responseJson);
+
+		JSONObject jsonObject;
 		try {
 			jsonObject = JSONObject.fromObject(responseJson);
 		} catch (Exception e) {
 			jsonObject = new JSONObject();
 		}
 		String relRspCode = String.valueOf(jsonObject.get("rspCd"));
-		ifsysmock.setRealRspCode(relRspCode);
-
+		String testResulte;
 		// 1-正常 0-失败 -1-请求或响应存在其他异常
-		if (relRspCode.equalsIgnoreCase(mock.getRspCode())) {
-			// 实际响应返回码与预期的一致的情况
-			ifsysmock.setTestResult("1");
-
-		} else if (StringUtil.isBlank(responseJson)) {
-			// 实际响应报文为空的情况
-			ifsysmock.setTestResult("0");
-
-		} else {
-			ifsysmock.setTestResult("-1");
+		if (relRspCode.equals(mock.getRspCode())) {// 返回码与预期一致
+			testResulte ="1";
+		} else if (StringUtil.isNotEmpty(relRspCode)&&(!relRspCode.equals("null"))) {// 返回码与预期不一致,但不为空
+			testResulte ="0";
+		} else { // 返回码与预期不一致,或为空,或为其他
+			testResulte="-1";
 		}
-		ifSysMockService.writeBackRealRsp(ifsysmock);
+		mock.setTestResult(testResulte);
+		ifSysMockService.writeBackRealRsp(mock,testResulte,responseJson,relRspCode);
 	}
 
 	/**
@@ -84,19 +79,25 @@ public class IfSysAutoTestService extends Domain {
 	 * @param interFaceInfo
 	 */
 	public void autoTest(InterFaceInfo interFaceInfo) {
+		if(interFaceInfo.getId()==68){
+			System.out.println("hhehe");
+		}
 		// 获取接口访问的完整地址
 		String url = getAddressUrl(interFaceInfo.getAddressUrl(), interFaceInfo.getIfUrl());
 		// 调用接口所有的测试用例
+
 		for (IfSysMock mock : interFaceInfo.getMockList()) {
 			// 设置接口访问的完整地址
 			mock.setAddressUrl(url);
 			// 1、获取该测试用例调用时依赖的其他用例的调用列表
 			List<IfSysMock> invokerOrderList = new ArrayList<IfSysMock>();
 			invokerOrder(invokerOrderList, mock.getId());
+			//存放依赖的cookies
+			CookieStore cookieStore=new BasicCookieStore();
 			// 2、 按照调用序号依次调用被依赖测试用例
-			invokRefCase(invokerOrderList);
+			invokRefCase(invokerOrderList,cookieStore);
 			// 3、最后调用目标接口
-			invokCase(mock);
+			invokCase(mock,cookieStore);
 
 		}
 
@@ -112,7 +113,7 @@ public class IfSysAutoTestService extends Domain {
 	 *
 	 * @param invokerOrderList
 	 */
-	public void invokRefCase(List<IfSysMock> invokerOrderList) {
+	public void invokRefCase(List<IfSysMock> invokerOrderList,CookieStore cookieStore) {
 		for (int i = invokerOrderList.size() - 1; i >= 0; i--) {
 			IfSysMock refmock = invokerOrderList.get(i);
 			/**
@@ -122,7 +123,7 @@ public class IfSysAutoTestService extends Domain {
 			String postData = refmock.getRequestJson();
 			// 实际请求后，返回的报文（返回码和返回实体）
 			try {
-				httpClientService.httpPost(refmock.getAddressUrl(), postData);
+				httpClientService.httpPost(refmock.getAddressUrl(), postData,cookieStore);
 			} catch (Exception e) {
 				debug("调用失败   调用被依赖测试用例过程中出现异常");
 			}
@@ -140,13 +141,13 @@ public class IfSysAutoTestService extends Domain {
 	 *
 	 * @param mock
 	 */
-	public void invokCase(IfSysMock mock) {
+	public void invokCase(IfSysMock mock,CookieStore cookieStore) {
 		// 期望请求报文
 		String postData = mock.getRequestJson();
 		// 实际请求后，返回的报文（返回码和返回实体）
 		String responseJson = "";
 		try {
-			responseJson = httpClientService.httpPost(mock.getAddressUrl(), postData);
+			responseJson = httpClientService.httpPost(mock.getAddressUrl(), postData,cookieStore);
 		} catch (Exception e) {
 			responseJson = "";
 			debug("调用失败 调用目标测试用例过程中出现异常");
@@ -219,7 +220,6 @@ public class IfSysAutoTestService extends Domain {
 	 * @date 2015年12月22日下午4:14:44
 	 *
 	 * @param invokerOrderList
-	 * @param ifId
 	 */
 	public void invokerOrder(List<IfSysMock> invokerOrderList, int mockId) {
 		// 获取被测用例依赖其他用例的列表
@@ -229,9 +229,12 @@ public class IfSysAutoTestService extends Domain {
 			IfSysRefer refer = referList.get(i);
 			// 获取被依赖的用例数据
 			IfSysMock mock = ifSysMockService.getReferByIfId(refer.getRefMockId());
-			String url = getAddressUrl(mock.getAddressUrl(), mock.getIfURL());
-			mock.setAddressUrl(url);
-			invokerOrderList.add(mock);
+			if(mock!=null){
+				String url = getAddressUrl(mock.getAddressUrl(), mock.getIfURL());
+				mock.setAddressUrl(url);
+				invokerOrderList.add(mock);
+			}
+			
 			// 如果被依赖测试用例还依赖其他测试用例
 			invokerOrder(invokerOrderList, refer.getRefMockId());
 		}
@@ -271,16 +274,28 @@ public class IfSysAutoTestService extends Domain {
 	 * @author xiebin
 	 * @date 2015年12月10日上午10:43:23
 	 *
-	 * @param interFaceInfo
 	 * @return
 	 */
 	public String getAddressUrl(String url, String action) {
 		String addressUrl = "";
 		if (StringUtil.isNotBlank(url) && StringUtil.isNotBlank(action)) {
+			url=url.trim();
+			action=action.trim();
 			if (url.endsWith("/")) {
-				addressUrl = url + action;
+				if(action.startsWith("/")){
+					addressUrl=url+action.substring(1);
+				}else{
+					addressUrl = url + action;
+				}
+				
 			} else {
-				addressUrl = url + "/" + action;
+				if(action.startsWith("/")){
+					addressUrl=url+action;
+				}else{
+					addressUrl = url + "/" + action;
+				}
+				
+				
 			}
 		}
 		return addressUrl;

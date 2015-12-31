@@ -13,14 +13,18 @@
     td { border: 1px solid #e8e8e8;}
     .f{background: #ff594d!important; }
     a{background: #ff594d;display: block}
-    .failed{background: #ee0414 }
-    .failed44{background: #ee4e5c  }
-    .failed34{background: #ee966e  }
-    .failed24{background: #eecf80  }
-    .failed14{background: #d2ee87  }
-    .passed{background: #2aff3c  }
+    .failed{background: #FF4648 }
+    .failed44{background: #FF4C27  }
+    .failed34{background: #FF792F  }
+    .failed24{background: #FFAE3B  }
+    .failed14{background: #E0FF6C  }
+    .passed{background: #5BFF50  }
     .normal{background:none}
-    .head{background:grey;color:#fff;font-size:.5rem}
+    .head{background:grey;color:#eee;font-size:.5rem}
+    .progress{width: 200px;display: block;height: 20px;border: 1px solid grey;}
+    .progress span{display: block;height: 20px;background: #585eaa;}
+    .rate span{float:left}
+    small{font-size:0.75em;color:grey}
 </style>
 <body style='width:100%'>
 
@@ -33,7 +37,12 @@
 <table class='his'>
     #foreach( $ifId in $IfIDNameMap.keySet())
     <tr>
-        <td class="head" style="white-space: nowrap;text-overflow: ellipsis;text-align:left;font-size:.75em;" title="$ifId,$IfIDNameMap[$ifId]">$IfIDNameMap[$ifId]</td>
+        #if($IfIDNameMap[$ifId].length()>=9)
+            #set($ifnamelength = 9)
+        #else
+            #set($ifnamelength = $IfIDNameMap[$ifId].length())
+        #end
+        <td class="head" style="white-space: nowrap;text-overflow: ellipsis;text-align:left;font-size:.75em;" title="$IfIDNameMap[$ifId]">$ifId - $IfIDNameMap[$ifId].substring(0,$ifnamelength)</td>
         #foreach( $JNR in $OrderedHeadJNRSet)
 
             #set( $passRate = $initedDataSet[$JNR].get($ifId).get("ifPassRate") )
@@ -75,20 +84,22 @@
     </tr>
     #end
     <tr>
-        <td class="head" style="font-size:.75em;" title="批次号">批次</td>
+        <td class="head" style="background:#585eaa;font-size:.75em;" title="批次号">批次</td>
         #foreach( $JNR in $OrderedHeadJNRSet)
-            <td class="head" style="font-size:.75em;" title="$!JNR.substring(0,4)-$!JNR.substring(4,6)-$!JNR.substring(6,8)&#10;$!JNR.substring(8,10):$!JNR.substring(10,12):$!JNR.substring(12,14)">$!JNR.substring(8,10)</td>
+            <td class="head" style="background:#585eaa;font-size:.75em;" title="$!JNR.substring(0,4)-$!JNR.substring(4,6)-$!JNR.substring(6,8)&#10;$!JNR.substring(8,10):$!JNR.substring(10,12):$!JNR.substring(12,14)">$!JNR.substring(8,10)</td>
         #end
-        <td class="head"></td>
+        <td class="head" style="background:#585eaa;"></td>
     </tr>
 </table>
 
 <p>2.其他指标</p>
-<br>测试接口数:${ifCount}
-<br>测试用例数:${caseCount}
-<br>测试通过率(最新):${mockPassRate} %
-<br>测试覆盖率覆盖率(最新): --
-<br>测试覆盖率覆盖率(总体): --
+<p>测试接口数:${ifCount}</p>
+<p>测试用例数:${caseCount}</p>
+<p class="rate"><span>测试通过率(最新): </span><span class="progress"><span style="width:${mockPassRate}%"></span></span> ${mockPassRate} %</p>
+<p class="rate"><span>用例覆盖率(最新): </span><span class="progress"><span style="width:${CCcoverage}%"></span></span> ${CCcoverage} %</p>
+<p class="rate"><span>接口覆盖率(最新): </span><span class="progress"><span style="width:${IFcoverage}%"></span></span> ${IFcoverage} %</p>
+<p><small>用例覆盖率:已测用例数/用例总数</small></p>
+<p><small>接口覆盖率:已测接口数/接口总数</small></p>
 
 <br>祝工作愉快!
 </body>
