@@ -142,6 +142,7 @@ public class IfSysAutoTest extends Domain {
 		int jnrCount = 15;
 		// 发送结果分析
 		List<IfSysMockHistory> recentRst = ifSysMockHistoryService.getNewestReslutOf(jnrCount);
+
 		if(recentRst==null){System.out.println("查询最近的mocks查询结果为空");return;}
 		Map< String,List<IfSysMockHistory> > mailBuffers = new HashMap<>();
 		for(IfSysMockHistory history:recentRst){
@@ -172,8 +173,6 @@ public class IfSysAutoTest extends Domain {
 			}};
 		Map<String,Map> initedDataSet = new TreeMap<>();
 		ArrayList<String> HeadIFID = new ArrayList<>();
-		// 通过率
-		int _testCnt = 0;
 
 		while (entries.hasNext()) {
 			Map.Entry entry = (Map.Entry) entries.next();
@@ -211,12 +210,11 @@ public class IfSysAutoTest extends Domain {
 					try {
 						nowRst = eachHisMock.getTestResult().isEmpty()?0:(eachHisMock.getTestResult().equals("1")?1:0);
 					}catch (Exception e){
-						System.out.println("************** TestResult 为空 ************");
+						System.out.println("************** TestResult 为空 ********* 是否有改了数据库  ***");
 					}
 					float preRst = (float) (eachIfSet.get(ifId).get("ifPassRate"));
 					float _rate = ((rstSiz-1)*preRst+nowRst)/rstSiz;
 					eachIfSet.get(ifId).put("ifPassRate",(float)(Math.round(_rate*100))/100); //实时计算
-					_testCnt++;
 				}else{
 					eachIfSet.get(ifId).put("ifPassRate","没有测试数据,无法计算");
 				}
@@ -248,15 +246,12 @@ public class IfSysAutoTest extends Domain {
 		// JNR集合
 		Set<String> OrderedHeadJNRSet = initedDataSet.keySet();
 
-		// 接口总数
-		int ifCount = IfIDNameMap.size();
-		// 用例总数
-		int caseCount = _testCnt;
-
 		// 计算通过率 - 格式化数据
 		List<IfSysMockHistory> lastRst = ifSysMockHistoryService.getNewestReslutOf(1);//最近一批数据
-		float mockCount = lastRst.size();
 		float _passRate = 0;
+
+		// 用例总数
+		float mockCount = lastRst.size();
 
 		// 计算当次覆盖率
 		float CCprob,CCtot,IFtst,IFtot;
@@ -293,7 +288,7 @@ public class IfSysAutoTest extends Domain {
 		}
 		mailSenderService.setTo(copyTo);
 		// String userName= ifSysStuffService.getStuffByEmail(email).get(0).getUserName();
-		mailSenderService.setSubject("来自独孤九剑接口自动化测试的邮件 - 总览");
+		mailSenderService.setSubject("总览 - 来自独孤九剑接口自动化测试的邮件");
 		mailSenderService.setTemplateName("copyMail.vm");// 设置的邮件模板
 		// 发送结果
 		Map<String,Object> model = new HashMap<>();
@@ -305,7 +300,7 @@ public class IfSysAutoTest extends Domain {
 		// 最近一条JNR
 		model.put("lastJNR", lastJNR);
 		// 指标数据
-		model.put("ifCount", ifCount);
+		model.put("ifCount", IFtst);
 		// model.put("caseCount", caseCount); //所有的
 		model.put("caseCount", Math.round(mockCount));
 		model.put("jnrCount", jnrCount);
