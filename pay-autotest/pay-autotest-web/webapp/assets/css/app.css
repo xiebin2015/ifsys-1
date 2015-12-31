@@ -196,3 +196,7 @@ pre{
 .orderRely{
 	width:30px;
 }
+.breadNav{
+	margin-bottom:0 !important;
+	font-size:15px;
+}
