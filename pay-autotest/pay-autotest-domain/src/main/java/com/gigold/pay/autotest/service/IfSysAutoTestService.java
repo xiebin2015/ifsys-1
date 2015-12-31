@@ -10,6 +10,8 @@ package com.gigold.pay.autotest.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.client.CookieStore;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +79,9 @@ public class IfSysAutoTestService extends Domain {
 	 * @param interFaceInfo
 	 */
 	public void autoTest(InterFaceInfo interFaceInfo) {
+		if(interFaceInfo.getId()==68){
+			System.out.println("hhehe");
+		}
 		// 获取接口访问的完整地址
 		String url = getAddressUrl(interFaceInfo.getAddressUrl(), interFaceInfo.getIfUrl());
 		// 调用接口所有的测试用例
@@ -87,10 +92,12 @@ public class IfSysAutoTestService extends Domain {
 			// 1、获取该测试用例调用时依赖的其他用例的调用列表
 			List<IfSysMock> invokerOrderList = new ArrayList<IfSysMock>();
 			invokerOrder(invokerOrderList, mock.getId());
+			//存放依赖的cookies
+			CookieStore cookieStore=new BasicCookieStore();
 			// 2、 按照调用序号依次调用被依赖测试用例
-			invokRefCase(invokerOrderList);
+			invokRefCase(invokerOrderList,cookieStore);
 			// 3、最后调用目标接口
-			invokCase(mock);
+			invokCase(mock,cookieStore);
 
 		}
 
@@ -106,7 +113,7 @@ public class IfSysAutoTestService extends Domain {
 	 *
 	 * @param invokerOrderList
 	 */
-	public void invokRefCase(List<IfSysMock> invokerOrderList) {
+	public void invokRefCase(List<IfSysMock> invokerOrderList,CookieStore cookieStore) {
 		for (int i = invokerOrderList.size() - 1; i >= 0; i--) {
 			IfSysMock refmock = invokerOrderList.get(i);
 			/**
@@ -116,7 +123,7 @@ public class IfSysAutoTestService extends Domain {
 			String postData = refmock.getRequestJson();
 			// 实际请求后，返回的报文（返回码和返回实体）
 			try {
-				httpClientService.httpPost(refmock.getAddressUrl(), postData);
+				httpClientService.httpPost(refmock.getAddressUrl(), postData,cookieStore);
 			} catch (Exception e) {
 				debug("调用失败   调用被依赖测试用例过程中出现异常");
 			}
@@ -134,13 +141,13 @@ public class IfSysAutoTestService extends Domain {
 	 *
 	 * @param mock
 	 */
-	public void invokCase(IfSysMock mock) {
+	public void invokCase(IfSysMock mock,CookieStore cookieStore) {
 		// 期望请求报文
 		String postData = mock.getRequestJson();
 		// 实际请求后，返回的报文（返回码和返回实体）
 		String responseJson = "";
 		try {
-			responseJson = httpClientService.httpPost(mock.getAddressUrl(), postData);
+			responseJson = httpClientService.httpPost(mock.getAddressUrl(), postData,cookieStore);
 		} catch (Exception e) {
 			responseJson = "";
 			debug("调用失败 调用目标测试用例过程中出现异常");
