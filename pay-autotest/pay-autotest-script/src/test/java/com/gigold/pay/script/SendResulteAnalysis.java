@@ -149,7 +149,7 @@ public class SendResulteAnalysis {
 
                 // if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com"))
 
-                if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com")||email.equals("liuzg@gigold.com"))
+                if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com")||email.equals("liuzg@gigold.com")||email.equals("xiebin@gigold.com"))
 
                     mailSenderService.sendWithTemplateForHTML(model);
             }
@@ -162,6 +162,7 @@ public class SendResulteAnalysis {
         int jnrCount = 15;
         // 发送结果分析
         List<IfSysMockHistory> recentRst = ifSysMockHistoryService.getNewestReslutOf(jnrCount);
+
         if(recentRst==null){System.out.println("查询最近的mocks查询结果为空");return;}
         Map< String,List<IfSysMockHistory> > mailBuffers = new HashMap<>();
         for(IfSysMockHistory history:recentRst){
@@ -192,8 +193,6 @@ public class SendResulteAnalysis {
             }};
         Map<String,Map> initedDataSet = new TreeMap<>();
         ArrayList<String> HeadIFID = new ArrayList<>();
-        // 通过率
-        int _testCnt = 0;
 
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
@@ -231,12 +230,11 @@ public class SendResulteAnalysis {
                     try {
                         nowRst = eachHisMock.getTestResult().isEmpty()?0:(eachHisMock.getTestResult().equals("1")?1:0);
                     }catch (Exception e){
-                        System.out.println("************** TestResult 为空 ************");
+                        System.out.println("************** TestResult 为空 ********* 是否有改了数据库  ***:"+eachHisMock.getTestResult());
                     }
                     float preRst = (float) (eachIfSet.get(ifId).get("ifPassRate"));
                     float _rate = ((rstSiz-1)*preRst+nowRst)/rstSiz;
                     eachIfSet.get(ifId).put("ifPassRate",(float)(Math.round(_rate*100))/100); //实时计算
-                    _testCnt++;
                 }else{
                     eachIfSet.get(ifId).put("ifPassRate","没有测试数据,无法计算");
                 }
@@ -268,15 +266,12 @@ public class SendResulteAnalysis {
         // JNR集合
         Set<String> OrderedHeadJNRSet = initedDataSet.keySet();
 
-        // 接口总数
-        int ifCount = IfIDNameMap.size();
-        // 用例总数
-        int caseCount = _testCnt;
-
         // 计算通过率 - 格式化数据
         List<IfSysMockHistory> lastRst = ifSysMockHistoryService.getNewestReslutOf(1);//最近一批数据
-        float mockCount = lastRst.size();
         float _passRate = 0;
+
+        // 用例总数
+        float mockCount = lastRst.size();
 
         // 计算当次覆盖率
         float CCprob,CCtot,IFtst,IFtot;
@@ -325,7 +320,7 @@ public class SendResulteAnalysis {
             // 最近一条JNR
             model.put("lastJNR", lastJNR);
             // 指标数据
-            model.put("ifCount", ifCount);
+            model.put("ifCount", IFtst);
             // model.put("caseCount", caseCount); //所有的
             model.put("caseCount", Math.round(mockCount));
             model.put("jnrCount", jnrCount);
@@ -334,7 +329,6 @@ public class SendResulteAnalysis {
             model.put("IFcoverage", (float)(Math.round(IFcoverage*10000))/100);//保留两位
             mailSenderService.sendWithTemplateForHTML(model);
         System.out.println("邮件发送成功！");
-
     }
 
 	@After
