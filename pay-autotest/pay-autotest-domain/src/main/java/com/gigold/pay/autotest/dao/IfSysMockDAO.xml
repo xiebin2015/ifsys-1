@@ -286,7 +286,7 @@
  		FROM
  			T_IF_AUTO_MOCK a left outer join T_IF_INTERFACE b ON a.IF_ID = b.ID
  		WHERE
- 			a.TEST_RESULT=#{testResult} and STATUS='Y' and not ISNULL(TEST_RESULT)
+ 			a.TEST_RESULT=#{testResult} and STATUS='Y' and not ISNULL(TEST_RESULT)  and b.ISVALID='Y'
       ]]>
 	</select>
 
@@ -313,7 +313,7 @@
  		FROM
  			T_IF_AUTO_MOCK a left outer join T_IF_INTERFACE b ON a.IF_ID = b.ID
  		WHERE
- 			(ISNULL(a.TEST_RESULT) or a.TEST_RESULT!=1) and STATUS='Y' and not ISNULL(TEST_RESULT)
+ 			(ISNULL(a.TEST_RESULT) or a.TEST_RESULT!=1) and STATUS='Y' and not ISNULL(TEST_RESULT) and b.ISVALID='Y'
       ]]>
 	</select>
 
@@ -340,7 +340,7 @@
  		FROM
  			T_IF_AUTO_MOCK a left outer join T_IF_INTERFACE b ON a.IF_ID = b.ID
  		WHERE
- 			not ISNULL(a.TEST_RESULT) and STATUS='Y' and not ISNULL(TEST_RESULT)
+ 			not ISNULL(a.TEST_RESULT) and STATUS='Y' and not ISNULL(TEST_RESULT)  and b.ISVALID='Y'
       ]]>
 	</select>
 
