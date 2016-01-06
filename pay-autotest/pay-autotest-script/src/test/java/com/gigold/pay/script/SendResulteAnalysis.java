@@ -73,9 +73,11 @@ public class SendResulteAnalysis {
         System.out.println("work");
 	}
 
-    //@Test
+   // @Test
 	public void autoTest() {
+		ifSysMockService.initIfSysMock();
 		ifsysCheckThreadPool.execute();
+		
 	}
 
    // @Test
@@ -147,8 +149,16 @@ public class SendResulteAnalysis {
                 model.put("ifOfmockSetList", ifOfmockSetList);
                 model.put("userName", userName);
 
+<<<<<<< HEAD
                 if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com")||email.equals("liuzg@gigold.com")||email.equals("xiebin@gigold.com"))
                 mailSenderService.sendWithTemplateForHTML(model);
+=======
+                // if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com"))
+
+                //if(email.equals("chenkuan@gigold.com")||email.equals("chenhl@gigold.com")||email.equals("liuzg@gigold.com")||email.equals("xiebin@gigold.com"))
+
+                    mailSenderService.sendWithTemplateForHTML(model);
+>>>>>>> gigold/master
             }
             System.out.println("邮件发送成功！");
         }

@@ -132,7 +132,7 @@ $(function() {
 	});
 	
 	
-		//点击删除测试数据
+		//点击删除依赖用例数据
 	$(document).on("click",".mockDelBtn",function(){
 		var curEle = $(this).parent().parent();
 		var sendData = {};
@@ -151,6 +151,7 @@ $(function() {
 	});
 	//添加依赖
 	$(document).on("click", ".relyBtn", function() {
+		
 		//加载系统信息
 		gigold.pay.interFace.ajaxHandler({
 			"url": "getAllSysInfo.do",
@@ -170,7 +171,10 @@ $(function() {
 		});
 
 		var morkId = $(this).parent().parent().find(".hideInp").attr("data-id");
+		var opernames = $(this).parent().parent().find(".hideInp").attr("data-opername");
+		var rspcds = $(this).parent().parent().find(".hideInp").attr("data-rspcd");
 		$("#mockDateShowBody").attr("data-id",morkId);
+		$(".tabName").html('<ol class="am-breadcrumb breadNav"> <li><a>'+opernames+'</a></li><li><a>'+rspcds+'</a></li><li><a>数据依赖关系表</a></li></ol>');
 		relyAjaxFn(morkId);
 
 		$("#doc-modal-rely").modal({
@@ -270,6 +274,7 @@ $(function() {
 		var $ele = $(this).parent().parent();
 		var sendData = {};
 		sendData.id = $ele.find(".hideInp").attr("data-id");
+		if(sendData.id){
 		gigold.pay.interFace.ajaxHandler({
 			"url": "autotest/deleteifsysmockbyid.do",
 			"data": JSON.stringify(sendData),
@@ -279,6 +284,9 @@ $(function() {
 				}
 			}
 		});
+		}else{
+			$($ele).remove();
+		}
 	});
 
 	//加载接口信息
@@ -334,11 +342,11 @@ $(function() {
 					$(".operName").html(data.interFaceInfo.ifName);
 					$.each(data.interFaceInfo.mockList, function(index, mock) {
 						htmlStr += '<div class="rspBox">';
-						htmlStr += '<input type="hidden" class="hideInp" data-id="' + mock.id + '" data-ifId="' + mock.ifId + '" />';
+						htmlStr += '<input type="hidden" class="hideInp" data-id="' + mock.id + '" data-ifId="' + mock.ifId + '" data-operName="' + data.interFaceInfo.ifName + '" data-rspCd="' + mock.rspCode + '" />';
 						htmlStr += '<p><span class="rspCd">' + mock.rspCode + ':</span>';
 						htmlStr += '<code class="rspCdDesc">' + mock.rspCodeDesc + '</code>';
 						htmlStr +='<button class="am-btn am-radius relyBtn am-btn-xs am-btn-secondary">依赖</button></p><hr />';
-						htmlStr += '<p><span >用例名称:<input name="caseName" value="'+mock.caseName+'"</span></p>';
+						htmlStr += '<p><span >('+mock.id+')用例名称:<input name="caseName" value="'+mock.caseName+'"</span></p>';
 						htmlStr += '<p><span >入参:</span><pre class="reqJson">' + mock.requestJson + '</pre></p>';
 						htmlStr += '<p><span >出参:</span><pre class="rspJson">' + mock.responseJson + '</pre></p>';
 						htmlStr += '<div class="bianjiBtn">';
@@ -642,5 +650,9 @@ function addCodMod(data) {
 	htmlStr += '<button type="button" class="am-btn am-btn-danger delBtn">删除</button>';
 	htmlStr += '</div></div>';
 	var rspBoxs = $(document).find(".rspBox");
-	$(rspBoxs[0]).before(htmlStr);
+	if(rspBoxs.length==0){
+		$(".modalCd").html(htmlStr);;
+	}else{
+		$(rspBoxs[0]).before(htmlStr);
+	}
 }
