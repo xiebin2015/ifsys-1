@@ -250,6 +250,7 @@ $(function() {
 		sendData.responseJson = $ele.find(".rspJson").val();
 		sendData.checkJson = $ele.find(".checkJson").val();
 		sendData.rspRefJson = $ele.find(".rspRefJson").val();
+		console.log(sendData);
 		gigold.pay.interFace.ajaxHandler({
 			"url": "autotest/updateifsysmock.do",
 			"data": JSON.stringify(sendData),
